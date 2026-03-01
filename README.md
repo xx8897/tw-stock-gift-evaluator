@@ -98,3 +98,14 @@ pip install pandas requests openpyxl
 python evaluate_stocks.py
 ```
 執行完畢後即會同時生成上述兩份 Excel 檔案。可透過 `新版性價比` 或 `新版推薦評分` 欄位排序，快速找出超值的零股神股！
+
+---
+
+## 📄 授權與版權聲明 (Copyright & License)
+
+Copyright (c) 2026 xx8897. All rights reserved.
+
+本專案保留所有權利。未經作者事先書面同意，嚴禁任何人以任何形式或方式（包含但不限於：複製、修改、散發、再授權或用於商業及非商業用途）使用本專案之部分或全部程式碼。
+
+詳細授權條款請參閱 **[LICENSE](LICENSE)** 檔案。
+若需取得使用或修改之授權，請來信聯繫原作者（請將您的聯絡 Email 補充在此）。
