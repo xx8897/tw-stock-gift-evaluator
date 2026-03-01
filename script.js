@@ -13,6 +13,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const annualFilter = document.getElementById('annualFilter');
     const sortableHeaders = document.querySelectorAll('th.sortable');
 
+    // Modal Elements
+    const infoModal = document.getElementById('infoModal');
+    const openModalBtn = document.getElementById('openModalBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+
     try {
         // Fetch Excel File
         const response = await fetch(EXCEL_URL);
@@ -60,6 +65,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderTable();
         }));
         annualFilter.addEventListener('change', renderTable);
+
+        // Modal Event Listeners
+        if (openModalBtn && closeModalBtn && infoModal) {
+            openModalBtn.addEventListener('click', () => {
+                infoModal.classList.remove('hidden');
+            });
+
+            closeModalBtn.addEventListener('click', () => {
+                infoModal.classList.add('hidden');
+            });
+
+            // Close when clicking outside of modal content
+            infoModal.addEventListener('click', (e) => {
+                if (e.target === infoModal) {
+                    infoModal.classList.add('hidden');
+                }
+            });
+        }
 
         sortableHeaders.forEach(header => {
             header.addEventListener('click', () => {

@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>台股股東會紀念品攻略 🎁</title>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Outfit:wght@400;600;800&display=swap"
+        rel="stylesheet">
+
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="app-background">
         <div class="blob blob-1"></div>
@@ -27,21 +31,33 @@
             <div class="header-content">
                 <h1>
                     <span class="gradient-text">台股股東會紀念品</span>評估指南
-                    <i class="fa-solid fa-gift bounce-icon"></i>
                 </h1>
                 <p class="subtitle">自動抓取最新股價，精算零股性價比！幫您找出最划算的「零股神股」✨</p>
-                <div class="last-updated" id="last-updated">
-                    <i class="fa-regular fa-clock"></i> 載入資料中...
+                <div class="header-actions">
+                    <div class="last-updated" id="last-updated">
+                        <i class="fa-regular fa-clock"></i> 載入資料中...
+                    </div>
+                    <button class="info-btn" id="openModalBtn"><i class="fa-solid fa-circle-info"></i> 評估說明</button>
                 </div>
             </div>
         </header>
+
+        <section class="intro-section glass-panel">
+            <h3><i class="fa-solid fa-lightbulb" style="color: #fcd34d;"></i> 關於本工具</h3>
+            <p>本工具整合了台股最新的股東會紀念品資訊與即時股價，為您精算出購買「零股 (1股)」的真實性價比。透過直覺的篩選與排序，幫您輕鬆建立高 CP 值的零股投資名單！</p>
+            <div class="intro-tips">
+                <span class="tip"><i class="fa-solid fa-check-circle" style="color: #10b981;"></i> 建議優先關注「連續 5
+                    年發放」的穩定標的</span>
+                <span class="tip"><i class="fa-solid fa-star" style="color: #fbbf24;"></i> 5 星神股代表性價比極高</span>
+            </div>
+        </section>
 
         <section class="controls glass-panel">
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" id="searchInput" placeholder="搜尋股號、公司名稱或紀念品品項...">
             </div>
-            
+
             <div class="filters">
                 <label class="filter-btn active" data-filter="all">
                     <input type="radio" name="star-filter" value="all" checked> 全部顯示
@@ -63,7 +79,7 @@
                 <div class="spinner"></div>
                 <p>正在解析 Excel 推薦名單...</p>
             </div>
-            
+
             <table id="dataTable" class="hidden">
                 <thead>
                     <tr>
@@ -71,16 +87,23 @@
                         <th class="sortable" data-sort="name">公司 <i class="fa-solid fa-sort"></i></th>
                         <th class="sortable" data-sort="price">最新股價 <i class="fa-solid fa-sort"></i></th>
                         <th>上次紀念品</th>
-                        <th class="sortable" data-sort="freq">五年內發放 <i class="fa-solid fa-sort"></i></th>
-                        <th class="sortable" data-sort="cp" class="highlight-col">新版性價比 <i class="fa-solid fa-sort"></i></th>
-                        <th class="sortable" data-sort="score">推薦評分 <i class="fa-solid fa-sort"></i></th>
+                        <th class="sortable" data-sort="freq" title="近五年內有發放紀念品的次數。建議選擇長期發放的標的。">五年內發放 <i
+                                class="fa-regular fa-circle-question info-icon"></i> <i class="fa-solid fa-sort"></i>
+                        </th>
+                        <th class="sortable highlight-col" data-sort="cp"
+                            title="性價比 = (預估紀念品價值 - 零股總成本) / 零股總成本。數值越高代表越划算。">新版性價比 <i
+                                class="fa-regular fa-circle-question info-icon"></i> <i class="fa-solid fa-sort"></i>
+                        </th>
+                        <th class="sortable" data-sort="score" title="綜合股價、性價比與發放紀錄給出的推薦指數。5星為強烈推薦。">推薦評分 <i
+                                class="fa-regular fa-circle-question info-icon"></i> <i class="fa-solid fa-sort"></i>
+                        </th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
                     <!-- Rows will be dynamically populated here -->
                 </tbody>
             </table>
-            
+
             <div id="noResults" class="hidden no-results">
                 <i class="fa-regular fa-face-frown-open"></i>
                 <p>找不到符合條件的標的</p>
@@ -88,13 +111,52 @@
         </div>
 
         <footer class="footer">
-            <p>Made with ❤️ by <a href="https://github.com/xx8897/tw-stock-gift-evaluator" target="_blank" rel="noopener noreferrer">xx8897</a></p>
+            <p>Made with ❤️ by <a href="https://github.com/xx8897/tw-stock-gift-evaluator" target="_blank"
+                    rel="noopener noreferrer">xx8897</a></p>
             <p class="license-notice">授權說明：本網頁資料僅供參考。程式碼採用 All Rights Reserved 宣告，禁止未經授權之使用。</p>
         </footer>
     </main>
+
+    <!-- Modal for Detailed Documentation -->
+    <div id="infoModal" class="modal-overlay hidden">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2>📖 股東會紀念品評估說明</h2>
+                <button class="close-btn" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <h4>1. 什麼是「新版性價比」？</h4>
+                <p>性價比是計算您買進 1 股零股的「回報率」。公式為：<br>
+                    <code>(紀念品估值 - 手續費20元 - 最新股價) / (手續費20元 + 最新股價)</code><br>
+                    如果是負數，代表您花錢買零股加上手續費後，收到的紀念品價值還無法回本。
+                </p>
+
+                <h4>2. 紀念品估值的邏輯</h4>
+                <p>我們會透過演算法掃描歷年紀念品名稱，自動估算價值。例如：</p>
+                <ul>
+                    <li>超商商品卡、禮物卡：直接提取其面額（如 35 元商品卡算作 35 元）。</li>
+                    <li>實用生活用品（如洗衣精、洗碗精）：估值為 50 - 150 元不等。</li>
+                    <li>特定小物件（如保鮮盒、環保袋）：估值約 50 元。</li>
+                </ul>
+
+                <h4>3. 「推薦評分」怎麼算出來的？</h4>
+                <div class="score-legend">
+                    <p><span class="badge badge-5">5 星神股</span> 性價比 > 1.0 (買到賺到)</p>
+                    <p><span class="badge badge-4">4 星推薦</span> 性價比 > 0.0 (至少不虧本)</p>
+                    <p><span class="badge badge-3">3 星尚可</span> 性價比 > -0.5 (小虧但有紀念品)</p>
+                    <p><span class="badge badge-2">2 星不推</span> 性價比 > -0.8</p>
+                    <p><span class="badge badge-1">1 星極差</span> 超高股價或極低價值紀念品</p>
+                </div>
+
+                <h4>💡 小撇步</h4>
+                <p>就算是 5 星神股，也建議挑選「五年內發放次數」多（如 4 次或 5 次）的公司，這代表這家公司有穩定發放紀念品的習慣，比較不會遇到今年突然不發的窘境！</p>
+            </div>
+        </div>
+    </div>
 
     <!-- SheetJS for local Excel parsing -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
