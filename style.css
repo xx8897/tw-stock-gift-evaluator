@@ -306,12 +306,13 @@ th.sortable.active i {
 }
 
 tbody tr {
-    transition: background-color 0.2s ease, transform 0.2s;
+    transition: background-color 0.2s ease, box-shadow 0.2s;
 }
 
 tbody tr:hover {
     background: rgba(255, 255, 255, 0.05);
-    transform: scale(1.005) translateX(5px);
+    /* inset left border highlight — no transform, no stacking context */
+    box-shadow: inset 4px 0 0 var(--accent-primary);
 }
 
 td {
@@ -1191,8 +1192,15 @@ td {
         max-width: 90vw;
     }
 
-    /* Page jump: hide on very small screens */
+    /* Page jump: show below buttons on mobile, centered */
     .page-jump {
-        display: none;
+        width: 100%;
+        justify-content: center;
+        margin-left: 0;
+        padding-left: 0;
+        border-left: none;
+        padding-top: 0.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        margin-top: 0.4rem;
     }
 }
