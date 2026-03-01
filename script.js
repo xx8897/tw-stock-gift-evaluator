@@ -22,12 +22,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     const openModalBtn = document.getElementById('openModalBtn');
     const closeModalBtn = document.getElementById('closeModalBtn');
 
-    // ── Modal ──────────────────────────────────────────────────────────
+    // ── Modal ────────────────────────────────────────────────────────
     openModalBtn?.addEventListener('click', () => infoModal.classList.remove('hidden'));
     closeModalBtn?.addEventListener('click', () => infoModal.classList.add('hidden'));
     infoModal?.addEventListener('click', e => { if (e.target === infoModal) infoModal.classList.add('hidden'); });
 
-    // ── Load Data ──────────────────────────────────────────────────────
+    // Close history popups when clicking elsewhere
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.history-popup.open').forEach(el => el.classList.remove('open'));
+    });
+
+    // ── Load Data ─────────────────────────────────────────────────────
     try {
         const response = await fetch(EXCEL_URL);
         if (!response.ok) throw new Error('無法載入 Excel 檔案，請確認檔案是否存在於儲存庫中。');
@@ -41,8 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             lastUpdated.innerHTML = `<i class="fa-solid fa-check"></i> 同步至最新版`;
         }
 
-        const data = new Uint8Array(arrayBuffer);
-        const workbook = XLSX.read(data, { type: 'array' });
+        const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: 'array' });
         const ws = workbook.Sheets[workbook.SheetNames[0]];
         const rawData = XLSX.utils.sheet_to_json(ws);
 
@@ -53,14 +57,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             gift: String(row['上次紀念品'] || ''),
             freq: parseInt(row['五年內發放次數']) || 0,
             cp: parseFloat(row['新版性價比']) || 0,
-            score: String(row['新版推薦評分'] || '1 星')
+            score: String(row['新版推薦評分'] || '1 星'),
+            fiveYearGifts: String(row['五年發放紀念品'] || '')
         }));
 
-        // Show table area, hide loader
         loadingState.classList.add('hidden');
         tableWrapper.classList.remove('hidden');
 
-        // ── Event Listeners ────────────────────────────────────────────
+        // ── Event Listeners ───────────────────────────────────────────
         searchInput.addEventListener('input', () => { currentPage = 1; renderTable(); });
 
         filterBtns.forEach(btn => btn.addEventListener('change', e => {
@@ -87,7 +91,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     currentSort.column = col;
                     currentSort.direction = 'desc';
                 }
-                // Update sort icons
                 sortHeaders.forEach(h => {
                     h.classList.remove('active');
                     const si = h.querySelector('i.fa-solid');
@@ -96,13 +99,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 header.classList.add('active');
                 const si = header.querySelector('i.fa-solid');
                 if (si) si.className = currentSort.direction === 'asc' ? 'fa-solid fa-sort-up' : 'fa-solid fa-sort-down';
-
                 currentPage = 1;
                 renderTable();
             });
         });
 
-        // Set default sort icon
+        // Default sort icon
         const defaultHeader = document.querySelector('th[data-sort="score"]');
         if (defaultHeader) {
             defaultHeader.classList.add('active');
@@ -121,7 +123,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         `;
     }
 
-    // ── Render ─────────────────────────────────────────────────────────
+    // ── Render ────────────────────────────────────────────────────────
     function renderTable() {
         const query = searchInput.value.toLowerCase().trim();
         const starFilter = document.querySelector('input[name="star-filter"]:checked')?.value || 'all';
@@ -140,7 +142,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                         true;
 
             const matchAnnual = isAnnualOnly ? row.freq >= 5 : true;
-
             return matchSearch && matchStar && matchAnnual;
         });
 
@@ -163,7 +164,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         resultCount.textContent = `共 ${total} 筆結果`;
 
-        // 3. Toggle no-results
         if (total === 0) {
             noResults.classList.remove('hidden');
             tableBody.innerHTML = '';
@@ -172,29 +172,50 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         noResults.classList.add('hidden');
 
-        // 4. Render page rows
+        // 3. Render page rows
         const start = (currentPage - 1) * pageSize;
         const pageData = filteredData.slice(start, start + pageSize);
 
         tableBody.innerHTML = '';
         pageData.forEach(row => {
             const starNum = parseInt(row.score.charAt(0)) || 1;
-            const displayGift = row.gift.length > 25 ? row.gift.slice(0, 25) + '…' : row.gift;
-            const tooltip = row.gift.length > 25 ? ` title="${row.gift.replace(/"/g, '&quot;')}"` : '';
+            const displayGift = row.gift.length > 22 ? row.gift.slice(0, 22) + '…' : row.gift;
+
+            // Build five-year history popup
+            let historyHtml = '';
+            const raw5y = row.fiveYearGifts;
+            if (raw5y && raw5y !== 'nan' && raw5y.trim()) {
+                const lines = raw5y.split('\n').filter(l => l.trim());
+                historyHtml = lines.map(l => {
+                    const m = l.match(/^\((\d{4})\)(.*)$/);
+                    if (m) {
+                        const giftText = m[2].trim() || '（未發放）';
+                        return `<div class="hist-row"><span class="hist-year">${m[1]}</span><span class="hist-gift">${giftText}</span></div>`;
+                    }
+                    return `<div class="hist-row"><span class="hist-gift">${l.trim()}</span></div>`;
+                }).join('');
+            }
+
+            const historyTag = historyHtml
+                ? `<button class="history-btn" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')" title="查看五年歷史"><i class="fa-solid fa-clock-rotate-left"></i></button><div class="history-popup">${historyHtml}</div>`
+                : '';
+
+            const freqBar = '●'.repeat(row.freq) + '○'.repeat(Math.max(0, 5 - row.freq));
+
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td data-label="股號" class="stock-id">${row.id}</td>
                 <td data-label="公司" class="stock-name">${row.name}</td>
                 <td data-label="最新股價" class="price">${row.price.toFixed(2)}</td>
-                <td data-label="上次紀念品"${tooltip}>${displayGift}</td>
-                <td data-label="五年內發放">${row.freq} <span style="opacity:.5;font-size:.8em">/ 5</span></td>
+                <td data-label="上次紀念品" class="gift-cell">${displayGift}${historyTag}</td>
+                <td data-label="五年內發放" class="freq-cell"><span class="freq-num">${row.freq}/5</span><span class="freq-bar">${freqBar}</span></td>
                 <td data-label="CP 值" class="cp-value">${row.cp.toFixed(2)}</td>
                 <td data-label="推薦評分"><span class="badge badge-${starNum}">${row.score}</span></td>
             `;
             tableBody.appendChild(tr);
         });
 
-        // 5. Render pagination
+        // 4. Render pagination
         renderPagination(totalPages);
     }
 
@@ -226,7 +247,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         pagination.appendChild(mkBtn('<i class="fa-solid fa-chevron-left"></i>', currentPage - 1, false, currentPage === 1));
 
-        // Build page number list
         let pages;
         if (totalPages <= 7) {
             pages = Array.from({ length: totalPages }, (_, i) => i + 1);

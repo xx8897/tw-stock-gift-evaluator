@@ -976,3 +976,149 @@ td {
         display: none;
     }
 }
+
+/* ==========================================
+   GitHub Star Button
+   ========================================== */
+.github-star-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: var(--text-primary);
+    padding: 0.45rem 1rem;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-family: inherit;
+    transition: all 0.25s ease;
+}
+
+.github-star-btn:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+    color: #fbbf24;
+}
+
+/* ==========================================
+   Gift Cell & History Popup
+   ========================================== */
+.gift-cell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.history-btn {
+    flex-shrink: 0;
+    background: rgba(96, 165, 250, 0.15);
+    border: 1px solid rgba(96, 165, 250, 0.3);
+    color: #60a5fa;
+    border-radius: 6px;
+    padding: 2px 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    line-height: 1.4;
+}
+
+.history-btn:hover {
+    background: rgba(96, 165, 250, 0.3);
+}
+
+.history-popup {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 200;
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 0.75rem;
+    min-width: 260px;
+    max-width: 340px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+.history-popup.open {
+    display: block;
+}
+
+.hist-row {
+    display: flex;
+    gap: 8px;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.83rem;
+    line-height: 1.4;
+}
+
+.hist-row:last-child {
+    border-bottom: none;
+}
+
+.hist-year {
+    flex-shrink: 0;
+    font-family: 'Outfit', monospace;
+    color: #60a5fa;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.hist-gift {
+    color: var(--text-secondary);
+    word-break: break-all;
+}
+
+/* ==========================================
+   Freq Cell (dot bar)
+   ========================================== */
+.freq-cell {
+    white-space: nowrap;
+}
+
+.freq-num {
+    font-family: 'Outfit', monospace;
+    font-weight: 600;
+}
+
+.freq-bar {
+    display: inline-block;
+    margin-left: 6px;
+    letter-spacing: 2px;
+    font-size: 0.7rem;
+    color: #60a5fa;
+    opacity: 0.8;
+}
+
+/* ==========================================
+   Mobile card overrides for new cells
+   ========================================== */
+@media (max-width: 768px) {
+    .gift-cell {
+        flex-wrap: wrap;
+        white-space: normal;
+    }
+
+    /* freq-cell: align like other cells (right side) */
+    .freq-cell {
+        justify-content: flex-end;
+    }
+
+    .freq-bar {
+        display: none;
+        /* hide dot bar on mobile, number is enough */
+    }
+
+    /* History popup: left-align to viewport on mobile */
+    .history-popup {
+        left: auto;
+        right: 0;
+        max-width: 90vw;
+    }
+}
