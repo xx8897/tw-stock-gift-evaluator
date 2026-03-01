@@ -546,7 +546,7 @@ td {
 }
 
 .modal-content {
-    background: var(--surface-light);
+    background: rgba(15, 23, 42, 0.95);
     width: 90%;
     max-width: 600px;
     max-height: 85vh;
