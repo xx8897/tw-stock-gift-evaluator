@@ -1006,11 +1006,17 @@ td {
    Gift Cell & History Popup
    ========================================== */
 .gift-cell {
-    position: relative;
     display: flex;
     align-items: center;
     gap: 6px;
     white-space: nowrap;
+    overflow: visible;
+}
+
+/* td that contains gift-cell needs relative for the popup */
+#dataTable td:has(.gift-cell) {
+    position: relative;
+    overflow: visible;
 }
 
 .history-btn {
@@ -1076,24 +1082,85 @@ td {
 }
 
 /* ==========================================
-   Freq Cell (dot bar)
+   Freq Cell — dot progress bar
    ========================================== */
 .freq-cell {
     white-space: nowrap;
+    vertical-align: middle;
 }
 
 .freq-num {
     font-family: 'Outfit', monospace;
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 1rem;
 }
 
-.freq-bar {
+.freq-slash {
+    font-size: 0.75rem;
+    opacity: 0.45;
+    margin-left: 1px;
+}
+
+.freq-dots {
+    display: inline-flex;
+    gap: 3px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.dot {
     display: inline-block;
-    margin-left: 6px;
-    letter-spacing: 2px;
-    font-size: 0.7rem;
-    color: #60a5fa;
-    opacity: 0.8;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.dot.filled {
+    background: #60a5fa;
+}
+
+.dot.empty {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* ==========================================
+   Page Jump Input
+   ========================================== */
+.page-jump {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 0.5rem;
+    padding-left: 0.75rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+}
+
+.page-jump input {
+    width: 52px;
+    text-align: center;
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    padding: 0.25rem 0.4rem;
+    border-radius: 7px;
+    font-size: 0.83rem;
+    font-family: 'Outfit', monospace;
+    outline: none;
+    transition: border-color 0.2s;
+    /* hide number spinners */
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.page-jump input::-webkit-inner-spin-button,
+.page-jump input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+.page-jump input:focus {
+    border-color: var(--accent-primary);
 }
 
 /* ==========================================
@@ -1105,20 +1172,25 @@ td {
         white-space: normal;
     }
 
-    /* freq-cell: align like other cells (right side) */
+    /* freq-cell: align right like other card cells */
     .freq-cell {
         justify-content: flex-end;
     }
 
-    .freq-bar {
+    /* Hide dots on mobile - number is enough */
+    .freq-dots {
         display: none;
-        /* hide dot bar on mobile, number is enough */
     }
 
-    /* History popup: left-align to viewport on mobile */
+    /* History popup: right-anchored on mobile */
     .history-popup {
         left: auto;
         right: 0;
         max-width: 90vw;
+    }
+
+    /* Page jump: hide on very small screens */
+    .page-jump {
+        display: none;
     }
 }

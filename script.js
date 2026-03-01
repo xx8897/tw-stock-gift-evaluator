@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const openModalBtn = document.getElementById('openModalBtn');
     const closeModalBtn = document.getElementById('closeModalBtn');
 
-    // ── Modal ────────────────────────────────────────────────────────
+    // ── Modal ─────────────────────────────────────────────────────────
     openModalBtn?.addEventListener('click', () => infoModal.classList.remove('hidden'));
     closeModalBtn?.addEventListener('click', () => infoModal.classList.add('hidden'));
     infoModal?.addEventListener('click', e => { if (e.target === infoModal) infoModal.classList.add('hidden'); });
@@ -129,7 +129,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const starFilter = document.querySelector('input[name="star-filter"]:checked')?.value || 'all';
         const isAnnualOnly = annualFilter.checked;
 
-        // 1. Filter
         filteredData = globalData.filter(row => {
             const matchSearch = !query ||
                 row.id.includes(query) ||
@@ -145,7 +144,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             return matchSearch && matchStar && matchAnnual;
         });
 
-        // 2. Sort
         filteredData.sort((a, b) => {
             let va = a[currentSort.column];
             let vb = b[currentSort.column];
@@ -172,7 +170,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         noResults.classList.add('hidden');
 
-        // 3. Render page rows
         const start = (currentPage - 1) * pageSize;
         const pageData = filteredData.slice(start, start + pageSize);
 
@@ -181,7 +178,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const starNum = parseInt(row.score.charAt(0)) || 1;
             const displayGift = row.gift.length > 22 ? row.gift.slice(0, 22) + '…' : row.gift;
 
-            // Build five-year history popup
+            // Five-year history popup
             let historyHtml = '';
             const raw5y = row.fiveYearGifts;
             if (raw5y && raw5y !== 'nan' && raw5y.trim()) {
@@ -189,33 +186,37 @@ document.addEventListener('DOMContentLoaded', async () => {
                 historyHtml = lines.map(l => {
                     const m = l.match(/^\((\d{4})\)(.*)$/);
                     if (m) {
-                        const giftText = m[2].trim() || '（未發放）';
-                        return `<div class="hist-row"><span class="hist-year">${m[1]}</span><span class="hist-gift">${giftText}</span></div>`;
+                        return `<div class="hist-row"><span class="hist-year">${m[1]}</span><span class="hist-gift">${m[2].trim() || '（未發放）'}</span></div>`;
                     }
                     return `<div class="hist-row"><span class="hist-gift">${l.trim()}</span></div>`;
                 }).join('');
             }
-
             const historyTag = historyHtml
                 ? `<button class="history-btn" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')" title="查看五年歷史"><i class="fa-solid fa-clock-rotate-left"></i></button><div class="history-popup">${historyHtml}</div>`
                 : '';
 
-            const freqBar = '●'.repeat(row.freq) + '○'.repeat(Math.max(0, 5 - row.freq));
+            // Frequency: clamp display to max 5 dots
+            const freqDisplay = Math.min(row.freq, 5);
+            const freqDots = `<span class="freq-dots">${'<i class="dot filled"></i>'.repeat(freqDisplay)}${'<i class="dot empty"></i>'.repeat(5 - freqDisplay)}</span>`;
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td data-label="股號" class="stock-id">${row.id}</td>
                 <td data-label="公司" class="stock-name">${row.name}</td>
                 <td data-label="最新股價" class="price">${row.price.toFixed(2)}</td>
-                <td data-label="上次紀念品" class="gift-cell">${displayGift}${historyTag}</td>
-                <td data-label="五年內發放" class="freq-cell"><span class="freq-num">${row.freq}/5</span><span class="freq-bar">${freqBar}</span></td>
+                <td data-label="上次紀念品">
+                    <div class="gift-cell">${displayGift}${historyTag}</div>
+                </td>
+                <td data-label="五年內發放" class="freq-cell">
+                    <span class="freq-num">${row.freq}<span class="freq-slash">/5</span></span>
+                    ${freqDots}
+                </td>
                 <td data-label="CP 值" class="cp-value">${row.cp.toFixed(2)}</td>
                 <td data-label="推薦評分"><span class="badge badge-${starNum}">${row.score}</span></td>
             `;
             tableBody.appendChild(tr);
         });
 
-        // 4. Render pagination
         renderPagination(totalPages);
     }
 
@@ -245,8 +246,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             return s;
         };
 
+        // Prev
         pagination.appendChild(mkBtn('<i class="fa-solid fa-chevron-left"></i>', currentPage - 1, false, currentPage === 1));
 
+        // Page numbers with ellipsis
         let pages;
         if (totalPages <= 7) {
             pages = Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -257,11 +260,34 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (currentPage < totalPages - 2) pages.push('...');
             pages.push(totalPages);
         }
-
         pages.forEach(p => {
             pagination.appendChild(p === '...' ? mkEllipsis() : mkBtn(p, p, p === currentPage, false));
         });
 
+        // Next
         pagination.appendChild(mkBtn('<i class="fa-solid fa-chevron-right"></i>', currentPage + 1, false, currentPage === totalPages));
+
+        // ── Page Jump Input ───────────────────────────────────────────
+        const jumpWrap = document.createElement('div');
+        jumpWrap.className = 'page-jump';
+        jumpWrap.innerHTML = `
+            <span>跳至</span>
+            <input id="pageJumpInput" type="number" min="1" max="${totalPages}" value="${currentPage}" title="輸入頁碼後按 Enter">
+            <span>/ ${totalPages}</span>
+        `;
+        pagination.appendChild(jumpWrap);
+
+        const jumpInput = jumpWrap.querySelector('#pageJumpInput');
+        const doJump = () => {
+            const v = parseInt(jumpInput.value, 10);
+            if (v >= 1 && v <= totalPages && v !== currentPage) {
+                currentPage = v;
+                renderTable();
+                document.querySelector('.table-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+        jumpInput.addEventListener('keydown', e => { if (e.key === 'Enter') doJump(); });
+        jumpInput.addEventListener('blur', doJump);
+        jumpInput.addEventListener('click', e => e.stopPropagation()); // prevent closing popups
     }
 });
