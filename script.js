@@ -183,13 +183,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             const tooltip = row.gift.length > 25 ? ` title="${row.gift.replace(/"/g, '&quot;')}"` : '';
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td class="stock-id">${row.id}</td>
-                <td class="stock-name">${row.name}</td>
-                <td class="price">${row.price.toFixed(2)}</td>
-                <td${tooltip}>${displayGift}</td>
-                <td>${row.freq} <span style="opacity:.5;font-size:.8em">/ 5</span></td>
-                <td class="cp-value">${row.cp.toFixed(2)}</td>
-                <td><span class="badge badge-${starNum}">${row.score}</span></td>
+                <td data-label="股號" class="stock-id">${row.id}</td>
+                <td data-label="公司" class="stock-name">${row.name}</td>
+                <td data-label="最新股價" class="price">${row.price.toFixed(2)}</td>
+                <td data-label="上次紀念品"${tooltip}>${displayGift}</td>
+                <td data-label="五年內發放">${row.freq} <span style="opacity:.5;font-size:.8em">/ 5</span></td>
+                <td data-label="CP 值" class="cp-value">${row.cp.toFixed(2)}</td>
+                <td data-label="推薦評分"><span class="badge badge-${starNum}">${row.score}</span></td>
             `;
             tableBody.appendChild(tr);
         });
