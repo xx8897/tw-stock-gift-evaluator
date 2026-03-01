@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loadingState = document.getElementById('loadingState');
     const dataTable = document.getElementById('dataTable');
     const noResults = document.getElementById('noResults');
-    const lastUpdated = document.getElementById('lastUpdated');
+    const lastUpdated = document.getElementById('last-updated');
     const searchInput = document.getElementById('searchInput');
     const filterBtns = document.querySelectorAll('.filter-btn input[type="radio"]');
     const annualFilter = document.getElementById('annualFilter');
