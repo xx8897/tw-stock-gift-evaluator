@@ -764,3 +764,149 @@ td {
     white-space: nowrap;
     margin-left: 1rem;
 }
+
+/* ==========================================
+   Mobile RWD — ≤ 768px
+   ========================================== */
+@media (max-width: 768px) {
+
+    /* Reduce container padding */
+    .container {
+        padding: 1rem 0.75rem;
+        gap: 1rem;
+    }
+
+    /* Header: stack vertically, smaller font */
+    h1 {
+        font-size: 1.6rem;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .subtitle {
+        font-size: 0.9rem;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .glass-panel {
+        padding: 1.25rem;
+        border-radius: 14px;
+    }
+
+    /* Intro section */
+    .intro-section h3 {
+        font-size: 1rem;
+    }
+
+    .intro-tips {
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+
+    /* Controls: single column */
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .search-box {
+        min-width: unset;
+    }
+
+    .filters {
+        justify-content: flex-start;
+        gap: 0.5rem;
+    }
+
+    .filter-btn {
+        font-size: 0.82rem;
+        padding: 0.5rem 0.9rem;
+    }
+
+    /* Table: horizontal scroll */
+    #tableWrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        min-width: 620px;
+    }
+
+    th,
+    td {
+        padding: 0.8rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    /* Toolbar */
+    .table-toolbar {
+        padding: 0.75rem 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    /* Pagination: smaller buttons */
+    .page-btn {
+        min-width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+
+    .pagination {
+        gap: 0.25rem;
+        padding: 0.8rem;
+        flex-wrap: wrap;
+    }
+
+    /* Modal: full-screen on mobile */
+    .modal-content {
+        width: 95%;
+        max-height: 90vh;
+        padding: 1.25rem;
+    }
+
+    .modal-header h2 {
+        font-size: 1.1rem;
+    }
+
+    .score-legend p {
+        flex-wrap: wrap;
+    }
+}
+
+/* ==========================================
+   Mobile RWD — ≤ 480px (small phones)
+   ========================================== */
+@media (max-width: 480px) {
+
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    .gradient-text {
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    .filter-btn {
+        font-size: 0.78rem;
+        padding: 0.4rem 0.7rem;
+    }
+
+    .cp-value {
+        font-size: 0.95rem;
+    }
+
+    /* Hide pagination ellipsis label on tiny screens */
+    .page-ellipsis {
+        display: none;
+    }
+}
