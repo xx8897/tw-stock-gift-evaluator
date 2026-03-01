@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台股股東會紀念品攻略 🎁</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-background">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="container">
+        <header class="glass-panel">
+            <div class="header-content">
+                <h1>
+                    <span class="gradient-text">台股股東會紀念品</span>評估指南
+                    <i class="fa-solid fa-gift bounce-icon"></i>
+                </h1>
+                <p class="subtitle">自動抓取最新股價，精算零股性價比！幫您找出最划算的「零股神股」✨</p>
+                <div class="last-updated" id="last-updated">
+                    <i class="fa-regular fa-clock"></i> 載入資料中...
+                </div>
+            </div>
+        </header>
+
+        <section class="controls glass-panel">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="搜尋股號、公司名稱或紀念品品項...">
+            </div>
+            
+            <div class="filters">
+                <label class="filter-btn active" data-filter="all">
+                    <input type="radio" name="star-filter" value="all" checked> 全部顯示
+                </label>
+                <label class="filter-btn" data-filter="5">
+                    <input type="radio" name="star-filter" value="5"> ⭐ 5 星神股
+                </label>
+                <label class="filter-btn" data-filter="4">
+                    <input type="radio" name="star-filter" value="4"> ⭐ 4 星以上
+                </label>
+                <label class="filter-btn" data-filter="annual">
+                    <input type="checkbox" id="annualFilter"> 💎 連續 5 年發放
+                </label>
+            </div>
+        </section>
+
+        <div class="table-container glass-panel">
+            <div class="loading-state" id="loadingState">
+                <div class="spinner"></div>
+                <p>正在解析 Excel 推薦名單...</p>
+            </div>
+            
+            <table id="dataTable" class="hidden">
+                <thead>
+                    <tr>
+                        <th class="sortable" data-sort="id">股號 <i class="fa-solid fa-sort"></i></th>
+                        <th class="sortable" data-sort="name">公司 <i class="fa-solid fa-sort"></i></th>
+                        <th class="sortable" data-sort="price">最新股價 <i class="fa-solid fa-sort"></i></th>
+                        <th>上次紀念品</th>
+                        <th class="sortable" data-sort="freq">五年內發放 <i class="fa-solid fa-sort"></i></th>
+                        <th class="sortable" data-sort="cp" class="highlight-col">新版性價比 <i class="fa-solid fa-sort"></i></th>
+                        <th class="sortable" data-sort="score">推薦評分 <i class="fa-solid fa-sort"></i></th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Rows will be dynamically populated here -->
+                </tbody>
+            </table>
+            
+            <div id="noResults" class="hidden no-results">
+                <i class="fa-regular fa-face-frown-open"></i>
+                <p>找不到符合條件的標的</p>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Made with ❤️ by <a href="https://github.com/xx8897/tw-stock-gift-evaluator" target="_blank" rel="noopener noreferrer">xx8897</a></p>
+            <p class="license-notice">授權說明：本網頁資料僅供參考。程式碼採用 All Rights Reserved 宣告，禁止未經授權之使用。</p>
+        </footer>
+    </main>
+
+    <!-- SheetJS for local Excel parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
