@@ -1,17 +1,23 @@
 const EXCEL_URL = '2021-2025_推薦評分.xlsx';
 let globalData = [];
+let filteredData = [];
 let currentSort = { column: 'score', direction: 'desc' };
+let currentPage = 1;
+let pageSize = 25;
 
 document.addEventListener('DOMContentLoaded', async () => {
     const tableBody = document.getElementById('tableBody');
     const loadingState = document.getElementById('loadingState');
-    const dataTable = document.getElementById('dataTable');
+    const tableWrapper = document.getElementById('tableWrapper');
     const noResults = document.getElementById('noResults');
     const lastUpdated = document.getElementById('last-updated');
     const searchInput = document.getElementById('searchInput');
     const filterBtns = document.querySelectorAll('.filter-btn input[type="radio"]');
     const annualFilter = document.getElementById('annualFilter');
     const sortableHeaders = document.querySelectorAll('th.sortable');
+    const pageSizeSelect = document.getElementById('pageSizeSelect');
+    const resultCount = document.getElementById('resultCount');
+    const pagination = document.getElementById('pagination');
 
     // Modal Elements
     const infoModal = document.getElementById('infoModal');
@@ -21,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         // Fetch Excel File
         const response = await fetch(EXCEL_URL);
-        if (!response.ok) throw new Error('Network response was not ok');
+        if (!response.ok) throw new Error('無法載入 Excel 檔案，請確認檔案是否存在於儲存庫中。');
         const arrayBuffer = await response.arrayBuffer();
 
         // Process File Details for Last Updated
@@ -54,33 +60,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         }));
 
         loadingState.classList.add('hidden');
-        dataTable.classList.remove('hidden');
+        tableWrapper.classList.remove('hidden');
 
         // Setup Event Listeners
-        searchInput.addEventListener('input', renderTable);
+        searchInput.addEventListener('input', () => { currentPage = 1; renderTable(); });
         filterBtns.forEach(btn => btn.addEventListener('change', (e) => {
-            // Update active styling
             document.querySelectorAll('.filter-btn').forEach(l => l.classList.remove('active'));
             if (e.target.checked) e.target.parentElement.classList.add('active');
+            currentPage = 1;
             renderTable();
         }));
-        annualFilter.addEventListener('change', renderTable);
+        annualFilter.addEventListener('change', () => { currentPage = 1; renderTable(); });
+
+        pageSizeSelect.addEventListener('change', () => {
+            pageSize = parseInt(pageSizeSelect.value);
+            currentPage = 1;
+            renderTable();
+        });
 
         // Modal Event Listeners
         if (openModalBtn && closeModalBtn && infoModal) {
-            openModalBtn.addEventListener('click', () => {
-                infoModal.classList.remove('hidden');
-            });
-
-            closeModalBtn.addEventListener('click', () => {
-                infoModal.classList.add('hidden');
-            });
-
-            // Close when clicking outside of modal content
+            openModalBtn.addEventListener('click', () => infoModal.classList.remove('hidden'));
+            closeModalBtn.addEventListener('click', () => infoModal.classList.add('hidden'));
             infoModal.addEventListener('click', (e) => {
-                if (e.target === infoModal) {
-                    infoModal.classList.add('hidden');
-                }
+                if (e.target === infoModal) infoModal.classList.add('hidden');
             });
         }
 
@@ -91,24 +94,30 @@ document.addEventListener('DOMContentLoaded', async () => {
                     currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
                 } else {
                     currentSort.column = column;
-                    currentSort.direction = 'desc'; // Default to desc for new sorts
+                    currentSort.direction = 'desc';
                 }
 
-                // Update header classes
-                sortableHeaders.forEach(h => h.classList.remove('active'));
+                sortableHeaders.forEach(h => {
+                    h.classList.remove('active');
+                    h.querySelector('i.fa-solid.fa-sort-up, i.fa-solid.fa-sort-down')?.classList?.replace('fa-sort-up', 'fa-sort')?.replace('fa-sort-down', 'fa-sort');
+                });
                 header.classList.add('active');
 
-                const icon = header.querySelector('i');
-                icon.className = currentSort.direction === 'asc' ? 'fa-solid fa-sort-up' : 'fa-solid fa-sort-down';
+                const sortIcon = header.querySelector('i.fa-solid');
+                if (sortIcon) sortIcon.className = currentSort.direction === 'asc' ? 'fa-solid fa-sort-up' : 'fa-solid fa-sort-down';
 
+                currentPage = 1;
                 renderTable();
             });
         });
 
         // Set default sort state visually
         const defaultHeader = document.querySelector('th[data-sort="score"]');
-        defaultHeader.classList.add('active');
-        defaultHeader.querySelector('i').className = 'fa-solid fa-sort-down';
+        if (defaultHeader) {
+            defaultHeader.classList.add('active');
+            const icon = defaultHeader.querySelector('i.fa-solid');
+            if (icon) icon.className = 'fa-solid fa-sort-down';
+        }
 
         renderTable();
 
@@ -127,23 +136,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         const isAnnualOnly = annualFilter.checked;
 
         // 1. Filter
-        let filteredData = globalData.filter(row => {
-            // Search Match
+        filteredData = globalData.filter(row => {
             const matchesSearch = row.id.includes(query) ||
                 row.name.toLowerCase().includes(query) ||
                 row.gift.toLowerCase().includes(query);
 
-            // Star Match
             let matchesStar = true;
-            if (starFilter === '5') {
-                matchesStar = row.score.includes('5');
-            } else if (starFilter === '4') {
-                matchesStar = row.score.includes('5') || row.score.includes('4');
-            }
+            if (starFilter === '5') matchesStar = row.score.startsWith('5');
+            else if (starFilter === '4') matchesStar = row.score.startsWith('5') || row.score.startsWith('4');
 
-            // Annual Match
             const matchesAnnual = isAnnualOnly ? row.freq >= 5 : true;
-
             return matchesSearch && matchesStar && matchesAnnual;
         });
 
@@ -152,7 +154,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             let valA = a[currentSort.column];
             let valB = b[currentSort.column];
 
-            // Special handling for string scores
             if (currentSort.column === 'score') {
                 valA = parseInt(valA.charAt(0)) || 0;
                 valB = parseInt(valB.charAt(0)) || 0;
@@ -163,38 +164,95 @@ document.addEventListener('DOMContentLoaded', async () => {
             return 0;
         });
 
-        // 3. Render
-        tableBody.innerHTML = '';
+        const total = filteredData.length;
+        const totalPages = Math.ceil(total / pageSize);
+        if (currentPage > totalPages) currentPage = 1;
 
-        if (filteredData.length === 0) {
-            dataTable.classList.add('hidden');
+        // 3. Update result count
+        resultCount.textContent = `共 ${total} 筆結果`;
+
+        if (total === 0) {
+            tableWrapper.classList.add('hidden');
             noResults.classList.remove('hidden');
-        } else {
-            dataTable.classList.remove('hidden');
-            noResults.classList.add('hidden');
-
-            filteredData.forEach(row => {
-                const tr = document.createElement('tr');
-
-                // Get Star Number for Badge
-                const starNum = parseInt(row.score.charAt(0)) || 1;
-                let badgeClass = `badge-${starNum}`;
-
-                // Truncate Gift if too long
-                const displayGift = row.gift.length > 20 ? row.gift.substring(0, 20) + '...' : row.gift;
-                const giftTooltip = row.gift.length > 20 ? `title="${row.gift}"` : '';
-
-                tr.innerHTML = `
-                    <td class="stock-id">${row.id}</td>
-                    <td class="stock-name">${row.name}</td>
-                    <td class="price">${row.price.toFixed(2)}</td>
-                    <td ${giftTooltip}>${displayGift}</td>
-                    <td>${row.freq} <span style="opacity:0.5; font-size: 0.8em">/ 5</span></td>
-                    <td class="cp-value">${row.cp.toFixed(2)}</td>
-                    <td><span class="badge ${badgeClass}">${row.score}</span></td>
-                `;
-                tableBody.appendChild(tr);
-            });
+            pagination.innerHTML = '';
+            return;
         }
+
+        tableWrapper.classList.remove('hidden');
+        noResults.classList.add('hidden');
+
+        // 4. Render current page rows
+        const start = (currentPage - 1) * pageSize;
+        const pageData = filteredData.slice(start, start + pageSize);
+
+        tableBody.innerHTML = '';
+        pageData.forEach(row => {
+            const tr = document.createElement('tr');
+            const starNum = parseInt(row.score.charAt(0)) || 1;
+            const displayGift = row.gift.length > 25 ? row.gift.substring(0, 25) + '…' : row.gift;
+            const giftTooltip = row.gift.length > 25 ? `title="${row.gift.replace(/"/g, '&quot;')}"` : '';
+
+            tr.innerHTML = `
+                <td class="stock-id">${row.id}</td>
+                <td class="stock-name">${row.name}</td>
+                <td class="price">${row.price.toFixed(2)}</td>
+                <td ${giftTooltip}>${displayGift}</td>
+                <td>${row.freq} <span style="opacity:0.5; font-size: 0.8em">/ 5</span></td>
+                <td class="cp-value">${row.cp.toFixed(2)}</td>
+                <td><span class="badge badge-${starNum}">${row.score}</span></td>
+            `;
+            tableBody.appendChild(tr);
+        });
+
+        // 5. Render pagination
+        renderPagination(totalPages);
+    }
+
+    function renderPagination(totalPages) {
+        pagination.innerHTML = '';
+        if (totalPages <= 1) return;
+
+        const createBtn = (label, page, isActive = false, isDisabled = false) => {
+            const btn = document.createElement('button');
+            btn.className = 'page-btn' + (isActive ? ' active' : '') + (isDisabled ? ' disabled' : '');
+            btn.innerHTML = label;
+            btn.disabled = isDisabled;
+            if (!isDisabled) {
+                btn.addEventListener('click', () => {
+                    currentPage = page;
+                    renderTable();
+                    // Scroll table into view
+                    document.querySelector('.table-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            }
+            return btn;
+        };
+
+        pagination.appendChild(createBtn('<i class="fa-solid fa-chevron-left"></i>', currentPage - 1, false, currentPage === 1));
+
+        // Show limited page numbers with ellipsis
+        let pages = [];
+        if (totalPages <= 7) {
+            pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+        } else {
+            pages = [1];
+            if (currentPage > 3) pages.push('...');
+            for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) pages.push(i);
+            if (currentPage < totalPages - 2) pages.push('...');
+            pages.push(totalPages);
+        }
+
+        pages.forEach(p => {
+            if (p === '...') {
+                const span = document.createElement('span');
+                span.className = 'page-ellipsis';
+                span.textContent = '…';
+                pagination.appendChild(span);
+            } else {
+                pagination.appendChild(createBtn(p, p, p === currentPage));
+            }
+        });
+
+        pagination.appendChild(createBtn('<i class="fa-solid fa-chevron-right"></i>', currentPage + 1, false, currentPage === totalPages));
     }
 });

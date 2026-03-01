@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>台股股東會紀念品攻略 🎁</title>
+    <meta name="description" content="台股股東會紀念品攻略，自動抓取最新股價，精算零股性價比，幫您找出最划算的零股神股。">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,6 +32,7 @@
             <div class="header-content">
                 <h1>
                     <span class="gradient-text">台股股東會紀念品</span>評估指南
+                    <i class="fa-solid fa-gift bounce-icon"></i>
                 </h1>
                 <p class="subtitle">自動抓取最新股價，精算零股性價比！幫您找出最划算的「零股神股」✨</p>
                 <div class="header-actions">
@@ -44,11 +46,15 @@
 
         <section class="intro-section glass-panel">
             <h3><i class="fa-solid fa-lightbulb" style="color: #fcd34d;"></i> 關於本工具</h3>
-            <p>本工具整合了台股最新的股東會紀念品資訊與即時股價，為您精算出購買「零股 (1股)」的真實性價比。透過直覺的篩選與排序，幫您輕鬆建立高 CP 值的零股投資名單！</p>
+            <p>本工具整合了台股最新的股東會紀念品資訊（資料來源：<a href="https://www.stockgift.tw/" target="_blank" rel="noopener noreferrer"
+                    style="color: var(--accent-primary);">零股寶</a>）與即時股價，涵蓋 2021–2025 年間全台上市/上櫃公司紀錄共 <strong>881
+                    筆</strong>。透過演算法自動推估紀念品市場價值，精算出購買「零股 (1股)」的真實 CP 值，幫您輕鬆建立高性價比的零股投資名單！</p>
             <div class="intro-tips">
                 <span class="tip"><i class="fa-solid fa-check-circle" style="color: #10b981;"></i> 建議優先關注「連續 5
                     年發放」的穩定標的</span>
-                <span class="tip"><i class="fa-solid fa-star" style="color: #fbbf24;"></i> 5 星神股代表性價比極高</span>
+                <span class="tip"><i class="fa-solid fa-star" style="color: #fbbf24;"></i> 5 星神股代表 CP 值 ≥
+                    2.0，買到賺到</span>
+                <span class="tip"><i class="fa-solid fa-calendar" style="color: #60a5fa;"></i> 股價基準日：2026/02/25</span>
             </div>
         </section>
 
@@ -80,29 +86,49 @@
                 <p>正在解析 Excel 推薦名單...</p>
             </div>
 
-            <table id="dataTable" class="hidden">
-                <thead>
-                    <tr>
-                        <th class="sortable" data-sort="id">股號 <i class="fa-solid fa-sort"></i></th>
-                        <th class="sortable" data-sort="name">公司 <i class="fa-solid fa-sort"></i></th>
-                        <th class="sortable" data-sort="price">最新股價 <i class="fa-solid fa-sort"></i></th>
-                        <th>上次紀念品</th>
-                        <th class="sortable" data-sort="freq" title="近五年內有發放紀念品的次數。建議選擇長期發放的標的。">五年內發放 <i
-                                class="fa-regular fa-circle-question info-icon"></i> <i class="fa-solid fa-sort"></i>
-                        </th>
-                        <th class="sortable highlight-col" data-sort="cp"
-                            title="性價比 = (預估紀念品價值 - 零股總成本) / 零股總成本。數值越高代表越划算。">新版性價比 <i
-                                class="fa-regular fa-circle-question info-icon"></i> <i class="fa-solid fa-sort"></i>
-                        </th>
-                        <th class="sortable" data-sort="score" title="綜合股價、性價比與發放紀錄給出的推薦指數。5星為強烈推薦。">推薦評分 <i
-                                class="fa-regular fa-circle-question info-icon"></i> <i class="fa-solid fa-sort"></i>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <!-- Rows will be dynamically populated here -->
-                </tbody>
-            </table>
+            <div id="tableWrapper" class="hidden">
+                <div class="table-toolbar">
+                    <div class="result-count" id="resultCount"></div>
+                    <div class="page-size-control">
+                        <label for="pageSizeSelect">每頁顯示</label>
+                        <select id="pageSizeSelect">
+                            <option value="25" selected>25</option>
+                            <option value="50">50</option>
+                            <option value="75">75</option>
+                            <option value="100">100</option>
+                        </select>
+                        <span>筆</span>
+                    </div>
+                </div>
+
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th class="sortable" data-sort="id">股號 <i class="fa-solid fa-sort"></i></th>
+                            <th class="sortable" data-sort="name">公司 <i class="fa-solid fa-sort"></i></th>
+                            <th class="sortable" data-sort="price">最新股價 <i class="fa-solid fa-sort"></i></th>
+                            <th>上次紀念品</th>
+                            <th class="sortable" data-sort="freq"
+                                title="近五年內（2021–2025）有發放紀念品的次數，滿分為 5 次。建議選擇長期穩定發放的標的。">五年內發放 <i
+                                    class="fa-regular fa-circle-question info-icon"></i> <i
+                                    class="fa-solid fa-sort"></i></th>
+                            <th class="sortable highlight-col" data-sort="cp"
+                                title="新版性價比 = (五年紀念品總估值 ÷ 最新股價) × (五年內發放次數 ÷ 5)。數值越高代表越划算，≥ 2.0 為 5 星神股。">新版性價比 <i
+                                    class="fa-regular fa-circle-question info-icon"></i> <i
+                                    class="fa-solid fa-sort"></i></th>
+                            <th class="sortable" data-sort="score"
+                                title="綜合 CP 值給出的推薦星級：5星(CP≥2.0)、4星(CP≥1.0)、3星(CP≥0.5)、2星(CP≥0.1)、1星(CP<0.1)。">推薦評分 <i
+                                    class="fa-regular fa-circle-question info-icon"></i> <i
+                                    class="fa-solid fa-sort"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Rows will be dynamically populated here -->
+                    </tbody>
+                </table>
+
+                <div id="pagination" class="pagination"></div>
+            </div>
 
             <div id="noResults" class="hidden no-results">
                 <i class="fa-regular fa-face-frown-open"></i>
@@ -113,43 +139,61 @@
         <footer class="footer">
             <p>Made with ❤️ by <a href="https://github.com/xx8897/tw-stock-gift-evaluator" target="_blank"
                     rel="noopener noreferrer">xx8897</a></p>
-            <p class="license-notice">授權說明：本網頁資料僅供參考。程式碼採用 All Rights Reserved 宣告，禁止未經授權之使用。</p>
+            <p class="license-notice">資料來源：零股寶。本網頁資料僅供參考，不構成投資建議。程式碼採用 All Rights Reserved 宣告，禁止未經授權之使用。</p>
         </footer>
     </main>
 
     <!-- Modal for Detailed Documentation -->
     <div id="infoModal" class="modal-overlay hidden">
-        <div class="modal-content glass-panel">
+        <div class="modal-content">
             <div class="modal-header">
                 <h2>📖 股東會紀念品評估說明</h2>
                 <button class="close-btn" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
-                <h4>1. 什麼是「新版性價比」？</h4>
-                <p>性價比是計算您買進 1 股零股的「回報率」。公式為：<br>
-                    <code>(紀念品估值 - 手續費20元 - 最新股價) / (手續費20元 + 最新股價)</code><br>
-                    如果是負數，代表您花錢買零股加上手續費後，收到的紀念品價值還無法回本。
-                </p>
+                <h4>📂 資料來源</h4>
+                <p>原始資料取自 <a href="https://www.stockgift.tw/" target="_blank" rel="noopener noreferrer">零股寶</a>，涵蓋
+                    2021–2025 年全台上市/上櫃公司股東會紀念品發放紀錄，共 <strong>881 筆</strong>。股價採用三層備援（台灣證交所 → 櫃買中心 → 原始紀錄），基準日為
+                    <strong>2026/02/25</strong>。</p>
 
-                <h4>2. 紀念品估值的邏輯</h4>
-                <p>我們會透過演算法掃描歷年紀念品名稱，自動估算價值。例如：</p>
-                <ul>
-                    <li>超商商品卡、禮物卡：直接提取其面額（如 35 元商品卡算作 35 元）。</li>
-                    <li>實用生活用品（如洗衣精、洗碗精）：估值為 50 - 150 元不等。</li>
-                    <li>特定小物件（如保鮮盒、環保袋）：估值約 50 元。</li>
-                </ul>
+                <h4>📐 新版性價比公式</h4>
+                <p>以「五年紀念品總值」為基礎計算，而非單次紀念品：</p>
+                <code>新版性價比 = (五年紀念品總估值 ÷ 最新股價) × (五年內發放次數 ÷ 5)</code>
+                <p style="margin-top: 0.5rem;">此公式同時反映了「紀念品值多少」和「這家公司發放頻率有多穩定」。</p>
 
-                <h4>3. 「推薦評分」怎麼算出來的？</h4>
-                <div class="score-legend">
-                    <p><span class="badge badge-5">5 星神股</span> 性價比 > 1.0 (買到賺到)</p>
-                    <p><span class="badge badge-4">4 星推薦</span> 性價比 > 0.0 (至少不虧本)</p>
-                    <p><span class="badge badge-3">3 星尚可</span> 性價比 > -0.5 (小虧但有紀念品)</p>
-                    <p><span class="badge badge-2">2 星不推</span> 性價比 > -0.8</p>
-                    <p><span class="badge badge-1">1 星極差</span> 超高股價或極低價值紀念品</p>
+                <h4>🏷️ 紀念品估值模型（參考市場實際行情）</h4>
+                <div class="valuation-table">
+                    <div class="val-row"><span>現金 / 商品卡 / 禮物卡</span><span class="val-price">面額</span></div>
+                    <div class="val-row highlight"><span>六福村主題樂園門票</span><span class="val-price">1,199 元</span></div>
+                    <div class="val-row highlight"><span>大魯閣消費抵用券+買1送1</span><span class="val-price">800 元</span></div>
+                    <div class="val-row"><span>王品股東大禮包</span><span class="val-price">400 元</span></div>
+                    <div class="val-row"><span>佐登妮絲城堡入園</span><span class="val-price">300 元</span></div>
+                    <div class="val-row"><span>蓋毯 / 毛毯</span><span class="val-price">200 元</span></div>
+                    <div class="val-row"><span>保溫杯 / 保溫瓶</span><span class="val-price">150 元</span></div>
+                    <div class="val-row"><span>食用油（橄欖油/苦茶油）</span><span class="val-price">120 元</span></div>
+                    <div class="val-row"><span>不鏽鋼餐具 / 砧板 / 保鮮盒</span><span class="val-price">120 元</span></div>
+                    <div class="val-row"><span>保健品 / 膠囊 / 維生素</span><span class="val-price">100 元</span></div>
+                    <div class="val-row"><span>杯子 / 馬克杯</span><span class="val-price">80 元</span></div>
+                    <div class="val-row"><span>個人衛生用品（香皂/沐浴乳）</span><span class="val-price">60 元</span></div>
+                    <div class="val-row"><span>食品（火鍋湯/拌麵/零食）</span><span class="val-price">50 元</span></div>
+                    <div class="val-row"><span>清潔用品（洗衣精/洗碗精）</span><span class="val-price">50 元</span></div>
+                    <div class="val-row"><span>環保袋 / 購物袋</span><span class="val-price">50 元</span></div>
+                    <div class="val-row"><span>濕紙巾 / 衛生紙</span><span class="val-price">30 元</span></div>
+                    <div class="val-row"><span>其他未分類品項</span><span class="val-price">40 元</span></div>
                 </div>
 
-                <h4>💡 小撇步</h4>
-                <p>就算是 5 星神股，也建議挑選「五年內發放次數」多（如 4 次或 5 次）的公司，這代表這家公司有穩定發放紀念品的習慣，比較不會遇到今年突然不發的窘境！</p>
+                <h4>⭐ 推薦評級對照</h4>
+                <div class="score-legend">
+                    <p><span class="badge badge-5">5 星神股</span> CP 值 ≥ 2.0（買到賺到）</p>
+                    <p><span class="badge badge-4">4 星推薦</span> CP 值 ≥ 1.0（回本有餘）</p>
+                    <p><span class="badge badge-3">3 星尚可</span> CP 值 ≥ 0.5</p>
+                    <p><span class="badge badge-2">2 星不推</span> CP 值 ≥ 0.1</p>
+                    <p><span class="badge badge-1">1 星極差</span> CP 值 &lt; 0.1 或無發放</p>
+                </div>
+
+                <h4>💡 選股小撇步</h4>
+                <p>就算是 5 星神股，也建議優先挑選「五年內發放次數」為 <strong>5 次</strong>的公司。
+                    這代表該公司 2021–2025 年<strong>年年都發</strong>紀念品，穩定度最高，比較不會遇到今年突然縮手不發的窘境！</p>
             </div>
         </div>
     </div>
