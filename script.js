@@ -182,23 +182,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             let historyHtml = '';
             const raw5y = row.fiveYearGifts;
             if (raw5y && raw5y !== 'nan' && raw5y.trim()) {
-                const lines = raw5y.split('\n').filter(l => l.trim());
+                // Trim \r as well (Excel exports sometimes use CRLF) so the regex matches correctly on every line
+                const lines = raw5y.split(/\r?\n/).filter(l => l.trim());
                 historyHtml = lines.map(l => {
-                    const m = l.match(/^\((\d{4})\)(.*)$/);
+                    const clean = l.trim();
+                    const m = clean.match(/^\((\d{4})\)(.*)$/);
                     if (m) {
                         return `<div class="hist-row"><span class="hist-year">${m[1]}</span><span class="hist-gift">${m[2].trim() || '（未發放）'}</span></div>`;
                     }
-                    return `<div class="hist-row"><span class="hist-gift">${l.trim()}</span></div>`;
+                    return `<div class="hist-row"><span class="hist-gift">${clean}</span></div>`;
                 }).join('');
             }
             const historyTag = historyHtml
                 ? `<button class="history-btn" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')" title="查看五年歷史"><i class="fa-solid fa-clock-rotate-left"></i></button><div class="history-popup">${historyHtml}</div>`
                 : '';
 
-            // Frequency: clamp display to max 5 dots
-            const freqDisplay = Math.min(row.freq, 5);
-            const freqDots = `<span class="freq-dots">${'<i class="dot filled"></i>'.repeat(freqDisplay)}${'<i class="dot empty"></i>'.repeat(5 - freqDisplay)}</span>`;
-
+            // Frequency: just the number, no dots
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td data-label="股號" class="stock-id">${row.id}</td>
@@ -209,7 +208,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </td>
                 <td data-label="五年內發放" class="freq-cell">
                     <span class="freq-num">${row.freq}<span class="freq-slash">/5</span></span>
-                    ${freqDots}
                 </td>
                 <td data-label="CP 值" class="cp-value">${row.cp.toFixed(2)}</td>
                 <td data-label="推薦評分"><span class="badge badge-${starNum}">${row.score}</span></td>

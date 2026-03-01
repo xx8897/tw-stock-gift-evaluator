@@ -1041,14 +1041,16 @@ td {
     position: absolute;
     top: calc(100% + 6px);
     left: 0;
-    z-index: 200;
-    background: #1e293b;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    z-index: 500;
+    /* Fully opaque — no alpha on background */
+    background: #0d1829;
+    isolation: isolate;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 10px;
     padding: 0.75rem;
     min-width: 260px;
     max-width: 340px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
 }
 
 .history-popup.open {
