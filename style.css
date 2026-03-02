@@ -733,23 +733,93 @@ td:has(.gift-cell) {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: var(--text-primary);
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
+    padding: 0.6rem 1.2rem;
+    border-radius: 12px;
     cursor: pointer;
     font-family: inherit;
     font-size: 0.9rem;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
+    font-weight: 500;
 }
 
 .info-btn:hover {
     background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
     transform: translateY(-2px);
 }
 
-/* --- Modal Styles --- */
+.action-divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sponsor-group {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.sponsor-btn {
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+/* 綠界按鈕 */
+.sponsor-btn.ecpay {
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #10b981;
+}
+
+.sponsor-btn.ecpay:hover {
+    background: rgba(16, 185, 129, 0.25);
+    border-color: #10b981;
+    transform: translateY(-2px);
+}
+
+/* Ko-fi 按鈕 */
+.sponsor-btn.kofi {
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #3b82f6;
+}
+
+.sponsor-btn.kofi:hover {
+    background: rgba(59, 130, 246, 0.25);
+    border-color: #3b82f6;
+    transform: translateY(-2px);
+}
+
+.github-star-btn {
+    padding: 0.6rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 0.82rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.github-star-btn:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+}
 
 .modal-overlay {
     position: fixed;
@@ -1027,6 +1097,30 @@ td:has(.gift-cell) {
     /* Intro section */
     .intro-section h3 {
         font-size: 1rem;
+    }
+
+    .header-actions {
+        gap: 0.75rem;
+        padding: 0 1rem;
+    }
+
+    .action-divider {
+        display: none;
+    }
+
+    .sponsor-group {
+        gap: 0.5rem;
+    }
+
+    .sponsor-btn span,
+    .github-star-btn span {
+        font-size: 0.75rem;
+    }
+
+    .info-btn,
+    .sponsor-btn,
+    .github-star-btn {
+        padding: 0.5rem 0.8rem;
     }
 
     .intro-tips {
