@@ -267,42 +267,46 @@ table {
     text-align: left;
 }
 
-/* Column widths (fixed layout) */
+/* Column widths — percentages, total = 100% */
 th:nth-child(1) {
-    width: 68px;
+    width: 9%;
 }
 
 /* 股號 */
 th:nth-child(2) {
-    width: 88px;
+    width: 11%;
 }
 
 /* 公司 */
 th:nth-child(3) {
-    width: 78px;
+    width: 11%;
 }
 
 /* 最新股價 */
-/* th:nth-child(4) no width — 上次紀念品 takes remaining space */
+th:nth-child(4) {
+    width: 33%;
+}
+
+/* 上次紀念品 */
 th:nth-child(5) {
-    width: 88px;
+    width: 12%;
 }
 
 /* 五年內發放 */
 th:nth-child(6) {
-    width: 78px;
+    width: 12%;
 }
 
-/* CP 值 */
+/* 新版性價比 */
 th:nth-child(7) {
-    width: 78px;
+    width: 12%;
 }
 
 /* 推薦評分 */
 
 th,
 td {
-    padding: 1.2rem 1.5rem;
+    padding: 1rem 0.85rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
