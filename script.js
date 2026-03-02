@@ -247,15 +247,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Prev
         pagination.appendChild(mkBtn('<i class="fa-solid fa-chevron-left"></i>', currentPage - 1, false, currentPage === 1));
 
-        // Page numbers with ellipsis
+        // Page numbers with ellipsis — show ±3 pages around current
         let pages;
-        if (totalPages <= 7) {
+        if (totalPages <= 11) {
             pages = Array.from({ length: totalPages }, (_, i) => i + 1);
         } else {
             pages = [1];
-            if (currentPage > 3) pages.push('...');
-            for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) pages.push(i);
-            if (currentPage < totalPages - 2) pages.push('...');
+            if (currentPage > 4) pages.push('...');
+            for (let i = Math.max(2, currentPage - 3); i <= Math.min(totalPages - 1, currentPage + 3); i++) pages.push(i);
+            if (currentPage < totalPages - 3) pages.push('...');
             pages.push(totalPages);
         }
         pages.forEach(p => {
