@@ -529,22 +529,28 @@ td:has(.gift-cell) {
 
 .disclaimer-body {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
 }
 
-.disclaimer-body h4 {
+.disclaimer-item {
+    border-left: 2px solid rgba(255, 255, 255, 0.08);
+    padding-left: 1rem;
+}
+
+.disclaimer-item h4 {
     font-size: 0.85rem;
     color: var(--accent-primary);
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
     font-weight: 600;
     letter-spacing: 0.03em;
 }
 
-.disclaimer-body p {
+.disclaimer-item p {
     font-size: 0.82rem;
     color: var(--text-secondary);
     line-height: 1.65;
+    margin: 0;
 }
 
 /* --- New Intro Section & header actions --- */
