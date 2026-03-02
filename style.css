@@ -1085,7 +1085,7 @@ td {
 }
 
 /* ==========================================
-   Freq Cell — dot progress bar
+   Freq Cell — number only
    ========================================== */
 .freq-cell {
     white-space: nowrap;
@@ -1102,28 +1102,6 @@ td {
     font-size: 0.75rem;
     opacity: 0.45;
     margin-left: 1px;
-}
-
-.freq-dots {
-    display: inline-flex;
-    gap: 3px;
-    margin-left: 8px;
-    vertical-align: middle;
-}
-
-.dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-}
-
-.dot.filled {
-    background: #60a5fa;
-}
-
-.dot.empty {
-    background: rgba(255, 255, 255, 0.12);
 }
 
 /* ==========================================
@@ -1178,11 +1156,6 @@ td {
     /* freq-cell: align right like other card cells */
     .freq-cell {
         justify-content: flex-end;
-    }
-
-    /* Hide dots on mobile - number is enough */
-    .freq-dots {
-        display: none;
     }
 
     /* History popup: right-anchored on mobile */
