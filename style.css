@@ -267,39 +267,44 @@ table {
     text-align: left;
 }
 
-/* Column widths — percentages, total = 100% */
+/* Column widths — 8 columns, total ≈ 100% */
 th:nth-child(1) {
-    width: 9%;
+    width: 8%;
 }
 
 /* 股號 */
 th:nth-child(2) {
-    width: 11%;
+    width: 9%;
 }
 
 /* 公司 */
 th:nth-child(3) {
-    width: 11%;
+    width: 9%;
 }
 
 /* 最新股價 */
 th:nth-child(4) {
-    width: 33%;
+    width: 27%;
 }
 
 /* 上次紀念品 */
 th:nth-child(5) {
-    width: 12%;
+    width: 10%;
 }
 
 /* 五年內發放 */
 th:nth-child(6) {
-    width: 12%;
+    width: 11%;
 }
 
 /* 新版性價比 */
 th:nth-child(7) {
-    width: 12%;
+    width: 13%;
+}
+
+/* 去年條件 */
+th:nth-child(8) {
+    width: 10%;
 }
 
 /* 推薦評分 */
@@ -362,6 +367,30 @@ td {
 td:has(.gift-cell) {
     overflow: visible;
     position: relative;
+}
+
+.cond-cell {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+/* --- Step tags in guide --- */
+
+.step-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 1px 7px;
+    border-radius: 10px;
+    margin-left: 6px;
+    background: rgba(96, 165, 250, 0.18);
+    color: #7dd3fc;
+    vertical-align: middle;
+}
+
+.step-tag.optional {
+    background: rgba(167, 139, 250, 0.18);
+    color: #c4b5fd;
 }
 
 /* Highlights */

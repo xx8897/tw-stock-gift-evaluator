@@ -58,7 +58,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             freq: parseInt(row['五年內發放次數']) || 0,
             cp: parseFloat(row['新版性價比']) || 0,
             score: String(row['新版推薦評分'] || '1 星'),
-            fiveYearGifts: String(row['五年發放紀念品'] || '')
+            fiveYearGifts: String(row['五年發放紀念品'] || ''),
+            cond: String(row['去年條件'] || '')
         }));
 
         loadingState.classList.add('hidden');
@@ -198,6 +199,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 : '';
 
             // Frequency: just the number, no dots
+            const condText = (row.cond && row.cond !== 'nan' && row.cond.trim()) ? row.cond.trim() : '—';
+            const condDisplay = condText.length > 16 ? condText.slice(0, 16) + '…' : condText;
+
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td data-label="股號" class="stock-id">${row.id}</td>
@@ -210,6 +214,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <span class="freq-num">${row.freq}<span class="freq-slash">/5</span></span>
                 </td>
                 <td data-label="CP 值" class="cp-value">${row.cp.toFixed(2)}</td>
+                <td data-label="去年條件" class="cond-cell" title="${condText}">${condDisplay}</td>
                 <td data-label="推薦評分"><span class="badge badge-${starNum}">${row.score}</span></td>
             `;
             tableBody.appendChild(tr);
