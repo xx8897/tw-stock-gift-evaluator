@@ -11,8 +11,7 @@
 ├── .gitignore                  # Git 忽略清單
 │
 ├── data/                       # 📊 資料檔案目錄（Excel）
-│   ├── 2021-2025.xlsx          # 原始全台股紀念品歷史資料（881筆）
-│   ├── 2021-2025_推薦評分.xlsx # evaluate_stocks.py 產出：完整評分名單（網站讀取此檔）
+│   ├── 2021-2025_推薦評分.xlsx # evaluate_stocks.py 讀寫：完整評分名單（網站讀取此檔）
 │   └── 2021-2025_年年發放.xlsx # evaluate_stocks.py 產出：僅五年年年發放的篩選版
 │
 ├── css/                        # 🎨 樣式表（由 style.css 拆分而成）

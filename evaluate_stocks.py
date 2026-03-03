@@ -9,13 +9,15 @@ _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 _DATA_DIR = os.path.join(_BASE_DIR, 'data')
 os.makedirs(_DATA_DIR, exist_ok=True)
 
-INPUT_FILE  = os.path.join(_DATA_DIR, '2021-2025.xlsx')
+INPUT_FILE  = os.path.join(_DATA_DIR, '2021-2025_推薦評分.xlsx')
 OUTPUT_FILE = os.path.join(_DATA_DIR, '2021-2025_推薦評分.xlsx')
 
 # ============================================================
 # 1. 讀取原始資料
 # ============================================================
-df = pd.read_excel(INPUT_FILE, header=1)
+# 因為已經不需要原始檔案，我們直接讀取上一次評估過的結果作為下一次的基底
+# 這樣就不用再依賴原始的 2021-2025.xlsx 檔案
+df = pd.read_excel(INPUT_FILE)
 df.columns = df.columns.astype(str)
 
 if '上次紀念品' in df.columns:
