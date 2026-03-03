@@ -22,10 +22,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     const openModalBtn = document.getElementById('openModalBtn');
     const closeModalBtn = document.getElementById('closeModalBtn');
 
-    // ── Modal ─────────────────────────────────────────────────────────
+    // ── Modals ────────────────────────────────────────────────────────
     openModalBtn?.addEventListener('click', () => infoModal.classList.remove('hidden'));
     closeModalBtn?.addEventListener('click', () => infoModal.classList.add('hidden'));
-    infoModal?.addEventListener('click', e => { if (e.target === infoModal) infoModal.classList.add('hidden'); });
+
+    // Sponsor Modal
+    const sponsorModal = document.getElementById('sponsorModal');
+    const openSponsorBtn = document.getElementById('openSponsorBtn');
+    const closeSponsorBtn = document.getElementById('closeSponsorBtn');
+
+    openSponsorBtn?.addEventListener('click', () => sponsorModal.classList.remove('hidden'));
+    closeSponsorBtn?.addEventListener('click', () => sponsorModal.classList.add('hidden'));
+
+    // Close on overlay click
+    [infoModal, sponsorModal].forEach(m => {
+        m?.addEventListener('click', e => { if (e.target === m) m.classList.add('hidden'); });
+    });
 
     // Close history popups when clicking elsewhere
     document.addEventListener('click', () => {
@@ -311,20 +323,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             const coin = document.createElement('div');
             coin.className = 'coin-particle';
             coin.textContent = coinIcons[Math.floor(Math.random() * coinIcons.length)];
-            
+
             // Random direction and rotate
             const tx = (Math.random() - 0.5) * 300;
             const ty = (Math.random() - 0.8) * 300;
             const tr = (Math.random() - 0.5) * 720;
-            
+
             coin.style.left = lx + 'px';
             coin.style.top = ly + 'px';
             coin.style.setProperty('--tx', `${tx}px`);
             coin.style.setProperty('--ty', `${ty}px`);
             coin.style.setProperty('--tr', `${tr}deg`);
-            
+
             document.body.appendChild(coin);
-            
+
             coin.onanimationend = () => coin.remove();
         }
     }

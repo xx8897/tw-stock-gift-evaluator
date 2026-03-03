@@ -35,37 +35,31 @@
                     <i class="fa-solid fa-gift bounce-icon"></i>
                 </h1>
                 <p class="subtitle">自動抓取最新股價，精算零股性價比！幫您找出最划算的「零股神股」✨</p>
-                <div class="header-actions">
-                    <div class="last-updated" id="last-updated">
+                <!-- 狀態資訊與按鈕分開 -->
+                <div class="header-status">
+                    <div class="last-updated-pill" id="last-updated">
                         <i class="fa-regular fa-clock"></i> 載入資料中...
                     </div>
+                </div>
 
-                    <!-- 核心說明 -->
-                    <button class="info-btn" id="openModalBtn">
-                        <i class="fa-solid fa-circle-info"></i> 評估說明
-                    </button>
-
-                    <!-- 分隔線 -->
-                    <div class="action-divider"></div>
-
-                    <!-- 贊助支持組 -->
-                    <div class="sponsor-group">
-                        <a class="sponsor-btn ecpay" href="#" target="_blank" rel="noopener noreferrer"
-                            title="支援 ATM / 超商繳費 / 台灣信用卡 (準備中)">
-                            <i class="fa-solid fa-wallet"></i> <span>贊助專案 (在地)</span>
-                        </a>
-                        <a class="sponsor-btn kofi" href="https://ko-fi.com/leekdog8897" target="_blank"
-                            rel="noopener noreferrer" title="支援 PayPal / 國際信用卡">
-                            <i class="fa-solid fa-mug-hot"></i> <span>請喝咖啡 (Ko-fi)</span>
+                <div class="header-actions">
+                    <!-- 左側功能組 -->
+                    <div class="action-group">
+                        <button class="glass-btn primary" id="openModalBtn">
+                            <i class="fa-solid fa-circle-info"></i> 說明
+                        </button>
+                        <a class="glass-btn secondary" href="https://github.com/xx8897/tw-stock-gift-evaluator"
+                            target="_blank" rel="noopener noreferrer">
+                            <i class="fa-brands fa-github"></i> GitHub
                         </a>
                     </div>
 
-                    <!-- GitHub -->
-                    <a class="github-star-btn" href="https://github.com/xx8897/tw-stock-gift-evaluator" target="_blank"
-                        rel="noopener noreferrer">
-                        <i class="fa-brands fa-github"></i>
-                        <span>⭐ Star GitHub</span>
-                    </a>
+                    <!-- 右側贊助組 -->
+                    <div class="sponsor-group">
+                        <button class="glass-btn sponsor-trigger" id="openSponsorBtn">
+                            <i class="fa-solid fa-heart"></i> 贊助作者
+                        </button>
+                    </div>
                 </div>
             </div>
         </header>
@@ -319,6 +313,43 @@
 
     <!-- SheetJS for local Excel parsing -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- 贊助彈窗 (Sponsor Modal) -->
+    <div class="modal-overlay hidden" id="sponsorModal">
+        <div class="modal-content sponsor-modal-card">
+            <div class="modal-header">
+                <h2>支持專案開發</h2>
+                <button class="close-btn" id="closeSponsorBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="sponsor-intro">如果您覺得這個工具對您有幫助，歡迎請作者喝杯咖啡，支持專案持續維護與更新！✨</p>
+
+                <div class="sponsor-options">
+                    <!-- 綠界 -->
+                    <a href="#" target="_blank" class="sponsor-option-card ecpay">
+                        <div class="option-icon"><i class="fa-solid fa-wallet"></i></div>
+                        <div class="option-info">
+                            <h3>台灣在地贊助 (綠界)</h3>
+                            <p class="option-desc">支援 ATM 轉帳、超商代碼繳費、台灣信用卡。</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-right arrow"></i>
+                    </a>
+
+                    <!-- Ko-fi -->
+                    <a href="https://ko-fi.com/leekdog8897" target="_blank" class="sponsor-option-card kofi">
+                        <div class="option-icon"><i class="fa-solid fa-mug-hot"></i></div>
+                        <div class="option-info">
+                            <h3>國際與 PayPal 贊助</h3>
+                            <p class="option-desc">由 Ko-fi 平台提供，支援 PayPal 與國際信用卡付款。</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-right arrow"></i>
+                    </a>
+                </div>
+
+                <p class="sponsor-footer">您的支持是我最大的開發動力，謝謝您！</p>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 
