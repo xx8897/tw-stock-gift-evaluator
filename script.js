@@ -293,4 +293,39 @@ document.addEventListener('DOMContentLoaded', async () => {
         jumpInput.addEventListener('blur', doJump);
         jumpInput.addEventListener('click', e => e.stopPropagation()); // prevent closing popups
     }
+
+    // ── Coin Explosion Effect ─────────────────────────────────────────
+    const giftIcon = document.querySelector('.bounce-icon');
+    if (giftIcon) {
+        giftIcon.addEventListener('click', (e) => {
+            const rect = giftIcon.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            createCoins(centerX, centerY);
+        });
+    }
+
+    function createCoins(lx, ly) {
+        const coinIcons = ['💰', '🪙', '✨', '💎'];
+        for (let i = 0; i < 15; i++) {
+            const coin = document.createElement('div');
+            coin.className = 'coin-particle';
+            coin.textContent = coinIcons[Math.floor(Math.random() * coinIcons.length)];
+            
+            // Random direction and rotate
+            const tx = (Math.random() - 0.5) * 300;
+            const ty = (Math.random() - 0.8) * 300;
+            const tr = (Math.random() - 0.5) * 720;
+            
+            coin.style.left = lx + 'px';
+            coin.style.top = ly + 'px';
+            coin.style.setProperty('--tx', `${tx}px`);
+            coin.style.setProperty('--ty', `${ty}px`);
+            coin.style.setProperty('--tr', `${tr}deg`);
+            
+            document.body.appendChild(coin);
+            
+            coin.onanimationend = () => coin.remove();
+        }
+    }
 });

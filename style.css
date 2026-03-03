@@ -1487,3 +1487,41 @@ td:has(.gift-cell) {
         margin-top: 0.4rem;
     }
 }
+
+/* ==========================================
+   Coin Explosion Effect
+   ========================================== */
+.bounce-icon {
+    cursor: pointer;
+    transition: transform 0.1s !important;
+}
+
+.bounce-icon:active {
+    transform: scale(0.9) !important;
+}
+
+.coin-particle {
+    position: fixed;
+    z-index: 9999;
+    font-size: 1.2rem;
+    pointer-events: none;
+    user-select: none;
+    animation: coin-fly 0.8s ease-out forwards;
+}
+
+@keyframes coin-fly {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(0);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg) scale(1.2);
+    }
+
+    100% {
+        transform: translate(var(--tx), var(--ty)) rotate(var(--tr)) scale(0.8);
+        opacity: 0;
+    }
+}
