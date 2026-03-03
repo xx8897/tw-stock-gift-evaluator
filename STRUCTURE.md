@@ -30,12 +30,12 @@
 │   └── main.js                 # 程式進入點：DOMContentLoaded 時呼叫 initUI() + loadData()
 │
 ├── assets/                     # 🖼️ 靜態資源
-│   ├── favicon.png             # 瀏覽器分頁縮圖 icon
-│   └── thumbnail.png           # 社群分享預覽圖（Open Graph / Twitter Card）
+│   └── favicon.png             # 瀏覽器分頁縮圖 icon
 │
 └── .github/
     └── workflows/
-        └── static.yml          # GitHub Actions：自動部署至 GitHub Pages
+        ├── static.yml          # GitHub Actions：自動部署至 GitHub Pages
+        └── update-prices.yml   # GitHub Actions：每週自動評估股價並更新資料
 ```
 
 ---
