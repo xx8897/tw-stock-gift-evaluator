@@ -134,6 +134,10 @@
                 <label class="filter-btn" data-filter="annual">
                     <input type="checkbox" id="annualFilter"> 💎 連續 5 年發放
                 </label>
+                <div class="filter-divider"></div>
+                <label class="filter-btn purchase-filter" data-filter="purchased">
+                    <input type="checkbox" id="showPurchasedOnly"> 🛒 只看已買入
+                </label>
             </div>
         </section>
 
@@ -161,6 +165,7 @@
                 <table id="dataTable">
                     <thead>
                         <tr>
+                            <th class="th-purchased" title="標記已買入股票"><i class="fa-solid fa-cart-shopping"></i></th>
                             <th class="sortable" data-sort="id">股號 <i class="fa-solid fa-sort"></i></th>
                             <th class="sortable" data-sort="name">公司 <i class="fa-solid fa-sort"></i></th>
                             <th class="sortable" data-sort="price">最新股價 <i class="fa-solid fa-sort"></i></th>

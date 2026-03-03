@@ -5,11 +5,52 @@ const AppState = {
     globalData: [],
     filteredData: [],
     currentSort: { column: 'score', direction: 'desc' },
+    purchasedStocks: new Set(), // 儲存已買入的股號 (String)
+    filters: {
+        search: '',
+        stars: 'all',
+        annualOnly: false,
+        showPurchasedOnly: false // 新增過濾開關
+    },
     currentPage: 1,
     pageSize: 25
 };
 
+/**
+ * 載入已買入清單 (從 LocalStorage)
+ */
+function loadPurchased() {
+    try {
+        const saved = localStorage.getItem('purchased_stocks');
+        if (saved) {
+            const list = JSON.parse(saved);
+            AppState.purchasedStocks = new Set(list.map(String));
+        }
+    } catch (e) {
+        console.error('無法從 LocalStorage 載入買入清單:', e);
+        AppState.purchasedStocks = new Set();
+    }
+}
+
+/**
+ * 切換買入狀態並同步至 LocalStorage
+ */
+function togglePurchase(stockId) {
+    stockId = String(stockId);
+    if (AppState.purchasedStocks.has(stockId)) {
+        AppState.purchasedStocks.delete(stockId);
+    } else {
+        AppState.purchasedStocks.add(stockId);
+    }
+
+    // 同步到 LocalStorage
+    localStorage.setItem('purchased_stocks', JSON.stringify([...AppState.purchasedStocks]));
+}
+
 async function loadData() {
+    // 優先載入已買入狀態
+    loadPurchased();
+
     const loadingState = document.getElementById('loadingState');
     const tableWrapper = document.getElementById('tableWrapper');
     const lastUpdated = document.getElementById('last-updated');

@@ -9,44 +9,53 @@ table {
     text-align: left;
 }
 
-/* Column widths — 8 columns, total ≈ 100% */
-th:nth-child(1) {
-    width: 8%;
+/* Column widths — 9 columns total */
+th.th-purchased {
+    width: 45px;
+    text-align: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 }
 
 /* 股號 */
 th:nth-child(2) {
-    width: 9%;
+    width: 80px;
 }
 
 /* 公司 */
 th:nth-child(3) {
-    width: 9%;
+    width: 90px;
 }
 
 /* 最新股價 */
 th:nth-child(4) {
-    width: 27%;
+    width: 100px;
 }
 
 /* 上次紀念品 */
 th:nth-child(5) {
-    width: 10%;
+    width: auto;
+    /* Take remaining space */
 }
 
 /* 五年內發放 */
 th:nth-child(6) {
-    width: 11%;
+    width: 110px;
 }
 
 /* 新版性價比 */
 th:nth-child(7) {
-    width: 13%;
+    width: 100px;
 }
 
 /* 去年條件 */
 th:nth-child(8) {
-    width: 10%;
+    width: 150px;
+}
+
+/* 推薦評分 */
+th:nth-child(9) {
+    width: 120px;
 }
 
 /* 推薦評分 */
@@ -96,6 +105,14 @@ tbody tr:hover {
     background: rgba(255, 255, 255, 0.05);
     /* inset left border highlight — no transform, no stacking context */
     box-shadow: inset 4px 0 0 var(--accent-primary);
+}
+
+tbody tr.purchased-row {
+    background: rgba(52, 211, 153, 0.04);
+}
+
+tbody tr.purchased-row:hover {
+    background: rgba(52, 211, 153, 0.08);
 }
 
 td {
@@ -547,6 +564,7 @@ td:has(.gift-cell) {
     padding: 0 0.3rem;
 }
 
+/* ==========================================
    GitHub Star Button
    ========================================== */
 .github-star-btn {
@@ -744,4 +762,63 @@ td:has(.gift-cell) {
         border-top: 1px solid rgba(255, 255, 255, 0.08);
         margin-top: 0.4rem;
     }
-}
+
+    /* Target purchased cell in mobile card */
+    td.purchase-cell {
+        justify-content: flex-end;
+    }
+}
+
+/* --- Purchase Button & Cell --- */
+
+.purchase-cell {
+    text-align: center;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+}
+
+.purchase-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
+}
+
+.purchase-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--text-primary);
+}
+
+.purchase-btn.active {
+    background: #10b981;
+    border-color: #10b981;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+.purchase-btn.active:hover {
+    background: #059669;
+    border-color: #059669;
+}
+
+/* Purchase filter toggle stye */
+.purchase-filter input[type="checkbox"]:checked+.filter-btn,
+.purchase-filter input[type="checkbox"]:checked {
+    box-shadow: 0 0 0 2px var(--star-3);
+}
+
+.filter-divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0 0.5rem;
+}

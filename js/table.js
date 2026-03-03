@@ -1,6 +1,7 @@
 function renderTable() {
     const searchInput = document.getElementById('searchInput');
     const annualFilter = document.getElementById('annualFilter');
+    const showPurchasedOnly = document.getElementById('showPurchasedOnly');
     const resultCount = document.getElementById('resultCount');
     const noResults = document.getElementById('noResults');
     const tableBody = document.getElementById('tableBody');
@@ -8,7 +9,8 @@ function renderTable() {
 
     const query = searchInput.value.toLowerCase().trim();
     const starFilter = document.querySelector('input[name="star-filter"]:checked')?.value || 'all';
-    const isAnnualOnly = annualFilter.checked;
+    const isAnnualOnly = annualFilter ? annualFilter.checked : false;
+    const isPurchasedOnly = showPurchasedOnly ? showPurchasedOnly.checked : false;
 
     AppState.filteredData = AppState.globalData.filter(row => {
         const matchSearch = !query ||
@@ -22,7 +24,12 @@ function renderTable() {
                     true;
 
         const matchAnnual = isAnnualOnly ? row.freq >= 5 : true;
-        return matchSearch && matchStar && matchAnnual;
+
+        // 已買入過濾
+        const isPurchased = AppState.purchasedStocks.has(row.id);
+        const matchPurchased = isPurchasedOnly ? isPurchased : true;
+
+        return matchSearch && matchStar && matchAnnual && matchPurchased;
     });
 
     AppState.filteredData.sort((a, b) => {
@@ -58,6 +65,7 @@ function renderTable() {
     pageData.forEach(row => {
         const starNum = parseInt(row.score.charAt(0)) || 1;
         const displayGift = row.gift.length > 22 ? row.gift.slice(0, 22) + '…' : row.gift;
+        const isPurchased = AppState.purchasedStocks.has(row.id);
 
         let historyHtml = '';
         const raw5y = row.fiveYearGifts;
@@ -73,14 +81,23 @@ function renderTable() {
             }).join('');
         }
         const historyTag = historyHtml
-            ? `<button class="history-btn" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')" title="查看五年歷史"><i class="fa-solid fa-clock-rotate-left"></i></button><div class="history-popup">${historyHtml}</div>`
+            ? `<button class="history-btn" onclick="event.stopPropagation();this.parentElement.nextElementSibling.classList.toggle('open')" title="查看五年歷史"><i class="fa-solid fa-clock-rotate-left"></i></button><div class="history-popup">${historyHtml}</div>`
             : '';
 
         const condText = (row.cond && row.cond !== 'nan' && row.cond.trim()) ? row.cond.trim() : '—';
         const condDisplay = condText.length > 16 ? condText.slice(0, 16) + '…' : condText;
 
         const tr = document.createElement('tr');
+        if (isPurchased) tr.classList.add('purchased-row');
+
         tr.innerHTML = `
+            <td data-label="已買" class="purchase-cell">
+                <button class="purchase-btn ${isPurchased ? 'active' : ''}" 
+                        onclick="togglePurchaseAndRender('${row.id}')" 
+                        title="${isPurchased ? '已買入' : '標記買入'}">
+                    <i class="fa-solid ${isPurchased ? 'fa-check' : 'fa-plus'}"></i>
+                </button>
+            </td>
             <td data-label="股號" class="stock-id">${row.id}</td>
             <td data-label="公司" class="stock-name">${row.name}</td>
             <td data-label="最新股價" class="price">${row.price.toFixed(2)}</td>
@@ -98,6 +115,14 @@ function renderTable() {
     });
 
     renderPagination(totalPages);
+}
+
+/**
+ * 切換買入狀態並重新渲染表格
+ */
+function togglePurchaseAndRender(stockId) {
+    togglePurchase(stockId);
+    renderTable();
 }
 
 function renderPagination(totalPages) {

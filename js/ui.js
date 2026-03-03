@@ -26,6 +26,7 @@ function initUI() {
     const searchInput = document.getElementById('searchInput');
     const filterBtns = document.querySelectorAll('.filter-btn input[type="radio"]');
     const annualFilter = document.getElementById('annualFilter');
+    const showPurchasedOnly = document.getElementById('showPurchasedOnly');
     const pageSizeSelect = document.getElementById('pageSizeSelect');
     const sortHeaders = document.querySelectorAll('th.sortable');
 
@@ -44,6 +45,12 @@ function initUI() {
     }));
 
     annualFilter?.addEventListener('change', () => {
+        if (!AppState.globalData.length) return;
+        AppState.currentPage = 1;
+        renderTable();
+    });
+
+    showPurchasedOnly?.addEventListener('change', () => {
         if (!AppState.globalData.length) return;
         AppState.currentPage = 1;
         renderTable();
