@@ -1,0 +1,365 @@
+/* Container & Glass Panels */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Header */
+header {
+    text-align: center;
+}
+
+.gradient-text {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.bounce-icon {
+    color: #fca5a5;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-10px);
+    }
+
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.last-updated-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+/* Controls (Search & Filters) */
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+}
+
+.search-box i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+}
+
+.search-box input {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.8rem;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: rgba(15, 23, 42, 0.6);
+    color: var(--text-primary);
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.search-box input:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.filters {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    cursor: pointer;
+    padding: 0.6rem 1.2rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-btn input {
+    display: none;
+}
+
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.filter-btn.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    font-weight: 500;
+}
+
+#annualFilter+span {
+    display: inline;
+}
+
+.filter-btn:has(#annualFilter:checked) {
+    background: rgba(139, 92, 246, 0.3);
+    border-color: var(--accent-secondary);
+}
+
+.footer {
+    text-align: center;
+    padding: 1.5rem 0 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.footer a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.footer-top {
+    padding: 1rem;
+    margin-bottom: 0;
+}
+
+/* Disclaimer Section (full-width dark panel at bottom) */
+.disclaimer-section {
+    background: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 0 0 20px 20px;
+    padding: 2rem;
+    margin-top: 0.5rem;
+    text-align: left;
+}
+
+.disclaimer-section h3 {
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.disclaimer-body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.disclaimer-item {
+    border-left: 2px solid rgba(255, 255, 255, 0.08);
+    padding-left: 1rem;
+}
+
+.disclaimer-item h4 {
+    font-size: 0.85rem;
+    color: var(--accent-primary);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+
+.disclaimer-item p {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin: 0;
+}
+
+/* ==========================================
+   Mobile RWD — ≤ 768px
+   ========================================== */
+@media (max-width: 768px) {
+
+    /* Reduce container padding */
+    .container {
+        padding: 1rem 0.75rem;
+        gap: 1rem;
+    }
+
+    /* Header: stack vertically, smaller font */
+    h1 {
+        font-size: 1.6rem;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .subtitle {
+        font-size: 0.9rem;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .glass-panel {
+        padding: 1.25rem;
+        border-radius: 14px;
+    }
+
+    /* Intro section */
+    .intro-section h3 {
+        font-size: 1rem;
+    }
+
+    .header-actions {
+        gap: 0.75rem;
+        padding: 0 1rem;
+    }
+
+    .action-divider {
+        display: none;
+    }
+
+    .sponsor-group {
+        gap: 0.5rem;
+    }
+
+    .sponsor-btn span,
+    .github-star-btn span {
+        font-size: 0.75rem;
+    }
+
+    .info-btn,
+    .sponsor-btn,
+    .github-star-btn {
+        padding: 0.5rem 0.8rem;
+    }
+
+    .intro-tips {
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+
+    /* Strategy cards: 2 columns on tablet, section padding reduced */
+    .intro-section,
+    .guide-section {
+        padding: 1.25rem;
+    }
+
+    .strategy-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Controls: single column */
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .search-box {
+        min-width: unset;
+    }
+
+    .filters {
+        justify-content: flex-start;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .filter-btn {
+        font-size: 0.82rem;
+        padding: 0.5rem 0.9rem;
+    }
+
+
+/* ==========================================
+   Mobile RWD — ≤ 480px (small phones)
+   ========================================== */
+@media (max-width: 480px) {
+
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    .gradient-text {
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    .filter-btn {
+        font-size: 0.78rem;
+        padding: 0.4rem 0.7rem;
+    }
+
+    .cp-value {
+        font-size: 0.95rem;
+    }
+
+    /* Hide pagination ellipsis label on tiny screens */
+    .page-ellipsis {
+        display: none;
+    }
+}

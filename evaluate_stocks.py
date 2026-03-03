@@ -2,9 +2,15 @@ import pandas as pd
 import requests
 import re
 import time
+import os
 
-INPUT_FILE = r'c:\雲端\台股文件\2021-2025.xlsx'
-OUTPUT_FILE = r'c:\雲端\台股文件\2021-2025_推薦評分.xlsx'
+# ── 使用腳本所在位置作為根目錄，方便跨機器執行 ──
+_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+_DATA_DIR = os.path.join(_BASE_DIR, 'data')
+os.makedirs(_DATA_DIR, exist_ok=True)
+
+INPUT_FILE  = os.path.join(_DATA_DIR, '2021-2025.xlsx')
+OUTPUT_FILE = os.path.join(_DATA_DIR, '2021-2025_推薦評分.xlsx')
 
 # ============================================================
 # 1. 讀取原始資料
@@ -387,7 +393,7 @@ print(f"Done! Evaluated {len(df)} total stocks and saved to {OUTPUT_FILE}")
 # ============================================================
 # 6. 另外產出篩選版：五年內發放次數 >= 5
 # ============================================================
-FILTERED_FILE = r'c:\雲端\台股文件\2021-2025_年年發放.xlsx'
+FILTERED_FILE = os.path.join(_DATA_DIR, '2021-2025_年年發放.xlsx')
 freq_col = pd.to_numeric(df['五年內發放次數'], errors='coerce').fillna(0)
 df_filtered = df[freq_col >= 5].copy()
 df_filtered = df_filtered.drop(columns=['股價'], errors='ignore')
