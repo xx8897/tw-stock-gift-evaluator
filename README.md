@@ -120,7 +120,25 @@
 
 ---
 
-## 🛠️ 環境與使用方式
+## 🤖 自動化股價更新（GitHub Actions）
+
+本專案透過 **GitHub Actions** 實現全自動化的股價更新流程，無需手動執行腳本：
+
+| 項目 | 說明 |
+|---|---|
+| **觸發時間** | 每週一 UTC 04:00（台灣時間 中午 12:00） |
+| **執行內容** | `evaluate_stocks.py` 抓取 TWSE/TPEX 最新收盤價，重新計算 CP 值，覆寫 `data/` 資料夾中的 xlsx |
+| **自動部署** | 資料更新後自動 git push，觸發 GitHub Pages 重新部署 |
+| **費用** | 公開 Repo 完全免費 |
+
+> Workflow 設定檔：[`.github/workflows/update-prices.yml`](.github/workflows/update-prices.yml)
+> 執行記錄：[Actions 頁面](https://github.com/xx8897/tw-stock-gift-evaluator/actions)
+
+網站標頭的「**最後更新**」時間，即對應 xlsx 最近一次的自動更新日期。
+
+---
+
+
 
 ### 軟體需求
 - **Python 3.x**

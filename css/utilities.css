@@ -34,7 +34,7 @@
     }
 }
 
-/* Footer */
+/* ===========================================
    Coin Explosion Effect
    ========================================== */
 .bounce-icon {
@@ -70,4 +70,39 @@
         transform: translate(var(--tx), var(--ty)) rotate(var(--tr)) scale(0.8);
         opacity: 0;
     }
+}
+
+/* ===========================================
+   Auto-Update Notice (footer)
+   ========================================== */
+.auto-update-notice {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 0.9rem 1.5rem;
+    margin-top: 0;
+    border-top: 1px solid rgba(52, 211, 153, 0.12);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    background: rgba(52, 211, 153, 0.04);
+    border-radius: 0 0 20px 20px;
+}
+
+.auto-update-notice strong {
+    color: #34d399;
+}
+
+.auto-update-notice a {
+    color: #34d399;
+    text-decoration: none;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+}
+
+.auto-update-notice a:hover {
+    opacity: 0.75;
+    text-decoration: underline;
 }
