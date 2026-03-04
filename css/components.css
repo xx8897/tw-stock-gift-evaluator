@@ -594,7 +594,7 @@ td:has(.gift-cell) {
 .gift-cell {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 10px;
     white-space: nowrap;
     overflow: visible;
 }

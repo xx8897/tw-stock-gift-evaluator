@@ -68,7 +68,7 @@ function renderTable() {
     tableBody.innerHTML = '';
     pageData.forEach(row => {
         const starNum = parseInt(row.score.charAt(0)) || 1;
-        const displayGift = row.gift.length > 22 ? row.gift.slice(0, 22) + '…' : row.gift;
+        const displayGift = row.gift.length > 18 ? row.gift.slice(0, 18) + '…' : row.gift;
         const isPurchased = AppState.purchasedStocks.has(row.id);
 
         let historyHtml = '';
