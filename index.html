@@ -28,8 +28,8 @@
 
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css?v=rounded">
+    <link rel="stylesheet" href="css/components.css?v=rounded">
     <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="css/utilities.css">
 </head>
@@ -121,22 +121,16 @@
                 <input type="text" id="searchInput" placeholder="搜尋股號、公司名稱或紀念品品項...">
             </div>
 
-            <div class="filters">
-                <label class="filter-btn active" data-filter="all">
-                    <input type="radio" name="star-filter" value="all" checked> 全部顯示
-                </label>
-                <label class="filter-btn" data-filter="5">
-                    <input type="radio" name="star-filter" value="5"> ⭐ 5 星神股
-                </label>
-                <label class="filter-btn" data-filter="4">
-                    <input type="radio" name="star-filter" value="4"> ⭐ 4 星以上
-                </label>
-                <label class="filter-btn" data-filter="annual">
-                    <input type="checkbox" id="annualFilter"> 💎 連續 5 年發放
-                </label>
+            <div class="filters" id="starFilterGroup">
+                <button class="filter-btn active" data-star="all">全部顯示</button>
+                <button class="filter-btn" data-star="5">🌟 5 星神股</button>
+                <button class="filter-btn" data-star="4">⭐ 4 星以上</button>
+                <button class="filter-btn" data-star="3">⭐ 3 星</button>
+                <button class="filter-btn" data-star="2">⭐ 2 星</button>
+                <button class="filter-btn" data-star="1">⭐ 1 星</button>
                 <div class="filter-divider"></div>
-                <label class="filter-btn purchase-filter" data-filter="purchased">
-                    <input type="checkbox" id="showPurchasedOnly"> 🛒 只看已買入
+                <label class="filter-btn annual-checkbox-label">
+                    <input type="checkbox" id="annualFilter"> 💎 連續 5 年發放
                 </label>
             </div>
         </section>
@@ -149,7 +143,17 @@
 
             <div id="tableWrapper" class="hidden">
                 <div class="table-toolbar">
-                    <div class="result-count" id="resultCount"></div>
+                    <div class="toolbar-left" style="display: flex; align-items: center; gap: 1rem;">
+                        <div class="result-count" id="resultCount"></div>
+                        <div class="purchase-tags-group" style="display: flex; gap: 0.5rem;">
+                            <button class="tag-btn" id="filterPurchased" title="只看已持有股票"
+                                style="padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; transition: all 0.2s;">🛒
+                                顯示已持有</button>
+                            <button class="tag-btn" id="filterUnpurchased" title="只看未持有股票"
+                                style="padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; transition: all 0.2s;">🛒
+                                顯示未持有</button>
+                        </div>
+                    </div>
                     <div class="page-size-control">
                         <label for="pageSizeSelect">每頁顯示</label>
                         <select id="pageSizeSelect">
@@ -242,36 +246,39 @@
 
         <footer class="footer">
 
-            <div class="disclaimer-section">
-                <h3>📜 版權與免責聲明 (Copyright &amp; Disclaimer)</h3>
-                <div class="disclaimer-body">
-                    <div class="disclaimer-item">
-                        <h4>資料來源與免責聲明</h4>
-                        <p>本工具所使用之紀念品歷史發放紀錄為公開之客觀事實數據。股市資料來源為台灣證券交易所及櫃買中心公開資訊。本工具僅對客觀數據進行自動化搜集、整理與分析計算。
-                        </p>
-                    </div>
-                    <div class="disclaimer-item">
-                        <h4>免責聲明</h4>
-                        <p>本工具資料與分析結果僅供參考使用，<strong>不構成任何形式的投資建議</strong>。股價有漲有跌，投資必須慌慌發。作者不對任何因使用本系統而產生的投資損失負責。
-                        </p>
-                    </div>
-                    <div class="disclaimer-item">
-                        <h4>程式碼授權聲明</h4>
-                        <p>Copyright &copy; 2026 xx8897. All Rights Reserved.<br>
-                            本專案程式碼保留所有權利。未經作者事先書面同意，嚴禁任何人以任何形式孶製、修改、散發、再授權或用於商業 / 非商業用途。
-                            詳細授權條款請參閱 <a href="https://github.com/xx8897/tw-stock-gift-evaluator/blob/master/LICENSE"
-                                target="_blank" rel="noopener noreferrer" style="color:#60a5fa;">LICENSE</a> 檔案。
-                        </p>
+            <div class="footer-panel glass-panel" style="padding: 0; overflow: hidden;">
+                <div class="disclaimer-section" style="padding: 2rem;">
+                    <h3>📜 版權與免責聲明 (Copyright &amp; Disclaimer)</h3>
+                    <div class="disclaimer-body">
+                        <div class="disclaimer-item">
+                            <h4>資料來源與免責聲明</h4>
+                            <p>本工具所使用之紀念品歷史發放紀錄為公開之客觀事實數據。股市資料來源為台灣證券交易所及櫃買中心公開資訊。本工具僅對客觀數據進行自動化搜集、整理與分析計算。
+                            </p>
+                        </div>
+                        <div class="disclaimer-item">
+                            <h4>免責聲明</h4>
+                            <p>本工具資料與分析結果僅供參考使用，<strong>不構成任何形式的投資建議</strong>。股價有漲有跌，投資必須慌慌發。作者不對任何因使用本系統而產生的投資損失負責。
+                            </p>
+                        </div>
+                        <div class="disclaimer-item">
+                            <h4>程式碼授權聲明</h4>
+                            <p>Copyright &copy; 2026 xx8897. All Rights Reserved.<br>
+                                本專案程式碼保留所有權利。未經作者事先書面同意，嚴禁任何人以任何形式孶製、修改、散發、再授權或用於商業 / 非商業用途。
+                                詳細授權條款請參閱 <a
+                                    href="https://github.com/xx8897/tw-stock-gift-evaluator/blob/master/LICENSE"
+                                    target="_blank" rel="noopener noreferrer" style="color:#60a5fa;">LICENSE</a> 檔案。
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="auto-update-notice">
-                <i class="fa-solid fa-rotate" style="color:#34d399;"></i>
-                <span>股價資料由 <strong>GitHub Actions</strong> 進行計畫式的自動更新，最新股價基準以「最後更新」標示為準。</span>
-                <a href="https://github.com/xx8897/tw-stock-gift-evaluator/actions" target="_blank"
-                    rel="noopener noreferrer">
-                    <i class="fa-solid fa-circle-check"></i> 查看自動化執行紀錄
-                </a>
+                <div class="auto-update-notice">
+                    <i class="fa-solid fa-rotate" style="color:#34d399;"></i>
+                    <span>股價資料由 <strong>GitHub Actions</strong> 進行計畫式的自動更新，最新股價基準以「最後更新」標示為準。</span>
+                    <a href="https://github.com/xx8897/tw-stock-gift-evaluator/actions" target="_blank"
+                        rel="noopener noreferrer">
+                        <i class="fa-solid fa-circle-check"></i> 查看自動化執行紀錄
+                    </a>
+                </div>
             </div>
             <div class="footer-top">
                 <p>Made with ❤️ by <a href="https://github.com/xx8897/tw-stock-gift-evaluator" target="_blank"

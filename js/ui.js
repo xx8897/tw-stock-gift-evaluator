@@ -24,9 +24,10 @@ function initUI() {
 
     // ── 搜尋、過濾、排序、分頁大小（僅在資料載入後作用）───────
     const searchInput = document.getElementById('searchInput');
-    const filterBtns = document.querySelectorAll('.filter-btn input[type="radio"]');
+    const starButtons = document.querySelectorAll('#starFilterGroup .filter-btn[data-star]');
     const annualFilter = document.getElementById('annualFilter');
-    const showPurchasedOnly = document.getElementById('showPurchasedOnly');
+    const filterPurchased = document.getElementById('filterPurchased');
+    const filterUnpurchased = document.getElementById('filterUnpurchased');
     const pageSizeSelect = document.getElementById('pageSizeSelect');
     const sortHeaders = document.querySelectorAll('th.sortable');
 
@@ -36,9 +37,32 @@ function initUI() {
         renderTable();
     });
 
-    filterBtns.forEach(btn => btn.addEventListener('change', e => {
-        document.querySelectorAll('.filter-btn').forEach(l => l.classList.remove('active'));
-        if (e.target.checked) e.target.parentElement.classList.add('active');
+    // 星星過濾器 (多選邏輯)
+    starButtons.forEach(btn => btn.addEventListener('click', () => {
+        const star = btn.dataset.star;
+        if (star === 'all') {
+            AppState.filters.stars = [];
+            starButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        } else {
+            const starNum = parseInt(star);
+            const index = AppState.filters.stars.indexOf(starNum);
+            if (index > -1) {
+                AppState.filters.stars.splice(index, 1);
+                btn.classList.remove('active');
+            } else {
+                AppState.filters.stars.push(starNum);
+                btn.classList.add('active');
+            }
+
+            // 如果選了星星，取消「全部」的 active
+            const allBtn = document.querySelector('#starFilterGroup .filter-btn[data-star="all"]');
+            if (AppState.filters.stars.length > 0) {
+                allBtn?.classList.remove('active');
+            } else {
+                allBtn?.classList.add('active');
+            }
+        }
         if (!AppState.globalData.length) return;
         AppState.currentPage = 1;
         renderTable();
@@ -50,7 +74,23 @@ function initUI() {
         renderTable();
     });
 
-    showPurchasedOnly?.addEventListener('change', () => {
+    // 買入/未買過濾 (工具列、互斥)
+    const updatePurchaseUI = () => {
+        filterPurchased?.classList.toggle('active', AppState.filters.purchaseFilter === 'purchased');
+        filterUnpurchased?.classList.toggle('active', AppState.filters.purchaseFilter === 'unpurchased');
+    };
+
+    filterPurchased?.addEventListener('click', () => {
+        AppState.filters.purchaseFilter = (AppState.filters.purchaseFilter === 'purchased') ? 'all' : 'purchased';
+        updatePurchaseUI();
+        if (!AppState.globalData.length) return;
+        AppState.currentPage = 1;
+        renderTable();
+    });
+
+    filterUnpurchased?.addEventListener('click', () => {
+        AppState.filters.purchaseFilter = (AppState.filters.purchaseFilter === 'unpurchased') ? 'all' : 'unpurchased';
+        updatePurchaseUI();
         if (!AppState.globalData.length) return;
         AppState.currentPage = 1;
         renderTable();

@@ -4,7 +4,7 @@
 }
 
 .sponsor-intro {
-    text-align: center;
+    text-align: left;
     margin-bottom: 2rem !important;
     font-size: 1rem !important;
 }
@@ -240,6 +240,8 @@
     margin-left: 1rem;
 }
 
+@media (max-width: 768px) {
+
     /* Modal: full-screen on mobile */
     .modal-content {
         width: 95%;
@@ -259,4 +261,4 @@
     .disclaimer-body {
         grid-template-columns: 1fr;
     }
-}
+}

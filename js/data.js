@@ -8,9 +8,9 @@ const AppState = {
     purchasedStocks: new Set(), // 儲存已買入的股號 (String)
     filters: {
         search: '',
-        stars: 'all',
+        stars: [], // 改為陣列，儲存選取的星級 (如 [5, 4])，為空時代表「全部」
         annualOnly: false,
-        showPurchasedOnly: false // 新增過濾開關
+        purchaseFilter: 'all' // 'all' | 'purchased' | 'unpurchased'
     },
     currentPage: 1,
     pageSize: 25

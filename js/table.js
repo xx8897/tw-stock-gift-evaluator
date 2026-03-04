@@ -1,35 +1,39 @@
 function renderTable() {
     const searchInput = document.getElementById('searchInput');
     const annualFilter = document.getElementById('annualFilter');
-    const showPurchasedOnly = document.getElementById('showPurchasedOnly');
     const resultCount = document.getElementById('resultCount');
     const noResults = document.getElementById('noResults');
     const tableBody = document.getElementById('tableBody');
     const pagination = document.getElementById('pagination');
 
     const query = searchInput.value.toLowerCase().trim();
-    const starFilter = document.querySelector('input[name="star-filter"]:checked')?.value || 'all';
     const isAnnualOnly = annualFilter ? annualFilter.checked : false;
-    const isPurchasedOnly = showPurchasedOnly ? showPurchasedOnly.checked : false;
 
     AppState.filteredData = AppState.globalData.filter(row => {
+        // 搜尋過濾 (股號、公司名、紀念品)
         const matchSearch = !query ||
             row.id.includes(query) ||
             row.name.toLowerCase().includes(query) ||
             row.gift.toLowerCase().includes(query);
 
-        const matchStar =
-            starFilter === '5' ? row.score.startsWith('5') :
-                starFilter === '4' ? (row.score.startsWith('5') || row.score.startsWith('4')) :
-                    true;
+        // 星星過濾 (多選)
+        const rowStar = parseInt(row.score.charAt(0)) || 1;
+        const matchStar = AppState.filters.stars.length === 0 ||
+            AppState.filters.stars.includes(rowStar);
 
+        // 連續 5 年過濾
         const matchAnnual = isAnnualOnly ? row.freq >= 5 : true;
 
-        // 已買入過濾
+        // 買入/未買過濾 (互斥)
         const isPurchased = AppState.purchasedStocks.has(row.id);
-        const matchPurchased = isPurchasedOnly ? isPurchased : true;
+        let matchPurchase = true;
+        if (AppState.filters.purchaseFilter === 'purchased') {
+            matchPurchase = isPurchased;
+        } else if (AppState.filters.purchaseFilter === 'unpurchased') {
+            matchPurchase = !isPurchased;
+        }
 
-        return matchSearch && matchStar && matchAnnual && matchPurchased;
+        return matchSearch && matchStar && matchAnnual && matchPurchase;
     });
 
     AppState.filteredData.sort((a, b) => {
