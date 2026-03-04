@@ -12,9 +12,9 @@ table {
 
 /* Column widths — 9 columns total */
 th.th-purchased {
-    width: 45px;
+    width: 50px;
     text-align: center;
-    padding-left: 0.5rem;
+    padding-left: 1rem;
     padding-right: 0.5rem;
 }
 
@@ -594,7 +594,7 @@ td:has(.gift-cell) {
 .gift-cell {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
     white-space: nowrap;
     overflow: visible;
 }
@@ -772,7 +772,7 @@ td:has(.gift-cell) {
 
 .purchase-cell {
     text-align: center;
-    padding-left: 0.5rem !important;
+    padding-left: 1rem !important;
     padding-right: 0.5rem !important;
 }
 
