@@ -15,13 +15,26 @@
     border: 1px solid var(--glass-border);
     border-radius: 20px;
     padding: 1.5rem 2rem;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 25px 50px -12px var(--shadow-heavy);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
 
 /* Header */
 header {
     text-align: center;
+}
+
+.theme-toggle-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
 }
 
 .gradient-text {
@@ -77,11 +90,11 @@ h1 {
     align-items: center;
     gap: 8px;
     padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--overlay-hover);
     border-radius: 999px;
     font-size: 0.85rem;
     color: var(--text-secondary);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-default);
     margin-bottom: 0.5rem;
 }
 
@@ -114,7 +127,7 @@ h1 {
     padding: 0.8rem 1rem 0.8rem 2.8rem;
     border-radius: 12px;
     border: 1px solid var(--glass-border);
-    background: rgba(15, 23, 42, 0.6);
+    background: var(--input-bg);
     color: var(--text-primary);
     font-size: 1rem;
     outline: none;
@@ -136,9 +149,9 @@ h1 {
     cursor: pointer;
     padding: 0.6rem 1.2rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--overlay-hover);
     border: 1px solid var(--glass-border);
-    color: #ffffff;
+    color: var(--text-primary);
     font-size: 0.9rem;
     transition: all 0.3s ease;
     user-select: none;
@@ -152,7 +165,7 @@ h1 {
 }
 
 .filter-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--overlay-active);
 }
 
 .filter-btn.active {
@@ -202,7 +215,7 @@ h1 {
     color: var(--text-primary);
     margin-bottom: 1.5rem;
     padding-bottom: 0.8rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .disclaimer-body {
@@ -212,7 +225,7 @@ h1 {
 }
 
 .disclaimer-item {
-    border-left: 2px solid rgba(255, 255, 255, 0.08);
+    border-left: 2px solid var(--border-subtle);
     padding-left: 1rem;
 }
 
@@ -243,6 +256,13 @@ h1 {
     }
 
     /* Header: stack vertically, smaller font */
+    .theme-toggle-btn {
+        top: 1.25rem;
+        right: 1.25rem;
+        width: 36px;
+        height: 36px;
+    }
+
     h1 {
         font-size: 1.6rem;
         flex-wrap: wrap;

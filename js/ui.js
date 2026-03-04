@@ -1,4 +1,33 @@
 function initUI() {
+    // ── 主題切換 (深色/淺色) ─────────────────────────────────
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const root = document.documentElement;
+
+    function applyTheme(theme) {
+        root.setAttribute('data-theme', theme);
+        if (themeIcon) {
+            themeIcon.className = theme === 'light'
+                ? 'fa-solid fa-sun'
+                : 'fa-solid fa-moon';
+        }
+    }
+
+    // 初始化：localStorage > 系統偏好 > 預設 dark
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        applyTheme(savedTheme);
+    } else if (window.matchMedia?.('(prefers-color-scheme: light)').matches) {
+        applyTheme('light');
+    }
+
+    themeToggle?.addEventListener('click', () => {
+        const current = root.getAttribute('data-theme') || 'dark';
+        const next = current === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        localStorage.setItem('theme', next);
+    });
+
     const infoModal = document.getElementById('infoModal');
     const openModalBtn = document.getElementById('openModalBtn');
     const closeModalBtn = document.getElementById('closeModalBtn');

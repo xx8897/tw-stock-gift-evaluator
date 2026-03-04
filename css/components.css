@@ -64,11 +64,11 @@ th:nth-child(9) {
 th,
 td {
     padding: 1rem 0.85rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 th {
-    background: rgba(15, 23, 42, 0.4);
+    background: var(--th-bg);
     color: var(--text-secondary);
     font-weight: 600;
     font-size: 0.9rem;
@@ -103,13 +103,13 @@ tbody tr {
 }
 
 tbody tr:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--overlay-hover);
     /* inset left border highlight — no transform, no stacking context */
     box-shadow: inset 4px 0 0 var(--accent-primary);
 }
 
 tbody tr.purchased-row {
-    background: rgba(52, 211, 153, 0.04);
+    background: rgba(52, 211, 153, 0.06);
 }
 
 tbody tr.purchased-row:hover {
@@ -238,16 +238,16 @@ td:has(.gift-cell) {
     cursor: pointer;
     font-family: 'Outfit', sans-serif;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-default);
+    background: var(--overlay-hover);
     color: var(--text-primary);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
 
 .glass-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: var(--overlay-strong);
+    border-color: var(--border-accent);
     transform: translateY(-2px);
     box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.5);
 }
@@ -321,7 +321,7 @@ td:has(.gift-cell) {
 }
 
 .tip {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--overlay-hover);
     padding: 0.4rem 0.8rem;
     border-radius: 4px;
     color: var(--text-primary);
@@ -337,16 +337,16 @@ td:has(.gift-cell) {
 }
 
 .strategy-card {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: var(--overlay-hover);
+    border: 1px solid var(--border-subtle);
     border-radius: 12px;
     padding: 1.1rem 1rem;
     transition: background 0.2s, border-color 0.2s;
 }
 
 .strategy-card:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.15);
+    background: var(--overlay-active);
+    border-color: var(--border-strong);
 }
 
 .strategy-card>i {
@@ -419,7 +419,7 @@ td:has(.gift-cell) {
     gap: 1rem;
     align-items: flex-start;
     padding: 0.85rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .guide-step:last-child {
@@ -501,7 +501,7 @@ td:has(.gift-cell) {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border-subtle);
     flex-wrap: wrap;
     gap: 0.5rem;
 }
@@ -543,7 +543,7 @@ td:has(.gift-cell) {
     align-items: center;
     gap: 0.4rem;
     padding: 1.2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid var(--border-subtle);
 }
 
 .page-btn {
@@ -552,7 +552,7 @@ td:has(.gift-cell) {
     padding: 0 0.5rem;
     border-radius: 8px;
     border: 1px solid var(--glass-border);
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--overlay-hover);
     color: var(--text-secondary);
     font-size: 0.88rem;
     cursor: pointer;
@@ -564,7 +564,7 @@ td:has(.gift-cell) {
 }
 
 .page-btn:hover:not(.disabled):not(.active) {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--overlay-active);
     color: var(--text-primary);
 }
 
@@ -659,9 +659,9 @@ td:has(.gift-cell) {
     left: 0;
     z-index: 500;
     /* Fully opaque — no alpha on background */
-    background: #0d1829;
+    background: var(--glass-bg-solid);
     isolation: isolate;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--border-strong);
     border-radius: 10px;
     padding: 0.75rem;
     min-width: 260px;
@@ -728,7 +728,7 @@ td:has(.gift-cell) {
     gap: 6px;
     margin-left: 0.5rem;
     padding-left: 0.75rem;
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 1px solid var(--border-default);
     font-size: 0.83rem;
     color: var(--text-secondary);
 }
@@ -736,7 +736,7 @@ td:has(.gift-cell) {
 .page-jump input {
     width: 52px;
     text-align: center;
-    background: rgba(15, 23, 42, 0.7);
+    background: var(--input-bg);
     border: 1px solid var(--glass-border);
     color: var(--text-primary);
     padding: 0.25rem 0.4rem;
@@ -779,15 +779,15 @@ td:has(.gift-cell) {
 
     #dataTable tr {
         margin-bottom: 1.25rem;
-        background: rgba(30, 41, 59, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: var(--glass-bg);
+        border: 1px solid var(--border-subtle);
         border-radius: 12px;
         padding: 0.5rem 0;
     }
 
     #dataTable tr:hover {
         box-shadow: none;
-        background: rgba(30, 41, 59, 0.8);
+        background: var(--glass-bg);
     }
 
     #dataTable td {
@@ -796,7 +796,7 @@ td:has(.gift-cell) {
         align-items: center;
         text-align: right;
         padding: 0.75rem 1.25rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid var(--border-subtle);
     }
 
     #dataTable td:last-child {

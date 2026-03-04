@@ -1,6 +1,6 @@
 body {
     font-family: 'Noto Sans TC', sans-serif;
-    background-color: var(--bg-dark);
+    background-color: var(--bg-app);
     color: var(--text-primary);
     min-height: 100vh;
     min-height: 100dvh;
@@ -9,6 +9,7 @@ body {
     padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     padding-left: env(safe-area-inset-left, 0px);
     padding-right: env(safe-area-inset-right, 0px);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Background Blobs for Glassmorphism effect */
@@ -20,7 +21,8 @@ body {
     height: 100vh;
     z-index: -1;
     overflow: hidden;
-    background: #0f172a;
+    background: var(--bg-app);
+    transition: background 0.3s ease;
 }
 
 .blob {
@@ -29,6 +31,7 @@ body {
     border-radius: 50%;
     opacity: 0.5;
     animation: float 20s infinite ease-in-out alternate;
+    transition: background 0.3s ease;
 }
 
 .blob-1 {
@@ -36,7 +39,7 @@ body {
     left: -10%;
     width: 50vw;
     height: 50vw;
-    background: rgba(59, 130, 246, 0.3);
+    background: var(--blob-1);
     animation-delay: 0s;
 }
 
@@ -45,7 +48,7 @@ body {
     right: -10%;
     width: 60vw;
     height: 60vw;
-    background: rgba(139, 92, 246, 0.2);
+    background: var(--blob-2);
     animation-delay: -5s;
 }
 
@@ -54,7 +57,7 @@ body {
     left: 60%;
     width: 40vw;
     height: 40vw;
-    background: rgba(236, 72, 153, 0.2);
+    background: var(--blob-3);
     animation-delay: -10s;
 }
 
