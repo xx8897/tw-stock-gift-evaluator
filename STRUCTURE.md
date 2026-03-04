@@ -1,12 +1,13 @@
-# 📂 專案目錄結構說明
+# 📂 專案目錄結構說明 (v2)
 
-> 本文件由 Antigravity 自動生成，描述本專案的完整目錄結構與各檔案用途。
+> 本文件描述本專案的完整目錄結構與各檔案用途。
 
 ```
 台股文件/
-├── index.html                  # 網站主頁面（單頁應用程式）
-├── evaluate_stocks.py          # 核心 Python 評分腳本
+├── index.html                  # 網站主頁面（單頁應用程式，含說明＆贊助彈窗）
+├── evaluate_stocks.py          # 核心 Python 評分腳本（股價抓取 + CP 值計算）
 ├── README.md                   # 專案說明文件
+├── STRUCTURE.md                # 專案目錄結構說明（本文件）
 ├── LICENSE                     # 版權授權聲明
 ├── .gitignore                  # Git 忽略清單
 │
@@ -14,19 +15,24 @@
 │   ├── 2021-2025_推薦評分.xlsx # evaluate_stocks.py 讀寫：完整評分名單（網站讀取此檔）
 │   └── 2021-2025_年年發放.xlsx # evaluate_stocks.py 產出：僅五年年年發放的篩選版
 │
-├── css/                        # 🎨 樣式表（由 style.css 拆分而成）
-│   ├── variables.css           # CSS 自訂變數（顏色、星級等設計 token）
-│   ├── base.css                # 全域重置、body、背景特效（blobs）
-│   ├── layout.css              # 整體容器、標頭、頁尾、控制區排版與 RWD
-│   ├── components.css          # 按鈕、卡片、表格、搜尋框、過濾器、星級標籤等元件
-│   ├── modal.css               # 彈出視窗（說明彈窗、贊助彈窗）與估值表格
-│   └── utilities.css           # 通用樣式類別（.hidden、.spinner）與金幣爆炸特效
+├── css/                        # 🎨 樣式表模組（共 6 個檔案）
+│   ├── variables.css           # CSS 自訂變數：顏色、星級、漸層等設計 token
+│   ├── base.css                # 全域重置、body、字體、背景 blob 動畫
+│   ├── layout.css              # 容器、標頭、頁尾、控制區排版 + 完整 RWD 斷點
+│   ├── components.css          # 表格（9 欄固定寬度）、按鈕、卡片、搜尋框、
+│   │                           #   星級篩選、策略卡片、分頁器、禮物歷史彈窗、
+│   │                           #   紀念品代領攻略、手機版卡片化佈局
+│   ├── modal.css               # 說明彈窗、贊助彈窗、估值表格
+│   └── utilities.css           # 通用類別（.hidden、.spinner）、金幣爆炸特效動畫
 │
-├── js/                         # ⚙️ JavaScript 邏輯（由 script.js 拆分而成）
-│   ├── data.js                 # 資料層：載入 Excel、GitHub API 時間備援、AppState 全域狀態
-│   ├── table.js                # 表格層：渲染表格、排序、過濾、分頁、歷史彈窗
-│   ├── ui.js                   # 介面層：彈出視窗控制、金幣特效、排序按鈕初始化
-│   └── main.js                 # 程式進入點：DOMContentLoaded 時呼叫 initUI() + loadData()
+├── js/                         # ⚙️ JavaScript 模組（共 4 個檔案）
+│   ├── data.js                 # 資料層：SheetJS 載入 Excel、GitHub API 時間備援、
+│   │                           #   AppState 全域狀態、localStorage 買入紀錄
+│   ├── table.js                # 表格層：renderTable() 渲染 9 欄表格、排序、
+│   │                           #   多維度過濾、分頁、頁碼跳轉、禮物歷史彈窗
+│   ├── ui.js                   # 介面層：彈窗（說明/贊助）控制、金幣爆炸特效、
+│   │                           #   排序按鈕初始化、買入篩選按鈕綁定
+│   └── main.js                 # 程式進入點：DOMContentLoaded → initUI() + loadData()
 │
 ├── assets/                     # 🖼️ 靜態資源
 │   └── favicon.png             # 瀏覽器分頁縮圖 icon
@@ -34,7 +40,7 @@
 └── .github/
     └── workflows/
         ├── static.yml          # GitHub Actions：自動部署至 GitHub Pages
-        └── update-prices.yml   # GitHub Actions：每週自動評估股價並更新資料
+        └── update-prices.yml   # GitHub Actions：旺季每週／淡季每月自動更新股價
 ```
 
 ---
@@ -43,10 +49,23 @@
 
 ### 資料流程
 ```
-Excel (data/) → data.js 讀取 → AppState.globalData
-                                    ↓
-                              table.js 過濾/排序/渲染 → DOM
+Excel (data/*.xlsx)
+    ↓  SheetJS 解析
+data.js → AppState.globalData (全域狀態)
+    ↓  搜尋 / 星級 / 連續5年 / 已買未買 篩選
+table.js → 排序 → 分頁 → 渲染 DOM
+    ↓  互動事件
+ui.js → 彈窗控制 / 排序按鈕 / 買入標記 / 金幣特效
 ```
+
+### 前端架構（v2）
+
+| 層級 | 檔案 | 職責 |
+|---|---|---|
+| 進入點 | `main.js` | 啟動 `initUI()` 和 `loadData()` |
+| 資料層 | `data.js` | Excel 解析、股價時間戳、全域狀態管理、localStorage |
+| 表格層 | `table.js` | 資料過濾、排序、分頁渲染、歷史彈窗 |
+| 介面層 | `ui.js` | 事件綁定、彈窗、特效、使用者互動 |
 
 ### 最後更新時間邏輯（data.js）
 1. 優先讀取 HTTP Header 的 `Last-Modified`
@@ -59,4 +78,4 @@ Excel (data/) → data.js 讀取 → AppState.globalData
 
 ---
 
-> 最後更新：2026-03-03
+> 最後更新：2026-03-04 (v2)
