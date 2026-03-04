@@ -368,6 +368,28 @@ td:has(.gift-cell) {
     margin: 0;
 }
 
+/* Strategy Cards — Mobile overrides (must live here, after the base rule) */
+@media (max-width: 768px) {
+    .strategy-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .strategy-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .strategy-card h4 {
+        font-size: 1.05rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .strategy-card p {
+        font-size: 0.9rem;
+    }
+}
+
 /* --- Guide Section --- */
 
 .guide-section {
@@ -733,9 +755,64 @@ td:has(.gift-cell) {
    Mobile card overrides for new cells
    ========================================== */
 @media (max-width: 768px) {
+
+    /* Hide table header */
+    #dataTable thead {
+        display: none;
+    }
+
+    #dataTable,
+    #dataTable tbody,
+    #dataTable tr,
+    #dataTable td {
+        display: block;
+        width: 100%;
+    }
+
+    #dataTable tr {
+        margin-bottom: 1.25rem;
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 0.5rem 0;
+    }
+
+    #dataTable tr:hover {
+        box-shadow: none;
+        background: rgba(30, 41, 59, 0.8);
+    }
+
+    #dataTable td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: right;
+        padding: 0.75rem 1.25rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    #dataTable td:last-child {
+        border-bottom: none;
+    }
+
+    #dataTable td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        margin-right: 1rem;
+        text-align: left;
+    }
+
+    /* Wrap pagination buttons */
+    .pagination {
+        flex-wrap: wrap;
+    }
+
     .gift-cell {
         flex-wrap: wrap;
         white-space: normal;
+        justify-content: flex-end;
     }
 
     /* freq-cell: align right like other card cells */
@@ -764,7 +841,8 @@ td:has(.gift-cell) {
 
     /* Target purchased cell in mobile card */
     td.purchase-cell {
-        justify-content: flex-end;
+        justify-content: space-between !important;
+        padding-left: 1.25rem !important;
     }
 }
 

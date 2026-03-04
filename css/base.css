@@ -3,8 +3,12 @@ body {
     background-color: var(--bg-dark);
     color: var(--text-primary);
     min-height: 100vh;
+    min-height: 100dvh;
     position: relative;
     overflow-x: hidden;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
 }
 
 /* Background Blobs for Glassmorphism effect */
@@ -63,4 +67,3 @@ body {
         transform: translate(5%, 5%) scale(1.1);
     }
 }
-
