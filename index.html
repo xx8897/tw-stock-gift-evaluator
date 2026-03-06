@@ -122,15 +122,35 @@
             </div>
 
             <div class="filters" id="starFilterGroup">
-                <button class="filter-btn active" data-star="all">全部顯示</button>
-                <button class="filter-btn" data-star="5">🌟 5 星</button>
-                <button class="filter-btn" data-star="4">⭐ 4 星</button>
-                <button class="filter-btn" data-star="3">⭐ 3 星</button>
-                <button class="filter-btn" data-star="2">⭐ 2 星</button>
-                <button class="filter-btn" data-star="1">⭐ 1 星</button>
+                <button class="filter-btn filter-circle active" data-star="all">
+                    <span>全部</span>
+                    <span>顯示</span>
+                </button>
+                <button class="filter-btn filter-circle" data-star="5">
+                    <span class="icon">🌟</span>
+                    <span>5 星</span>
+                </button>
+                <button class="filter-btn filter-circle" data-star="4">
+                    <span class="icon">⭐</span>
+                    <span>4 星</span>
+                </button>
+                <button class="filter-btn filter-circle" data-star="3">
+                    <span class="icon">⭐</span>
+                    <span>3 星</span>
+                </button>
+                <button class="filter-btn filter-circle" data-star="2">
+                    <span class="icon">⭐</span>
+                    <span>2 星</span>
+                </button>
+                <button class="filter-btn filter-circle" data-star="1">
+                    <span class="icon">⭐</span>
+                    <span>1 星</span>
+                </button>
                 <div class="filter-divider"></div>
-                <label class="filter-btn annual-checkbox-label">
-                    <input type="checkbox" id="annualFilter"> 💎 連續 5 年發放
+                <label class="filter-btn filter-circle annual-checkbox-label">
+                    <input type="checkbox" id="annualFilter">
+                    <span>連續</span>
+                    <span>五年</span>
                 </label>
             </div>
         </section>
