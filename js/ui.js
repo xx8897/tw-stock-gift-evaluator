@@ -76,6 +76,14 @@ function initUI() {
         renderTable();
     });
 
+    const excludeIdFilter = document.getElementById('excludeIdFilter');
+    excludeIdFilter?.addEventListener('change', () => {
+        AppState.filters.excludeId = excludeIdFilter.checked;
+        if (!AppState.globalData.length) return;
+        AppState.currentPage = 1;
+        renderTable();
+    });
+
     // 買入/未買過濾 (工具列、互斥)
     const updatePurchaseUI = () => {
         filterPurchased?.classList.toggle('active', AppState.filters.purchaseFilter === 'purchased');

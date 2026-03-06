@@ -24,6 +24,9 @@ function renderTable() {
         // 連續 5 年過濾
         const matchAnnual = isAnnualOnly ? row.freq >= 5 : true;
 
+        // 排除身分證過濾
+        const matchExcludeId = AppState.filters.excludeId ? !row.cond.includes('身分證') : true;
+
         // 買入/未買過濾 (互斥)
         const isPurchased = AppState.purchasedStocks.has(row.id);
         let matchPurchase = true;
@@ -33,7 +36,7 @@ function renderTable() {
             matchPurchase = !isPurchased;
         }
 
-        return matchSearch && matchStar && matchAnnual && matchPurchase;
+        return matchSearch && matchStar && matchAnnual && matchExcludeId && matchPurchase;
     });
 
     AppState.filteredData.sort((a, b) => {

@@ -10,10 +10,12 @@ const AppState = {
         search: '',
         stars: [], // 改為陣列，儲存選取的星級 (如 [5, 4])，為空時代表「全部」
         annualOnly: false,
+        excludeId: false,
         purchaseFilter: 'all' // 'all' | 'purchased' | 'unpurchased'
     },
     currentPage: 1,
-    pageSize: 25
+    pageSize: 25,
+    currentUser: null // Supabase 登入使用者，null 代表未登入
 };
 
 /**
@@ -33,7 +35,7 @@ function loadPurchased() {
 }
 
 /**
- * 切換買入狀態並同步至 LocalStorage
+ * 切換買入狀態並同步至 LocalStorage，並安排雲端自動同步
  */
 function togglePurchase(stockId) {
     stockId = String(stockId);
@@ -45,6 +47,9 @@ function togglePurchase(stockId) {
 
     // 同步到 LocalStorage
     localStorage.setItem('purchased_stocks', JSON.stringify([...AppState.purchasedStocks]));
+
+    // 若已登入，安排 15 分鐘後自動同步至雲端
+    if (typeof scheduleAutoSync === 'function') scheduleAutoSync();
 }
 
 async function loadData() {
