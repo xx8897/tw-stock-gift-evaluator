@@ -907,4 +907,5 @@ td:has(.gift-cell) {
     background: rgba(255, 255, 255, 0.15);
     margin: 0 0.8rem;
     border-radius: 2px;
+    align-self: center;
 }

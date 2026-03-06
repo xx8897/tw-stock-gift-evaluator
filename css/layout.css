@@ -132,6 +132,7 @@ h1 {
     display: flex;
     gap: 0.8rem;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .filter-btn {
@@ -184,6 +185,12 @@ h1 {
 .filter-btn:has(#annualFilter:checked) {
     background: rgba(139, 92, 246, 0.3);
     border-color: var(--accent-secondary);
+}
+
+.filter-btn:has(#excludeIdFilter:checked) {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: rgba(239, 68, 68, 0.6);
+    color: #fca5a5;
 }
 
 .footer {

@@ -10,6 +10,7 @@ const AppState = {
         search: '',
         stars: [], // 改為陣列，儲存選取的星級 (如 [5, 4])，為空時代表「全部」
         annualOnly: false,
+        excludeId: false,
         purchaseFilter: 'all' // 'all' | 'purchased' | 'unpurchased'
     },
     currentPage: 1,
