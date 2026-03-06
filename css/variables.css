@@ -47,43 +47,7 @@
     --star-1: #64748b;
 }
 
-/* ==========================================
-   Light Theme Overrides
-   ========================================== */
-[data-theme="light"] {
-    --bg-app: #f1f5f9;
-    --glass-bg: rgba(255, 255, 255, 0.75);
-    --glass-bg-solid: #ffffff;
-    --glass-border: rgba(0, 0, 0, 0.08);
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
-    --accent-primary: #2563eb;
-    --accent-secondary: #7c3aed;
-
-    --overlay-hover: rgba(0, 0, 0, 0.04);
-    --overlay-active: rgba(0, 0, 0, 0.08);
-    --overlay-strong: rgba(0, 0, 0, 0.1);
-
-    --border-subtle: rgba(0, 0, 0, 0.05);
-    --border-default: rgba(0, 0, 0, 0.1);
-    --border-strong: rgba(0, 0, 0, 0.15);
-    --border-accent: rgba(0, 0, 0, 0.2);
-
-    --th-bg: rgba(241, 245, 249, 0.8);
-    --input-bg: rgba(255, 255, 255, 0.8);
-    --modal-overlay: rgba(100, 116, 139, 0.5);
-    --modal-bg: rgba(255, 255, 255, 0.98);
-
-    --shadow-heavy: rgba(0, 0, 0, 0.15);
-    --shadow-medium: rgba(0, 0, 0, 0.08);
-
-    --blob-1: rgba(59, 130, 246, 0.12);
-    --blob-2: rgba(139, 92, 246, 0.08);
-    --blob-3: rgba(236, 72, 153, 0.08);
-
-    --star-2: #64748b;
-    --star-1: #94a3b8;
-}
+/* End of theme variables */
 
 * {
     margin: 0;

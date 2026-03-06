@@ -24,18 +24,7 @@ header {
     text-align: center;
 }
 
-.theme-toggle-btn {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-}
+/* null replacing .theme-toggle-btn */
 
 .gradient-text {
     background: var(--accent-gradient);
@@ -255,13 +244,7 @@ h1 {
         gap: 1rem;
     }
 
-    /* Header: stack vertically, smaller font */
-    .theme-toggle-btn {
-        top: 1.25rem;
-        right: 1.25rem;
-        width: 36px;
-        height: 36px;
-    }
+    /* Header: smaller font */
 
     h1 {
         font-size: 1.6rem;
