@@ -21,7 +21,9 @@
 1. 進入「API 和服務」 > 「用戶端」。
 2. 點擊「建立 OAuth 用戶端 ID」。
 3. 應用程式類型選 **網頁應用程式 (Web application)**。
-4. **已授權的 JavaScript 來源**：填入 `http://localhost:8080`。
+4. **已授權的 JavaScript 來源**：
+   - 填入 `http://localhost:8080` (本機測試用)
+   - 填入 `https://xx8897.github.io` (GitHub Pages 線上版)
 5. **已授權的重新導向 URI**：填入 Supabase 提供的 Callback URL (見下節)。
 6. 點擊「建立」按鈕。
 7. **系統會彈出視窗顯示結果**：請從該視窗中**複製 `Client ID` 與 `Client Secret`** (這就是設定 Supabase 的關鍵鑰匙)。
@@ -35,6 +37,10 @@
 1. 點擊左邊選單的 **人像圖示 (Authentication)**。
 2. 點擊 **URL Configuration**。
 3. 找到 **Callback URL (OAuth)**，這串網址要貼回 Google Cloud Console 的重新導向 URI。
+4. 找到 **Redirect URLs**，點擊 **Add URL**，加入你的 GitHub Pages 網址：
+   - `https://xx8897.github.io/tw-stock-gift-evaluator/`
+   - `https://xx8897.github.io/tw-stock-gift-evaluator/*` (加上星號可支援各種子路徑)
+   *(注意：如果 Supabase 這裡沒加，登入後會被強制導回 Localhost 或報錯)*
 
 ### B. 設定 Google Provider
 1. 在 Authentication 頁面點擊 **Providers**。
