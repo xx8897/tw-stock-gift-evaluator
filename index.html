@@ -180,7 +180,7 @@
                         </div>
                         <div class="filter-divider"></div>
                         <!-- 未登入：雲端同步按鈕 -->
-                        <button class="tag-btn cloud-sync-btn" id="loginBtn" onclick="signInWithGoogle()"
+                        <button class="tag-btn cloud-sync-btn" id="loginBtn" onclick="openLoginModal()"
                             style="padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; background: transparent; border: 1px solid rgba(66, 133, 244, 0.4); color: #93c5fd; transition: all 0.2s;">
                             <i class="fa-solid fa-cloud-arrow-up"></i> 雲端同步
                         </button>
@@ -337,6 +337,87 @@
             </div>
         </footer>
     </main>
+
+    <!-- Login Options Modal -->
+    <div id="loginModal" class="modal-overlay hidden">
+        <div class="modal-content login-modal-card">
+            <button class="close-btn" id="closeLoginModalBtn"><i class="fa-solid fa-xmark"></i></button>
+
+            <div class="login-header">
+                <h2>台股股東會紀念品指南</h2>
+                <p>登入以同步您的專屬投資清單</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="login-tabs">
+                <button class="login-tab active" data-tab="signin">登入</button>
+                <button class="login-tab" data-tab="signup">註冊</button>
+            </div>
+
+            <div class="login-body">
+                <!-- Standard Auth Form (Login/Signup) -->
+                <form id="authForm" class="auth-form">
+                    <div id="authErrorMsg" class="auth-error-msg hidden"></div>
+
+                    <div class="form-group">
+                        <label for="authEmail"><i class="fa-regular fa-envelope"></i> Email</label>
+                        <input type="email" id="authEmail" placeholder="player@example.com" required>
+                    </div>
+
+                    <div class="form-group password-group">
+                        <label for="authPassword"><i class="fa-solid fa-lock"></i> 密碼</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="authPassword" placeholder="••••••••" required minlength="6">
+                            <button type="button" class="toggle-password-btn" id="togglePasswordBtn">
+                                <i class="fa-regular fa-eye-slash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="auth-submit-btn" id="authSubmitBtn">登入</button>
+                </form>
+
+                <!-- OTP Verification Form (Hidden by default) -->
+                <form id="otpForm" class="auth-form hidden">
+                    <div class="otp-instruction">
+                        <i class="fa-solid fa-paper-plane"
+                            style="color: #34d399; font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                        <p style="color: #fff; font-weight: 600; margin-bottom: 0.2rem;">驗證碼已寄出！</p>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem;">請前往信箱查看 6 位數驗證碼</p>
+                    </div>
+
+                    <div id="otpErrorMsg" class="auth-error-msg hidden"></div>
+
+                    <div class="form-group">
+                        <input type="text" id="otpInput" placeholder="請輸入 6 位數驗證碼" required pattern="\d{6}"
+                            maxlength="6"
+                            style="text-align: center; letter-spacing: 0.5rem; font-family: monospace; font-size: 1.2rem;">
+                    </div>
+
+                    <button type="button" class="auth-submit-btn" id="otpSubmitBtn">驗證並登入</button>
+                    <button type="button" class="text-link-btn" id="backToSignupBtn"
+                        style="margin-top: 1rem; width: 100%;">← 返回重填</button>
+                </form>
+
+                <div class="login-divider">
+                    <span>或</span>
+                </div>
+
+                <!-- Alternative Methods -->
+                <div class="alt-login-methods">
+                    <button class="social-login-btn google-btn" onclick="signInWithGoogle()">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
+                        <span>使用 Google 登入</span>
+                    </button>
+
+                    <button class="guest-login-btn" id="guestLoginBtn">
+                        <i class="fa-solid fa-person-walking-luggage" style="color: #34d399;"></i>
+                        <span>以訪客身份繼續</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal for Detailed Documentation -->
     <div id="infoModal" class="modal-overlay hidden">
