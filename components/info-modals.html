@@ -1,0 +1,95 @@
+<!-- Modal for Detailed Documentation -->
+<div id="infoModal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>📖 股東會紀念品評估說明</h2>
+            <button class="close-btn" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+
+            <h4>📂 資料來源</h4>
+            <p>本站發放紀錄涵蓋
+                2021–2025 年全台上市/上櫃公司股東會紀念品歷史，共 <strong>881 筆</strong>公開事實數據。股價採用三層備援（台灣證交所 → 櫃買中心 → 歷史紀錄），基準日為
+                <strong>2026/02/25</strong>。
+            </p>
+
+            <h4>📐 新版性價比公式</h4>
+            <p>以「五年紀念品總值」為基礎計算，而非單次紀念品：</p>
+            <code>新版性價比 = (五年紀念品總估值 ÷ 最新股價) × (五年內發放次數 ÷ 5)</code>
+            <p style="margin-top: 0.5rem;">此公式同時反映了「紀念品值多少」和「這家公司發放頻率有多穩定」。</p>
+
+            <h4>🏷️ 紀念品估值模型（參考市場實際行情）</h4>
+            <div class="valuation-table">
+                <div class="val-row"><span>現金 / 商品卡 / 禮物卡</span><span class="val-price">面額</span></div>
+                <div class="val-row highlight"><span>六福村主題樂園門票</span><span class="val-price">1,199 元</span>
+                </div>
+                <div class="val-row highlight"><span>大魯閣消費抵用券+買1送1</span><span class="val-price">800 元</span>
+                </div>
+                <div class="val-row"><span>王品股東大禮包</span><span class="val-price">400 元</span></div>
+                <div class="val-row"><span>佐登妮絲城堡入園</span><span class="val-price">300 元</span></div>
+                <div class="val-row"><span>蓋毯 / 毛毯</span><span class="val-price">200 元</span></div>
+                <div class="val-row"><span>保溫杯 / 保溫瓶</span><span class="val-price">150 元</span></div>
+                <div class="val-row"><span>食用油（橄欖油/苦茶油）</span><span class="val-price">120 元</span></div>
+                <div class="val-row"><span>不鏽鋼餐具 / 砧板 / 保鮮盒</span><span class="val-price">120 元</span></div>
+                <div class="val-row"><span>保健品 / 膠囊 / 維生素</span><span class="val-price">100 元</span></div>
+                <div class="val-row"><span>杯子 / 馬克杯</span><span class="val-price">80 元</span></div>
+                <div class="val-row"><span>個人衛生用品（香皂/沐浴乳）</span><span class="val-price">60 元</span></div>
+                <div class="val-row"><span>食品（火鍋湯/拌麵/零食）</span><span class="val-price">50 元</span></div>
+                <div class="val-row"><span>清潔用品（洗衣精/洗碗精）</span><span class="val-price">50 元</span></div>
+                <div class="val-row"><span>環保袋 / 購物袋</span><span class="val-price">50 元</span></div>
+                <div class="val-row"><span>濕紙巾 / 衛生紙</span><span class="val-price">30 元</span></div>
+                <div class="val-row"><span>其他未分類品項</span><span class="val-price">40 元</span></div>
+            </div>
+
+            <h4>⭐ 推薦評級對照</h4>
+            <div class="score-legend">
+                <p><span class="badge badge-5">5 星神股</span> CP 值 ≥ 2.0（買到賺到）</p>
+                <p><span class="badge badge-4">4 星推薦</span> CP 值 ≥ 1.0（回本有餘）</p>
+                <p><span class="badge badge-3">3 星尚可</span> CP 值 ≥ 0.5</p>
+                <p><span class="badge badge-2">2 星不推</span> CP 值 ≥ 0.1</p>
+                <p><span class="badge badge-1">1 星極差</span> CP 值 &lt; 0.1 或無發放</p>
+            </div>
+
+            <h4>💡 選股小撇步</h4>
+            <p>就算是 5 星神股，也建議優先挑選「五年內發放次數」達到 <strong>5 次（年年發放）</strong> 的公司！
+                這代表 2021–2025 年間沒有任何一年缺票，穩定度最高。如果 5 次的自己喜歡的已被買光，就改找 4 次。發放次數越少風險越高。</p>
+        </div>
+    </div>
+</div>
+
+<!-- 贊助彈窗 (Sponsor Modal) -->
+<div class="modal-overlay hidden" id="sponsorModal">
+    <div class="modal-content sponsor-modal-card">
+        <div class="modal-header">
+            <h2>支持專案開發</h2>
+            <button class="close-btn" id="closeSponsorBtn">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="sponsor-intro">如果您覺得這個工具對您有幫助，歡迎請作者喝杯咖啡，支持專案持續維護與更新！✨</p>
+
+            <div class="sponsor-options">
+                <!-- 綠界 -->
+                <a href="#" target="_blank" class="sponsor-option-card ecpay">
+                    <div class="option-icon"><i class="fa-solid fa-wallet"></i></div>
+                    <div class="option-info">
+                        <h3>台灣在地贊助 (綠界)</h3>
+                        <p class="option-desc">支援 ATM 轉帳、超商代碼繳費、台灣信用卡。</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right arrow"></i>
+                </a>
+
+                <!-- Ko-fi -->
+                <a href="https://ko-fi.com/leekdog8897" target="_blank" class="sponsor-option-card kofi">
+                    <div class="option-icon"><i class="fa-solid fa-mug-hot"></i></div>
+                    <div class="option-info">
+                        <h3>國際與 PayPal 贊助</h3>
+                        <p class="option-desc">由 Ko-fi 平台提供，支援 PayPal 與國際信用卡付款。</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right arrow"></i>
+                </a>
+            </div>
+
+            <p class="sponsor-footer">您的支持是我最大的開發動力，謝謝您！</p>
+        </div>
+    </div>
+</div>
