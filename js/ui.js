@@ -145,10 +145,14 @@ function initUI() {
     }
 
     // ── 禮物 icon 金幣爆炸 ────────────────────────────────────
-    const giftIcon = document.querySelector('.bounce-icon');
-    if (giftIcon) {
-        giftIcon.addEventListener('click', () => {
-            const rect = giftIcon.getBoundingClientRect();
+    const headerGiftBox = document.getElementById('headerGiftBox');
+    if (headerGiftBox) {
+        headerGiftBox.addEventListener('click', () => {
+            if (navigator.vibrate) navigator.vibrate([30]);
+            const rect = headerGiftBox.getBoundingClientRect();
+            if (typeof triggerConfetti === 'function') {
+                triggerConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+            }
             createCoins(rect.left + rect.width / 2, rect.top + rect.height / 2);
         });
     }

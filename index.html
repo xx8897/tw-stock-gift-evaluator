@@ -26,12 +26,14 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/layout.css?v=rounded">
-    <link rel="stylesheet" href="css/components.css?v=rounded">
-    <link rel="stylesheet" href="css/modal.css">
-    <link rel="stylesheet" href="css/utilities.css">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/variables.css?v=5">
+    <link rel="stylesheet" href="css/base.css?v=5">
+    <link rel="stylesheet" href="css/layout.css?v=5">
+    <link rel="stylesheet" href="css/components.css?v=5">
+    <link rel="stylesheet" href="css/modal.css?v=5">
+    <link rel="stylesheet" href="css/auth.css?v=5">
+    <link rel="stylesheet" href="css/utilities.css?v=5">
 </head>
 
 <body>
@@ -43,10 +45,14 @@
 
     <main class="container">
         <header class="glass-panel" style="position: relative;">
+            <!-- 網頁頂部同步進度條 -->
+            <div id="topSyncProgressBar" class="top-sync-progress-bar"></div>
             <div class="header-content">
                 <h1>
                     <span class="gradient-text">台股股東會紀念品</span>評估指南
-                    <i class="fa-solid fa-gift bounce-icon"></i>
+                    <span class="gift-box-wrapper" title="點我有驚喜" id="headerGiftBox">
+                        <i class="fa-solid fa-gift bounce-icon" id="giftIcon"></i>
+                    </span>
                 </h1>
                 <p class="subtitle">自動抓取最新股價，精算零股性價比！幫您找出最划算的「零股神股」✨</p>
                 <!-- 狀態資訊與按鈕分開 -->
@@ -161,9 +167,30 @@
         </section>
 
         <div class="table-container glass-panel">
-            <div class="loading-state" id="loadingState">
-                <div class="spinner"></div>
-                <p>正在解析 Excel 推薦名單...</p>
+            <div class="loading-state" id="loadingState" style="width: 100%; padding: 0;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tbody>
+                        <tr class="skeleton-row" style="height: 60px;">
+                            <td></td>
+                        </tr>
+                        <tr class="skeleton-row" style="height: 60px;">
+                            <td></td>
+                        </tr>
+                        <tr class="skeleton-row" style="height: 60px;">
+                            <td></td>
+                        </tr>
+                        <tr class="skeleton-row" style="height: 60px;">
+                            <td></td>
+                        </tr>
+                        <tr class="skeleton-row" style="height: 60px;">
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="text-align: center; margin: 2rem 0; color: var(--text-secondary); font-size: 0.95rem;">
+                    <i class="fa-solid fa-spinner fa-spin" style="margin-right: 0.5rem; color: #60a5fa;"></i>
+                    正在讀取最新財報與估值模型...
+                </p>
             </div>
 
             <div id="tableWrapper" class="hidden">
@@ -181,13 +208,15 @@
                         <div class="filter-divider"></div>
                         <!-- 未登入：雲端同步按鈕 -->
                         <button class="tag-btn cloud-sync-btn" id="loginBtn" onclick="openLoginModal()"
-                            style="padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; background: transparent; border: 1px solid rgba(66, 133, 244, 0.4); color: #93c5fd; transition: all 0.2s;">
+                            style="padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; background: transparent; border: 1px solid rgba(66, 133, 244, 0.4); color: #93c5fd; transition: all 0.2s;"
+                            title="同步您的投資紀錄至雲端">
                             <i class="fa-solid fa-cloud-arrow-up"></i> 雲端同步
                         </button>
                         <!-- 已登入：使用者名稱 + 下拉選單 -->
                         <div class="user-inline hidden" id="userMenu">
                             <button class="tag-btn cloud-sync-btn" id="userMenuBtn"
-                                style="padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; background: transparent; border: 1px solid rgba(66, 133, 244, 0.4); color: #93c5fd; transition: all 0.2s;">
+                                style="padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; background: transparent; border: 1px solid rgba(66, 133, 244, 0.4); color: #93c5fd; transition: all 0.2s;"
+                                title="同步您的投資紀錄至雲端">
                                 <i class="fa-solid fa-cloud-arrow-up"></i>
                                 <span id="userEmailShort"></span> ▾
                             </button>
@@ -333,198 +362,378 @@
             </div>
             <div class="footer-top">
                 <p>Made with ❤️ by <a href="https://github.com/xx8897/tw-stock-gift-evaluator" target="_blank"
-                        rel="noopener noreferrer">xx8897</a></p>
+                        rel="noopener noreferrer">xx8897</a> (<a
+                        href="mailto:leekdog8897@gmail.com">leekdog8897@gmail.com</a>)</p>
             </div>
         </footer>
     </main>
 
     <!-- Login Options Modal -->
     <div id="loginModal" class="modal-overlay hidden">
-        <div class="modal-content login-modal-card">
-            <button class="close-btn" id="closeLoginModalBtn"><i class="fa-solid fa-xmark"></i></button>
+        <div class="login-modal-wrapper">
+            <button class="close-btn external-close-btn" id="closeLoginModalBtn"><i
+                    class="fa-solid fa-xmark"></i></button>
+            <div class="modal-content login-modal-card">
 
-            <div class="login-header">
-                <h2>台股股東會紀念品指南</h2>
-                <p>登入以同步您的專屬投資清單</p>
-            </div>
-
-            <!-- Tabs -->
-            <div class="login-tabs">
-                <button class="login-tab active" data-tab="signin">登入</button>
-                <button class="login-tab" data-tab="signup">註冊</button>
-            </div>
-
-            <div class="login-body">
-                <!-- Standard Auth Form (Login/Signup) -->
-                <form id="authForm" class="auth-form">
-                    <div id="authErrorMsg" class="auth-error-msg hidden"></div>
-
-                    <div class="form-group">
-                        <label for="authEmail"><i class="fa-regular fa-envelope"></i> Email</label>
-                        <input type="email" id="authEmail" placeholder="player@example.com" required>
-                    </div>
-
-                    <div class="form-group password-group">
-                        <label for="authPassword"><i class="fa-solid fa-lock"></i> 密碼</label>
-                        <div class="password-input-wrapper">
-                            <input type="password" id="authPassword" placeholder="••••••••" required minlength="6">
-                            <button type="button" class="toggle-password-btn" id="togglePasswordBtn">
-                                <i class="fa-regular fa-eye-slash"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="auth-submit-btn" id="authSubmitBtn">登入</button>
-                </form>
-
-                <!-- OTP Verification Form (Hidden by default) -->
-                <form id="otpForm" class="auth-form hidden">
-                    <div class="otp-instruction">
-                        <i class="fa-solid fa-paper-plane"
-                            style="color: #34d399; font-size: 2rem; margin-bottom: 0.5rem;"></i>
-                        <p style="color: #fff; font-weight: 600; margin-bottom: 0.2rem;">驗證碼已寄出！</p>
-                        <p style="color: var(--text-secondary); font-size: 0.85rem;">請前往信箱查看 6 位數驗證碼</p>
-                    </div>
-
-                    <div id="otpErrorMsg" class="auth-error-msg hidden"></div>
-
-                    <div class="form-group">
-                        <input type="text" id="otpInput" placeholder="請輸入 6 位數驗證碼" required pattern="\d{6}"
-                            maxlength="6"
-                            style="text-align: center; letter-spacing: 0.5rem; font-family: monospace; font-size: 1.2rem;">
-                    </div>
-
-                    <button type="button" class="auth-submit-btn" id="otpSubmitBtn">驗證並登入</button>
-                    <button type="button" class="text-link-btn" id="backToSignupBtn"
-                        style="margin-top: 1rem; width: 100%;">← 返回重填</button>
-                </form>
-
-                <div class="login-divider">
-                    <span>或</span>
+                <div class="login-header">
+                    <h2>台股股東會紀念品指南</h2>
+                    <p>登入以同步您的專屬投資清單</p>
                 </div>
 
-                <!-- Alternative Methods -->
-                <div class="alt-login-methods">
-                    <button class="social-login-btn google-btn" onclick="signInWithGoogle()">
-                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
-                        <span>使用 Google 登入</span>
+                <!-- Tabs -->
+                <div class="login-tabs">
+                    <button class="login-tab active" data-tab="signin" tabindex="1">登入</button>
+                    <button class="login-tab" data-tab="signup" tabindex="2">註冊</button>
+                </div>
+
+                <div class="login-body">
+                    <!-- Standard Auth Form (Login/Signup) -->
+                    <form id="authForm" class="auth-form stagger-anim">
+                        <div id="authErrorMsg" class="auth-error-msg hidden"></div>
+
+                        <!-- Honeypot field for bot protection -->
+                        <!-- bots might try to fill this. We check and reject if filled -->
+                        <div style="position: absolute; left: -9999px;">
+                            <input type="text" id="website_b_firstname" name="b_firstname" class="honeypot-field"
+                                tabindex="-1" autocomplete="off">
+                        </div>
+
+                        <div class="form-group signup-only hidden">
+                            <label for="authNickname"><i class="fa-regular fa-user"></i> 暱稱 (選填)</label>
+                            <div class="input-with-counter">
+                                <input type="text" id="authNickname" placeholder="設定您的專屬暱稱" maxlength="20"
+                                    autocomplete="nickname" tabindex="3">
+                                <span class="char-counter" id="nicknameCounter">0/20</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="authEmail"><i class="fa-regular fa-envelope"></i> Email</label>
+                            <input type="email" id="authEmail" name="email" placeholder="investor@example.com" required
+                                autocomplete="username" tabindex="4">
+                        </div>
+
+                        <div class="form-group password-group">
+                            <label for="authPassword"><i class="fa-solid fa-lock"></i> 密碼 <span id="capsLockWarning"
+                                    class="caps-warning hidden"><i class="fa-solid fa-a"></i> 大寫鎖定中</span></label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="authPassword" name="password" placeholder="••••••••" required
+                                    minlength="6" autocomplete="current-password" tabindex="5">
+                                <button type="button" class="toggle-password-btn" id="togglePasswordBtn" tabindex="-1">
+                                    <i class="fa-regular fa-eye-slash"></i>
+                                </button>
+                            </div>
+                            <div id="passwordStrength" class="password-strength hidden">
+                                <div class="strength-bar"></div>
+                            </div>
+                            <div id="passwordHintText" class="password-hint-text hidden">密碼長度至少需 6 碼</div>
+                        </div>
+
+                        <div class="form-options login-only">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="rememberMe" checked tabindex="6"> 保持登入
+                            </label>
+                            <a href="#" id="forgotPasswordLink" class="text-link" tabindex="7">忘記密碼？</a>
+                        </div>
+
+                        <div class="form-options signup-only hidden">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="tosAgree" required tabindex="6"> 我同意服務條款與隱私權政策
+                            </label>
+                        </div>
+
+                        <button type="submit" class="auth-submit-btn" id="authSubmitBtn" tabindex="8">
+                            <span class="btn-text">登入</span>
+                            <div class="btn-spinner hidden"><i class="fa-solid fa-spinner fa-spin"></i> <span
+                                    class="loading-text">載入中...</span></div>
+                            <div class="btn-success hidden"><i class="fa-solid fa-check"></i></div>
+                        </button>
+                    </form>
+
+                    <!-- OTP Verification Form (Hidden by default) -->
+                    <form id="otpForm" class="auth-form hidden stagger-anim">
+                        <div class="otp-instruction">
+                            <i class="fa-solid fa-envelope-open-text"
+                                style="color: #34d399; font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                            <p style="color: #fff; font-weight: 600; margin-bottom: 0.2rem;">驗證碼已寄出！</p>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem;" id="otpEmailMasked">請前往信箱查看 6
+                                位數驗證碼
+                            </p>
+                        </div>
+
+                        <div id="otpErrorMsg" class="auth-error-msg hidden"></div>
+
+                        <div class="form-group">
+                            <input type="text" id="otpInput" class="otp-input" placeholder="請輸入 6 位數驗證碼" required
+                                pattern="\d{6}" maxlength="6" autocomplete="one-time-code" tabindex="1">
+                        </div>
+
+                        <button type="button" class="auth-submit-btn" id="otpSubmitBtn" tabindex="2">
+                            <span class="btn-text">驗證並登入</span>
+                            <div class="btn-spinner hidden"><i class="fa-solid fa-spinner fa-spin"></i> <span
+                                    class="loading-text">驗證中...</span></div>
+                            <div class="btn-success hidden"><i class="fa-solid fa-check"></i></div>
+                        </button>
+                        <button type="button" class="text-link-btn" id="resendOtpBtn"
+                            style="margin-top: 0.5rem; width: 100%;" tabindex="3">重新發送驗證碼</button>
+                        <button type="button" class="text-link-btn" id="backToSignupBtn"
+                            style="margin-top: 1rem; width: 100%;" tabindex="4">← 返回重填</button>
+                    </form>
+
+                    <!-- Forgot Password / Reset Password Form -->
+                    <form id="forgotPasswordForm" class="auth-form hidden stagger-anim">
+                        <div class="otp-instruction">
+                            <i class="fa-solid fa-key"
+                                style="color: #60a5fa; font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                            <p style="color: #fff; font-weight: 600; margin-bottom: 0.2rem;">重置密碼</p>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem;">輸入您的 Email，我們會發送重置連結給您。</p>
+                        </div>
+
+                        <div id="forgotPasswordMsg" class="auth-error-msg hidden"></div>
+                        <div id="forgotPasswordSuccessMsg" class="auth-success-msg hidden">✅ 重置連結已發送！請檢查您的 Email 信箱。
+                        </div>
+
+                        <div class="form-group">
+                            <label for="resetEmail"><i class="fa-regular fa-envelope"></i> Email</label>
+                            <input type="email" id="resetEmail" name="resetEmail" placeholder="user@example.com"
+                                required autocomplete="username" tabindex="1">
+                        </div>
+
+                        <button type="submit" class="auth-submit-btn" id="forgotPasswordSubmitBtn" tabindex="2">
+                            <span class="btn-text">發送重置連結</span>
+                            <div class="btn-spinner hidden"><i class="fa-solid fa-spinner fa-spin"></i> <span
+                                    class="loading-text">處理中...</span></div>
+                            <div class="btn-success hidden"><i class="fa-solid fa-check"></i></div>
+                        </button>
+                        <button type="button" class="text-link-btn" id="backToLoginFromForgotBtn"
+                            style="margin-top: 1rem; width: 100%;" tabindex="3">← 返回登入</button>
+                    </form>
+
+                    <!-- Recovery OTP Verification Form (Hidden by default) -->
+                    <form id="recoverOtpForm" class="auth-form hidden stagger-anim">
+                        <div class="otp-instruction">
+                            <i class="fa-solid fa-envelope-circle-check"
+                                style="color: #60a5fa; font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                            <p style="color: #fff; font-weight: 600; margin-bottom: 0.2rem;">驗證碼已寄出！</p>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem;" id="recoverOtpEmailMasked">
+                                請前往信箱查看 6
+                                位數密碼重置驗證碼
+                            </p>
+                        </div>
+
+                        <div id="recoverOtpMsg" class="auth-error-msg hidden"></div>
+
+                        <div class="form-group">
+                            <input type="text" id="recoverOtpInput" class="otp-input" placeholder="請輸入 6 位數驗證碼" required
+                                pattern="\d{6}" maxlength="6" autocomplete="one-time-code" tabindex="1">
+                        </div>
+
+                        <button type="button" class="auth-submit-btn" id="recoverOtpSubmitBtn" tabindex="2">
+                            <span class="btn-text">驗證驗證碼</span>
+                            <div class="btn-spinner hidden"><i class="fa-solid fa-spinner fa-spin"></i> <span
+                                    class="loading-text">驗證中...</span></div>
+                            <div class="btn-success hidden"><i class="fa-solid fa-check"></i></div>
+                        </button>
+                        <button type="button" class="text-link-btn" id="resendRecoverOtpBtn"
+                            style="margin-top: 0.5rem; width: 100%;" tabindex="3">重新發送驗證碼</button>
+                        <button type="button" class="text-link-btn" id="backToForgotFromRecoverBtn"
+                            style="margin-top: 1rem; width: 100%;" tabindex="4">← 返回重填 Email</button>
+                    </form>
+
+                    <!-- Set New Password Form (Deep link) -->
+                    <form id="updatePasswordForm" class="auth-form hidden stagger-anim">
+                        <div class="otp-instruction">
+                            <i class="fa-solid fa-unlock-keyhole"
+                                style="color: #34d399; font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                            <p style="color: #fff; font-weight: 600; margin-bottom: 0.2rem;">設定新密碼</p>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem;">請輸入您的新密碼以完成重置。</p>
+                        </div>
+
+                        <div id="updatePasswordMsg" class="auth-error-msg hidden"></div>
+
+                        <div class="form-group password-group">
+                            <label for="newPassword"><i class="fa-solid fa-lock"></i> 新密碼</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="newPassword" name="newPassword" placeholder="••••••••"
+                                    required minlength="6" autocomplete="new-password" tabindex="1">
+                            </div>
+                        </div>
+
+                        <div class="form-group password-group">
+                            <label for="confirmNewPassword"><i class="fa-solid fa-lock"></i> 確認新密碼</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="confirmNewPassword" name="confirmNewPassword"
+                                    placeholder="••••••••" required minlength="6" autocomplete="new-password"
+                                    tabindex="2">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="auth-submit-btn" id="updatePasswordSubmitBtn" tabindex="3">
+                            <span class="btn-text">更新密碼並登入</span>
+                            <div class="btn-spinner hidden"><i class="fa-solid fa-spinner fa-spin"></i> <span
+                                    class="loading-text">處理中...</span></div>
+                            <div class="btn-success hidden"><i class="fa-solid fa-check"></i></div>
+                        </button>
+                    </form>
+
+                    <div class="login-divider" id="socialDivider">
+                        <span>或</span>
+                    </div>
+
+                    <!-- Alternative Methods -->
+                    <div class="alt-login-methods" id="altLoginMethods">
+                        <button class="social-login-btn google-btn" onclick="signInWithGoogle()" tabindex="9">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                                alt="Google Logo">
+                            <span>使用 Google 登入</span>
+                        </button>
+
+                        <button class="guest-login-btn" id="guestLoginBtn" tabindex="10">
+                            <i class="fa-solid fa-person-walking-luggage" style="color: #34d399;"></i>
+                            <span>以訪客身份繼續</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Sync Conflict Modal -->
+        <div id="syncConflictModal" class="modal-overlay hidden">
+            <div class="modal-content login-modal-card"
+                style="max-width: 420px; text-align: center; padding: 2.5rem 2rem;">
+                <div class="login-header" style="margin-bottom: 1.5rem;">
+                    <i class="fa-solid fa-code-compare"
+                        style="font-size: 3rem; color: #60a5fa; margin-bottom: 1rem; display: inline-block;"></i>
+                    <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">發現雲端資料</h2>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5;">
+                        您剛才以訪客模式勾選了一些股票，但在雲端中我們找到了您之前的紀錄。您希望如何處理？</p>
+                </div>
+                <div class="modal-body" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                    <button class="auth-submit-btn" id="btnMergeData"
+                        style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); letter-spacing: 0.05em; padding: 1rem;">
+                        <i class="fa-solid fa-object-group" style="margin-right: 0.5rem;"></i> 合併兩者 (推薦)
+                        <small
+                            style="display: block; font-weight: normal; font-size: 0.75rem; margin-top: 0.3rem; opacity: 0.9; letter-spacing: 0;">保留雲端與剛才點選的所有項目</small>
                     </button>
-
-                    <button class="guest-login-btn" id="guestLoginBtn">
-                        <i class="fa-solid fa-person-walking-luggage" style="color: #34d399;"></i>
-                        <span>以訪客身份繼續</span>
+                    <button class="auth-submit-btn" id="btnOverwriteCloud"
+                        style="background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); color: #e2e8f0; font-weight: normal; padding: 0.8rem;">
+                        <i class="fa-solid fa-cloud-arrow-down" style="margin-right: 0.5rem;"></i> 完全以雲端為準
+                        <small
+                            style="display: block; font-size: 0.75rem; margin-top: 0.3rem; color: #94a3b8; letter-spacing: 0;">捨棄剛剛點選的，恢復雲端清單</small>
                     </button>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal for Detailed Documentation -->
-    <div id="infoModal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>📖 股東會紀念品評估說明</h2>
-                <button class="close-btn" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="modal-body">
-
-                <h4>📂 資料來源</h4>
-                <p>本站發放紀錄涵蓋
-                    2021–2025 年全台上市/上櫃公司股東會紀念品歷史，共 <strong>881 筆</strong>公開事實數據。股價採用三層備援（台灣證交所 → 櫃買中心 → 歷史紀錄），基準日為
-                    <strong>2026/02/25</strong>。
-                </p>
-
-                <h4>📐 新版性價比公式</h4>
-                <p>以「五年紀念品總值」為基礎計算，而非單次紀念品：</p>
-                <code>新版性價比 = (五年紀念品總估值 ÷ 最新股價) × (五年內發放次數 ÷ 5)</code>
-                <p style="margin-top: 0.5rem;">此公式同時反映了「紀念品值多少」和「這家公司發放頻率有多穩定」。</p>
-
-                <h4>🏷️ 紀念品估值模型（參考市場實際行情）</h4>
-                <div class="valuation-table">
-                    <div class="val-row"><span>現金 / 商品卡 / 禮物卡</span><span class="val-price">面額</span></div>
-                    <div class="val-row highlight"><span>六福村主題樂園門票</span><span class="val-price">1,199 元</span></div>
-                    <div class="val-row highlight"><span>大魯閣消費抵用券+買1送1</span><span class="val-price">800 元</span></div>
-                    <div class="val-row"><span>王品股東大禮包</span><span class="val-price">400 元</span></div>
-                    <div class="val-row"><span>佐登妮絲城堡入園</span><span class="val-price">300 元</span></div>
-                    <div class="val-row"><span>蓋毯 / 毛毯</span><span class="val-price">200 元</span></div>
-                    <div class="val-row"><span>保溫杯 / 保溫瓶</span><span class="val-price">150 元</span></div>
-                    <div class="val-row"><span>食用油（橄欖油/苦茶油）</span><span class="val-price">120 元</span></div>
-                    <div class="val-row"><span>不鏽鋼餐具 / 砧板 / 保鮮盒</span><span class="val-price">120 元</span></div>
-                    <div class="val-row"><span>保健品 / 膠囊 / 維生素</span><span class="val-price">100 元</span></div>
-                    <div class="val-row"><span>杯子 / 馬克杯</span><span class="val-price">80 元</span></div>
-                    <div class="val-row"><span>個人衛生用品（香皂/沐浴乳）</span><span class="val-price">60 元</span></div>
-                    <div class="val-row"><span>食品（火鍋湯/拌麵/零食）</span><span class="val-price">50 元</span></div>
-                    <div class="val-row"><span>清潔用品（洗衣精/洗碗精）</span><span class="val-price">50 元</span></div>
-                    <div class="val-row"><span>環保袋 / 購物袋</span><span class="val-price">50 元</span></div>
-                    <div class="val-row"><span>濕紙巾 / 衛生紙</span><span class="val-price">30 元</span></div>
-                    <div class="val-row"><span>其他未分類品項</span><span class="val-price">40 元</span></div>
+        <!-- Modal for Detailed Documentation -->
+        <div id="infoModal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>📖 股東會紀念品評估說明</h2>
+                    <button class="close-btn" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
                 </div>
+                <div class="modal-body">
 
-                <h4>⭐ 推薦評級對照</h4>
-                <div class="score-legend">
-                    <p><span class="badge badge-5">5 星神股</span> CP 值 ≥ 2.0（買到賺到）</p>
-                    <p><span class="badge badge-4">4 星推薦</span> CP 值 ≥ 1.0（回本有餘）</p>
-                    <p><span class="badge badge-3">3 星尚可</span> CP 值 ≥ 0.5</p>
-                    <p><span class="badge badge-2">2 星不推</span> CP 值 ≥ 0.1</p>
-                    <p><span class="badge badge-1">1 星極差</span> CP 值 &lt; 0.1 或無發放</p>
+                    <h4>📂 資料來源</h4>
+                    <p>本站發放紀錄涵蓋
+                        2021–2025 年全台上市/上櫃公司股東會紀念品歷史，共 <strong>881 筆</strong>公開事實數據。股價採用三層備援（台灣證交所 → 櫃買中心 → 歷史紀錄），基準日為
+                        <strong>2026/02/25</strong>。
+                    </p>
+
+                    <h4>📐 新版性價比公式</h4>
+                    <p>以「五年紀念品總值」為基礎計算，而非單次紀念品：</p>
+                    <code>新版性價比 = (五年紀念品總估值 ÷ 最新股價) × (五年內發放次數 ÷ 5)</code>
+                    <p style="margin-top: 0.5rem;">此公式同時反映了「紀念品值多少」和「這家公司發放頻率有多穩定」。</p>
+
+                    <h4>🏷️ 紀念品估值模型（參考市場實際行情）</h4>
+                    <div class="valuation-table">
+                        <div class="val-row"><span>現金 / 商品卡 / 禮物卡</span><span class="val-price">面額</span></div>
+                        <div class="val-row highlight"><span>六福村主題樂園門票</span><span class="val-price">1,199 元</span>
+                        </div>
+                        <div class="val-row highlight"><span>大魯閣消費抵用券+買1送1</span><span class="val-price">800 元</span>
+                        </div>
+                        <div class="val-row"><span>王品股東大禮包</span><span class="val-price">400 元</span></div>
+                        <div class="val-row"><span>佐登妮絲城堡入園</span><span class="val-price">300 元</span></div>
+                        <div class="val-row"><span>蓋毯 / 毛毯</span><span class="val-price">200 元</span></div>
+                        <div class="val-row"><span>保溫杯 / 保溫瓶</span><span class="val-price">150 元</span></div>
+                        <div class="val-row"><span>食用油（橄欖油/苦茶油）</span><span class="val-price">120 元</span></div>
+                        <div class="val-row"><span>不鏽鋼餐具 / 砧板 / 保鮮盒</span><span class="val-price">120 元</span></div>
+                        <div class="val-row"><span>保健品 / 膠囊 / 維生素</span><span class="val-price">100 元</span></div>
+                        <div class="val-row"><span>杯子 / 馬克杯</span><span class="val-price">80 元</span></div>
+                        <div class="val-row"><span>個人衛生用品（香皂/沐浴乳）</span><span class="val-price">60 元</span></div>
+                        <div class="val-row"><span>食品（火鍋湯/拌麵/零食）</span><span class="val-price">50 元</span></div>
+                        <div class="val-row"><span>清潔用品（洗衣精/洗碗精）</span><span class="val-price">50 元</span></div>
+                        <div class="val-row"><span>環保袋 / 購物袋</span><span class="val-price">50 元</span></div>
+                        <div class="val-row"><span>濕紙巾 / 衛生紙</span><span class="val-price">30 元</span></div>
+                        <div class="val-row"><span>其他未分類品項</span><span class="val-price">40 元</span></div>
+                    </div>
+
+                    <h4>⭐ 推薦評級對照</h4>
+                    <div class="score-legend">
+                        <p><span class="badge badge-5">5 星神股</span> CP 值 ≥ 2.0（買到賺到）</p>
+                        <p><span class="badge badge-4">4 星推薦</span> CP 值 ≥ 1.0（回本有餘）</p>
+                        <p><span class="badge badge-3">3 星尚可</span> CP 值 ≥ 0.5</p>
+                        <p><span class="badge badge-2">2 星不推</span> CP 值 ≥ 0.1</p>
+                        <p><span class="badge badge-1">1 星極差</span> CP 值 &lt; 0.1 或無發放</p>
+                    </div>
+
+                    <h4>💡 選股小撇步</h4>
+                    <p>就算是 5 星神股，也建議優先挑選「五年內發放次數」達到 <strong>5 次（年年發放）</strong> 的公司！
+                        這代表 2021–2025 年間沒有任何一年缺票，穩定度最高。如果 5 次的自己喜歡的已被買光，就改找 4 次。發放次數越少風險越高。</p>
                 </div>
-
-                <h4>💡 選股小撇步</h4>
-                <p>就算是 5 星神股，也建議優先挑選「五年內發放次數」達到 <strong>5 次（年年發放）</strong> 的公司！
-                    這代表 2021–2025 年間沒有任何一年缺票，穩定度最高。如果 5 次的自己喜歡的已被買光，就改找 4 次。發放次數越少風險越高。</p>
             </div>
         </div>
-    </div>
 
-    <!-- SheetJS for local Excel parsing -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <!-- 贊助彈窗 (Sponsor Modal) -->
-    <div class="modal-overlay hidden" id="sponsorModal">
-        <div class="modal-content sponsor-modal-card">
-            <div class="modal-header">
-                <h2>支持專案開發</h2>
-                <button class="close-btn" id="closeSponsorBtn">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p class="sponsor-intro">如果您覺得這個工具對您有幫助，歡迎請作者喝杯咖啡，支持專案持續維護與更新！✨</p>
-
-                <div class="sponsor-options">
-                    <!-- 綠界 -->
-                    <a href="#" target="_blank" class="sponsor-option-card ecpay">
-                        <div class="option-icon"><i class="fa-solid fa-wallet"></i></div>
-                        <div class="option-info">
-                            <h3>台灣在地贊助 (綠界)</h3>
-                            <p class="option-desc">支援 ATM 轉帳、超商代碼繳費、台灣信用卡。</p>
-                        </div>
-                        <i class="fa-solid fa-chevron-right arrow"></i>
-                    </a>
-
-                    <!-- Ko-fi -->
-                    <a href="https://ko-fi.com/leekdog8897" target="_blank" class="sponsor-option-card kofi">
-                        <div class="option-icon"><i class="fa-solid fa-mug-hot"></i></div>
-                        <div class="option-info">
-                            <h3>國際與 PayPal 贊助</h3>
-                            <p class="option-desc">由 Ko-fi 平台提供，支援 PayPal 與國際信用卡付款。</p>
-                        </div>
-                        <i class="fa-solid fa-chevron-right arrow"></i>
-                    </a>
+        <!-- SheetJS for local Excel parsing -->
+        <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+        <!-- 贊助彈窗 (Sponsor Modal) -->
+        <div class="modal-overlay hidden" id="sponsorModal">
+            <div class="modal-content sponsor-modal-card">
+                <div class="modal-header">
+                    <h2>支持專案開發</h2>
+                    <button class="close-btn" id="closeSponsorBtn">&times;</button>
                 </div>
+                <div class="modal-body">
+                    <p class="sponsor-intro">如果您覺得這個工具對您有幫助，歡迎請作者喝杯咖啡，支持專案持續維護與更新！✨</p>
 
-                <p class="sponsor-footer">您的支持是我最大的開發動力，謝謝您！</p>
+                    <div class="sponsor-options">
+                        <!-- 綠界 -->
+                        <a href="#" target="_blank" class="sponsor-option-card ecpay">
+                            <div class="option-icon"><i class="fa-solid fa-wallet"></i></div>
+                            <div class="option-info">
+                                <h3>台灣在地贊助 (綠界)</h3>
+                                <p class="option-desc">支援 ATM 轉帳、超商代碼繳費、台灣信用卡。</p>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow"></i>
+                        </a>
+
+                        <!-- Ko-fi -->
+                        <a href="https://ko-fi.com/leekdog8897" target="_blank" class="sponsor-option-card kofi">
+                            <div class="option-icon"><i class="fa-solid fa-mug-hot"></i></div>
+                            <div class="option-info">
+                                <h3>國際與 PayPal 贊助</h3>
+                                <p class="option-desc">由 Ko-fi 平台提供，支援 PayPal 與國際信用卡付款。</p>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow"></i>
+                        </a>
+                    </div>
+
+                    <p class="sponsor-footer">您的支持是我最大的開發動力，謝謝您！</p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/supabase-config.js"></script>
+        <!-- Supabase SDK -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="js/supabase-config.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    <script src="js/data.js"></script>
-    <script src="js/table.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/sync.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/main.js"></script>
+        <script src="js/data.js?v=7"></script>
+        <script src="js/table.js?v=7"></script>
+        <script src="js/ui.js?v=7"></script>
+        <script src="js/sync.js?v=7"></script>
+        <script src="js/auth.js?v=7"></script>
+        <script src="js/main.js?v=7"></script>
 </body>
 
 </html>

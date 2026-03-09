@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Supabase Auth Debugger</title>
+</head>
+
+<body style="background: #0f172a; color: white; font-family: sans-serif; padding: 2rem;">
+    <h2>重複註冊偵測除錯器</h2>
+    <p>請點擊下方按鈕，這會模擬一次註冊 <strong style="color: #60a5fa;">zhixiang8897@gmail.com</strong> (您的 Google 信箱)。</p>
+    <button id="testBtn" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">執行模擬註冊測試</button>
+    <pre id="output"
+        style="background: #1e293b; padding: 1rem; border-radius: 8px; margin-top: 1rem; white-space: pre-wrap; word-wrap: break-word;"></pre>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script>
+        document.getElementById('testBtn').addEventListener('click', async () => {
+            const out = document.getElementById('output');
+            out.innerText = "發送請求中...\n";
+            try {
+                // 模擬註冊請求
+                const { data, error } = await window.supabaseClient.auth.signUp({
+                    email: 'zhixiang8897@gmail.com',
+                    password: 'TestPassword123!',
+                    options: { data: { nickname: 'test' } }
+                });
+
+                // 將結果完整的印出來，看看裡面有什麼
+                out.innerText += "\n[回傳的 Data 物件]:\n" + JSON.stringify(data, null, 2);
+                out.innerText += "\n\n[回傳的 Error 物件]:\n" + (error ? JSON.stringify(error, null, 2) : "null");
+
+                if (data?.user?.identities?.length === 0) {
+                    out.innerText += "\n\n👉 診斷：觸發了 identities.length === 0 的假成功判定！";
+                } else if (error) {
+                    out.innerText += "\n\n👉 診斷：Supabase 直接回傳了真實的 Error！";
+                } else {
+                    out.innerText += "\n\n👉 診斷：Supabase 認為註冊成功，但也沒有回傳 identities = 0。";
+                }
+            } catch (err) {
+                out.innerText += "\n\n[拋出的例外錯誤Exception]:\n" + err.message;
+            }
+        });
+    </script>
+</body>
+
+</html>
