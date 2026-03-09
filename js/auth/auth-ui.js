@@ -217,10 +217,14 @@ function handleAuthChange(user) {
         window.history.replaceState(null, '', window.location.pathname);
     }
 
-    if (!wasLoggedIn && isNowLoggedIn) {
-        if (typeof loadFromCloud === 'function' && document.getElementById('syncConflictModal').classList.contains('hidden')) {
-            loadFromCloud();
-        }
+    if (!wasLoggedIn && isNowLoggedIn && typeof window.checkAndMergeData === 'function') {
+        if (AppState.isInitialSyncing) return;
+        AppState.isInitialSyncing = true;
+        window.checkAndMergeData()
+            .catch(err => console.error('初次同步失敗:', err))
+            .finally(() => {
+                AppState.isInitialSyncing = false;
+            });
     }
 }
 
@@ -251,19 +255,86 @@ function updateAuthUI(user) {
 function triggerSyncProgress() {
     const bar = document.getElementById('topSyncProgressBar');
     if (!bar) return;
-    bar.classList.add('active');
-    bar.style.width = '30%';
-    setTimeout(() => bar.style.width = '70%', 500);
-    setTimeout(() => bar.style.width = '100%', 1200);
-    setTimeout(() => {
-        bar.style.opacity = '0';
-        setTimeout(() => {
-            bar.classList.remove('active');
-            bar.style.width = '0';
-            bar.style.opacity = '';
-        }, 500);
-    }, 1500);
+    bar.classList.add('active', 'syncing');
+    bar.classList.remove('complete', 'error');
+    bar.style.width = '32%';
+    requestAnimationFrame(() => {
+        bar.style.width = '78%';
+    });
 }
+
+let syncProgressHideTimer = null;
+let syncStatusResetTimer = null;
+
+function completeSyncProgress(isError = false) {
+    const bar = document.getElementById('topSyncProgressBar');
+    if (!bar) return;
+    if (syncProgressHideTimer) clearTimeout(syncProgressHideTimer);
+
+    bar.classList.add('active');
+    bar.classList.remove('syncing');
+    bar.classList.toggle('complete', !isError);
+    bar.classList.toggle('error', isError);
+    bar.style.width = '100%';
+
+    syncProgressHideTimer = setTimeout(() => {
+        bar.classList.remove('active', 'syncing', 'complete', 'error');
+        bar.style.width = '0';
+    }, isError ? 900 : 550);
+}
+
+function setTransientSyncStatus(text, mode = 'syncing', durationMs = 0) {
+    const el = document.getElementById('syncStatusText');
+    if (!el) return;
+    if (syncStatusResetTimer) {
+        clearTimeout(syncStatusResetTimer);
+        syncStatusResetTimer = null;
+    }
+
+    el.textContent = text;
+    el.classList.remove('sync-status--syncing', 'sync-status--ok', 'sync-status--error');
+    if (mode === 'syncing') el.classList.add('sync-status--syncing');
+    if (mode === 'ok') el.classList.add('sync-status--ok');
+    if (mode === 'error') el.classList.add('sync-status--error');
+    el.classList.remove('hidden');
+
+    if (durationMs > 0) {
+        syncStatusResetTimer = setTimeout(() => {
+            const fallback = el.dataset.lastSyncText || '';
+            el.classList.remove('sync-status--syncing', 'sync-status--ok', 'sync-status--error');
+            if (fallback) {
+                el.textContent = fallback;
+            }
+        }, durationMs);
+    }
+}
+
+function animateTableSyncApplied() {
+    const wrapper = document.getElementById('tableWrapper');
+    if (!wrapper) return;
+    wrapper.classList.remove('table-sync-refresh');
+    void wrapper.offsetWidth;
+    wrapper.classList.add('table-sync-refresh');
+}
+
+window.addEventListener('sync:started', () => {
+    triggerSyncProgress();
+    setTransientSyncStatus('同步中...', 'syncing');
+});
+
+window.addEventListener('sync:applied', () => {
+    animateTableSyncApplied();
+});
+
+window.addEventListener('sync:finished', () => {
+    completeSyncProgress(false);
+    setTransientSyncStatus('已同步', 'ok', 1200);
+});
+
+window.addEventListener('sync:error', () => {
+    completeSyncProgress(true);
+    setTransientSyncStatus('同步失敗，請重試', 'error', 2200);
+});
 
 // 暴露給全域，確保 HTML onclick 運作
 window.openLoginModal = openLoginModal;

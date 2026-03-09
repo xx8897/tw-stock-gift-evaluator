@@ -15,8 +15,35 @@ const AppState = {
     },
     currentPage: 1,
     pageSize: 25,
-    currentUser: null // Supabase 登入使用者，null 代表未登入
+    currentUser: null, // Supabase 登入使用者，null 代表未登入
+    isInitialSyncing: false
 };
+
+function processDataAndRender(options = {}) {
+    const { resetPage = false } = options;
+    if (resetPage) AppState.currentPage = 1;
+    if (AppState.globalData.length > 0 && typeof renderTable === 'function') {
+        renderTable();
+    }
+}
+
+function savePurchasedStocks(source = 'local') {
+    localStorage.setItem('purchased_stocks', JSON.stringify([...AppState.purchasedStocks]));
+    window.dispatchEvent(new CustomEvent('purchased:changed', {
+        detail: {
+            source,
+            count: AppState.purchasedStocks.size
+        }
+    }));
+}
+
+function replacePurchasedStocks(stockIds, options = {}) {
+    const { source = 'local', render = true, resetPage = false } = options;
+    const normalized = Array.isArray(stockIds) ? stockIds.map(String) : [];
+    AppState.purchasedStocks = new Set(normalized);
+    savePurchasedStocks(source);
+    if (render) processDataAndRender({ resetPage });
+}
 
 /**
  * 載入已買入清單 (從 LocalStorage)
@@ -26,7 +53,7 @@ function loadPurchased() {
         const saved = localStorage.getItem('purchased_stocks');
         if (saved) {
             const list = JSON.parse(saved);
-            AppState.purchasedStocks = new Set(list.map(String));
+            replacePurchasedStocks(list, { source: 'local', render: false });
         }
     } catch (e) {
         console.error('無法從 LocalStorage 載入買入清單:', e);
@@ -45,8 +72,9 @@ function togglePurchase(stockId) {
         AppState.purchasedStocks.add(stockId);
     }
 
-    // 同步到 LocalStorage
-    localStorage.setItem('purchased_stocks', JSON.stringify([...AppState.purchasedStocks]));
+    // 同步到 LocalStorage 並立即刷新前端
+    savePurchasedStocks('local');
+    processDataAndRender();
 
     // 若已登入，安排 15 分鐘後自動同步至雲端
     if (typeof scheduleAutoSync === 'function') scheduleAutoSync();
@@ -109,8 +137,8 @@ async function loadData() {
         loadingState.classList.add('hidden');
         tableWrapper.classList.remove('hidden');
 
-        // 資料載入完成後才渲染表格
-        renderTable();
+        // 資料載入完成後渲染表格
+        processDataAndRender();
 
     } catch (error) {
         console.error('Error loading Excel:', error);
@@ -121,3 +149,6 @@ async function loadData() {
         `;
     }
 }
+
+window.processDataAndRender = processDataAndRender;
+window.replacePurchasedStocks = replacePurchasedStocks;

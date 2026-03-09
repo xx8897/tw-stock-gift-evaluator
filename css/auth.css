@@ -610,7 +610,7 @@ input:-webkit-autofill:active {
     height: 3px;
     background: linear-gradient(90deg, #34d399 0%, #60a5fa 100%);
     width: 0%;
-    transition: width 0.3s ease, opacity 0.5s ease;
+    transition: width 0.35s ease, opacity 0.3s ease, background 0.25s ease;
     border-radius: 4px 4px 0 0;
     z-index: 100;
     opacity: 0;
@@ -618,6 +618,30 @@ input:-webkit-autofill:active {
 
 .top-sync-progress-bar.active {
     opacity: 1;
+}
+
+.top-sync-progress-bar.syncing {
+    background: linear-gradient(90deg, #38bdf8 0%, #34d399 100%);
+}
+
+.top-sync-progress-bar.complete {
+    background: linear-gradient(90deg, #34d399 0%, #22c55e 100%);
+}
+
+.top-sync-progress-bar.error {
+    background: linear-gradient(90deg, #f97316 0%, #ef4444 100%);
+}
+
+.sync-status--syncing {
+    color: #93c5fd !important;
+}
+
+.sync-status--ok {
+    color: #6ee7b7 !important;
+}
+
+.sync-status--error {
+    color: #fca5a5 !important;
 }
 
 /* Skeleton Loading Table */

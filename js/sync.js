@@ -13,6 +13,10 @@ const SYNC_LS_KEY = 'last_sync_time';
 
 let autoSyncTimer = null;
 
+function emitSyncEvent(name, detail = {}) {
+    window.dispatchEvent(new CustomEvent(name, { detail }));
+}
+
 // ── 資料合併策略 (Guest -> Cloud) ──────────────────────────────────
 async function checkAndMergeData() {
     return new Promise(async (resolve) => {
@@ -35,55 +39,17 @@ async function checkAndMergeData() {
 
             const cloudStocks = data ? data.map(r => r.stock_id) : [];
 
-            // Case 1: 雲端為空，直接同步本地 (即使本地也為空，同步也不影響)
+            // Case 1: 雲端為空，本地有資料 -> 保留本地並寫入雲端
             if (cloudStocks.length === 0) {
                 if (localStocks.length > 0) await syncToCloud(false); // background sync
                 resolve(false);
                 return;
             }
 
-            // Case 2: 雲端有資料，本地為空 -> 直接載入雲端
-            if (localStocks.length === 0) {
-                await loadFromCloud();
-                resolve(false);
-                return;
-            }
-
-            // Case 3: 雙方都有資料 -> 彈出合併詢問視窗
-            const conflictModal = document.getElementById('syncConflictModal');
-            conflictModal.classList.remove('hidden');
-
-            // Handle Merge (Union)
-            const btnMerge = document.getElementById('btnMergeData');
-            const handlerMerge = async () => {
-                cleanup();
-                const mergedSet = new Set([...localStocks, ...cloudStocks]);
-                AppState.purchasedStocks = mergedSet;
-                localStorage.setItem('purchased_stocks', JSON.stringify([...mergedSet]));
-                if (typeof window.processDataAndRender === 'function') window.processDataAndRender();
-                await syncToCloud(); // Save merged result to cloud
-                resolve(true);
-            };
-
-            // Handle Overwrite (Cloud wins)
-            const btnOverwrite = document.getElementById('btnOverwriteCloud');
-            const handlerOverwrite = async () => {
-                cleanup();
-                AppState.purchasedStocks = new Set(cloudStocks);
-                localStorage.setItem('purchased_stocks', JSON.stringify([...cloudStocks]));
-                if (typeof window.processDataAndRender === 'function') window.processDataAndRender();
-                updateSyncStatus(new Date()); // Already in sync with cloud
-                resolve(true);
-            };
-
-            const cleanup = () => {
-                conflictModal.classList.add('hidden');
-                btnMerge.removeEventListener('click', handlerMerge);
-                btnOverwrite.removeEventListener('click', handlerOverwrite);
-            };
-
-            btnMerge.addEventListener('click', handlerMerge);
-            btnOverwrite.addEventListener('click', handlerOverwrite);
+            // Case 2: 雲端有資料 -> 直接載入雲端覆寫本地（不再顯示確認視窗）
+            await loadFromCloud();
+            resolve(false);
+            return;
 
         } catch (err) {
             console.error('Check and Merge Error:', err);
@@ -105,6 +71,7 @@ async function syncToCloud(showLoading = true) {
         syncBtn.disabled = true;
         syncBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 同步中...';
     }
+    emitSyncEvent('sync:started', { mode: showLoading ? 'manual' : 'background' });
 
     try {
         // 先刪除該用戶所有舊資料，再批次寫入新資料
@@ -125,9 +92,11 @@ async function syncToCloud(showLoading = true) {
         localStorage.setItem(SYNC_LS_KEY, now.toISOString());
         updateSyncStatus(now);
         cancelAutoSync();
+        emitSyncEvent('sync:finished', { ok: true, syncedAt: now.toISOString() });
 
     } catch (err) {
         console.error('同步失敗:', err.message);
+        emitSyncEvent('sync:error', { message: err.message || '同步失敗' });
     } finally {
         if (syncBtn && showLoading) {
             syncBtn.disabled = false;
@@ -143,26 +112,31 @@ async function loadFromCloud() {
     if (!client || !user) return;
 
     try {
+        emitSyncEvent('sync:started', { mode: 'load-cloud' });
         const { data, error } = await client
             .from('user_stocks')
             .select('stock_id')
             .eq('user_id', user.id);
         if (error) throw error;
 
-        if (data && data.length > 0) {
-            AppState.purchasedStocks = new Set(data.map(r => r.stock_id));
+        const cloudStocks = data ? data.map(r => r.stock_id) : [];
+        if (typeof window.replacePurchasedStocks === 'function') {
+            window.replacePurchasedStocks(cloudStocks, { source: 'cloud', render: true });
+        } else {
+            AppState.purchasedStocks = new Set(cloudStocks.map(String));
             localStorage.setItem('purchased_stocks', JSON.stringify([...AppState.purchasedStocks]));
-            if (AppState.globalData.length > 0 && typeof window.processDataAndRender === 'function') {
-                window.processDataAndRender();
-            }
+            if (typeof window.processDataAndRender === 'function') window.processDataAndRender();
         }
+        emitSyncEvent('sync:applied', { source: 'cloud', count: cloudStocks.length });
 
         // 顯示上次同步時間
         const savedTime = localStorage.getItem(SYNC_LS_KEY);
         if (savedTime) updateSyncStatus(new Date(savedTime));
+        emitSyncEvent('sync:finished', { ok: true, source: 'cloud' });
 
     } catch (err) {
         console.error('雲端載入失敗:', err.message);
+        emitSyncEvent('sync:error', { message: err.message || '雲端載入失敗' });
     }
 }
 
@@ -193,7 +167,10 @@ function updateSyncStatus(dateObj) {
     // Smooth transition
     el.style.opacity = 0;
     setTimeout(() => {
-        el.textContent = `同步於 ${str}`;
+        const statusText = `同步於 ${str}`;
+        el.dataset.lastSyncText = statusText;
+        el.textContent = statusText;
+        el.classList.remove('sync-status--syncing', 'sync-status--ok', 'sync-status--error');
         el.classList.remove('hidden');
         el.style.opacity = 1;
     }, 200);
@@ -201,3 +178,5 @@ function updateSyncStatus(dateObj) {
 
 // Exported for testing/global access
 window.checkAndMergeData = checkAndMergeData;
+window.syncToCloud = syncToCloud;
+window.loadFromCloud = loadFromCloud;

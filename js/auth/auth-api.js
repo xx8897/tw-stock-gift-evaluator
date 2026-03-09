@@ -44,17 +44,7 @@ async function handleAuthSubmit(e) {
             triggerConfetti(btnRect.left + btnRect.width / 2, btnRect.top);
 
             await delay(600);
-
-            if (typeof window.checkAndMergeData === 'function') {
-                const needsMerge = await window.checkAndMergeData();
-                if (!needsMerge) {
-                    closeLoginModal();
-                } else {
-                    closeLoginModal();
-                }
-            } else {
-                closeLoginModal();
-            }
+            closeLoginModal();
 
         } else {
             const { data, error } = await window.supabaseClient.auth.signUp({

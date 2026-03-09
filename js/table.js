@@ -128,7 +128,6 @@ function renderTable() {
  */
 function togglePurchaseAndRender(stockId) {
     togglePurchase(stockId);
-    renderTable();
 }
 
 function renderPagination(totalPages) {
