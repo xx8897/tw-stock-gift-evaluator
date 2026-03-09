@@ -110,9 +110,22 @@
 }
 
 .login-tab.active {
-    background: var(--nav-bg);
     color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.login-tab[data-tab="signin"].active {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.85), rgba(37, 99, 235, 0.95));
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.login-tab[data-tab="signup"].active {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.85), rgba(5, 150, 105, 0.95));
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.4);
 }
 
 /* Forms */
@@ -127,6 +140,14 @@
     flex-direction: column;
     gap: 0.85rem;
     transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#authForm {
+    min-height: 340px;
+}
+
+#authForm .auth-submit-btn {
+    margin-top: auto;
 }
 
 /* Stagger Animation for Form Elements */

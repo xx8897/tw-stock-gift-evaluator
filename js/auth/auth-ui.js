@@ -104,7 +104,7 @@ function switchTab(tab) {
 
     const submitBtn = document.getElementById('authSubmitBtn');
     const tosAgree = document.getElementById('tosAgree');
-    if (submitBtn) submitBtn.querySelector('.btn-text').textContent = tab === 'signin' ? '登入' : '註冊';
+    setButtonState('authSubmitBtn', 'idle', tab === 'signin' ? '登入' : '註冊');
 
     if (tab === 'signup') {
         document.querySelectorAll('.signup-only').forEach(el => el.classList.remove('hidden'));

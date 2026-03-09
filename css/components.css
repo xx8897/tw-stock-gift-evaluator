@@ -586,6 +586,36 @@ td:has(.gift-cell) {
 }
 
 /* ==========================================
+   ToolBar Tag Buttons (Filter, Sync)
+   ========================================== */
+.purchase-tags-group .tag-btn:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.purchase-tags-group .tag-btn.active {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.purchase-tags-group #filterPurchased.active {
+    background: rgba(16, 185, 129, 0.2) !important;
+    border-color: rgba(16, 185, 129, 0.5) !important;
+    color: #34d399 !important;
+}
+
+.purchase-tags-group #filterUnpurchased.active {
+    background: rgba(245, 158, 11, 0.2) !important;
+    border-color: rgba(245, 158, 11, 0.5) !important;
+    color: #fbbf24 !important;
+}
+
+.purchase-tags-group .tag-btn.active i {
+    opacity: 1 !important;
+}
+
+/* ==========================================
    GitHub Star Button
    ========================================== */
 .github-star-btn {
