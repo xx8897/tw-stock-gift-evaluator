@@ -1,0 +1,31 @@
+name: Update Stocks Data to Supabase
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'data/2021-2025_推薦評分.xlsx'   # 只有 Excel 有變動時才觸發
+  workflow_dispatch:                      # 也可以在 GitHub 上手動觸發
+
+jobs:
+  upload:
+    name: Upload stocks to Supabase
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install openpyxl requests
+
+      - name: Upload stocks data
+        env:
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: python scripts/upload_stocks.py
