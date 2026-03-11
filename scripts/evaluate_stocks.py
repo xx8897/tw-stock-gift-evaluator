@@ -4,8 +4,8 @@ import re
 import time
 import os
 
-# ── 使用腳本所在位置作為根目錄，方便跨機器執行 ──
-_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# ── 使用腳本所在位置往上一層作為根目錄（因腳本放在 scripts/）──
+_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _DATA_DIR = os.path.join(_BASE_DIR, 'data')
 os.makedirs(_DATA_DIR, exist_ok=True)
 

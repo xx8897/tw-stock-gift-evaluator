@@ -28,7 +28,7 @@ jobs:
         run: pip install pandas requests openpyxl
 
       - name: 執行股價更新腳本
-        run: python evaluate_stocks.py
+        run: python scripts/evaluate_stocks.py
 
       - name: Commit 並 Push 更新後的資料
         run: |
