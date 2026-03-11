@@ -3,6 +3,20 @@
     max-width: 500px !important;
 }
 
+.mini-modal-card {
+    max-width: 360px;
+    text-align: center;
+}
+
+.mini-modal-card .modal-body p {
+    margin: 0.4rem 0;
+}
+
+.mini-modal-hint {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
 .sponsor-intro {
     text-align: left;
     margin-bottom: 2rem !important;
@@ -261,4 +275,8 @@
     .disclaimer-body {
         grid-template-columns: 1fr;
     }
+}
+
+#ecpayDisabledModal {
+    z-index: 1100;
 }

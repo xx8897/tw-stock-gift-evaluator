@@ -6,6 +6,7 @@ function initUI() {
     const closeModalBtn = document.getElementById('closeModalBtn');
 
     const sponsorModal = document.getElementById('sponsorModal');
+    const ecpayDisabledModal = document.getElementById('ecpayDisabledModal');
     const openSponsorBtn = document.getElementById('openSponsorBtn');
     const closeSponsorBtn = document.getElementById('closeSponsorBtn');
 
@@ -17,6 +18,16 @@ function initUI() {
 
     [infoModal, sponsorModal].forEach(m => {
         m?.addEventListener('click', e => { if (e.target === m) m.classList.add('hidden'); });
+    });
+
+    // 綠界未啟用提示
+    const ecpayOption = document.querySelector('.sponsor-option-card.ecpay');
+    ecpayOption?.addEventListener('click', (e) => {
+        e.preventDefault();
+        ecpayDisabledModal?.classList.remove('hidden');
+    });
+    ecpayDisabledModal?.addEventListener('click', () => {
+        ecpayDisabledModal.classList.add('hidden');
     });
 
     // ── 點擊其他地方收起歷史彈窗 ─────────────────────────────
