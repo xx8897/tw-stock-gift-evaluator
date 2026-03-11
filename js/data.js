@@ -89,6 +89,62 @@ async function loadData() {
     const lastUpdated = document.getElementById('last-updated');
 
     try {
+        if (!window.supabaseClient) {
+            console.warn('Supabase client 未初始化，退回本地 Excel 讀取模式');
+            throw new Error('Supabase client 未初始化');
+        }
+
+        // 嘗試從 Supabase 撈取 stocks 資料
+        const { data: supaData, error: supaError } = await window.supabaseClient
+            .from('stocks')
+            .select('*')
+            .order('cp', { ascending: false });
+
+        if (supaError) {
+            console.warn('Supabase 讀取失敗，嘗試載入本地備援 (Excel):', supaError);
+            throw supaError;
+        }
+
+        if (supaData && supaData.length > 0) {
+            let latestDate = new Date(0);
+
+            AppState.globalData = supaData.map(row => {
+                if (row.updated_at) {
+                    const d = new Date(row.updated_at);
+                    if (d > latestDate) latestDate = d;
+                }
+                return {
+                    id: String(row.stock_id || ''),
+                    name: String(row.name || ''),
+                    price: parseFloat(row.price) || 0,
+                    gift: String(row.gift || ''),
+                    freq: parseInt(row.freq) || 0,
+                    cp: parseFloat(row.cp) || 0,
+                    score: String(row.score || '1 星'),
+                    fiveYearGifts: String(row.five_year_gifts || ''),
+                    cond: String(row.cond || '')
+                };
+            });
+            
+            if (latestDate.getTime() === 0) latestDate = new Date();
+            
+            lastUpdated.innerHTML = `<i class="fa-regular fa-calendar-check"></i> 最後更新: ${latestDate.toLocaleDateString('zh-TW')} ${latestDate.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })}`;
+            
+            loadingState.classList.add('hidden');
+            tableWrapper.classList.remove('hidden');
+            processDataAndRender();
+            return; // 成功從 Supabase 取得資料，結束函式
+        } else {
+            throw new Error('Supabase 無資料，轉向備援');
+        }
+    } catch (primaryError) {
+        // Fallback 到 Excel 讀取機制
+        await loadExcelDataFallback(loadingState, tableWrapper, lastUpdated);
+    }
+}
+
+async function loadExcelDataFallback(loadingState, tableWrapper, lastUpdated) {
+    try {
         const response = await fetch(EXCEL_URL);
         if (!response.ok) throw new Error('無法載入 Excel 檔案，請確認檔案是否存在於儲存庫中。');
         const arrayBuffer = await response.arrayBuffer();
@@ -113,9 +169,9 @@ async function loadData() {
         }
 
         if (!isNaN(d.getTime())) {
-            lastUpdated.innerHTML = `<i class="fa-regular fa-calendar-check"></i> 最後更新: ${d.toLocaleDateString('zh-TW')} ${d.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })}`;
+            lastUpdated.innerHTML = `<i class="fa-regular fa-calendar-check"></i> 備援更新: ${d.toLocaleDateString('zh-TW')} ${d.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })}`;
         } else {
-            lastUpdated.innerHTML = `<i class="fa-solid fa-check"></i> 同步至最新版`;
+            lastUpdated.innerHTML = `<i class="fa-solid fa-check"></i> 同步至最新版 (備援)`;
         }
 
         const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: 'array' });
