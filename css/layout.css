@@ -120,6 +120,12 @@ h1 {
     flex-wrap: wrap;
 }
 
+.filters-secondary:empty {
+    display: none;
+    padding: 0;
+    border: 0;
+}
+
 .search-box {
     flex: 1;
     min-width: 300px;

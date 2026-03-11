@@ -537,6 +537,47 @@ td:has(.gift-cell) {
     word-break: keep-all;
 }
 
+.table-toolbar .square-tag {
+    height: 32px;
+    padding: 0 0.8rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-sizing: border-box;
+    font-size: 0.8rem;
+}
+
+.table-toolbar .square-tag i {
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.table-toolbar .square-tag input {
+    display: none;
+}
+
+.table-toolbar .square-tag.annual-checkbox-label input:checked + span,
+.table-toolbar .square-tag.annual-checkbox-label:has(input:checked) {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.5);
+    color: #34d399;
+    font-weight: 600;
+}
+
+.table-toolbar .square-tag.id-exclude-label input:checked + span,
+.table-toolbar .square-tag.id-exclude-label:has(input:checked) {
+    background: rgba(244, 63, 94, 0.2);
+    border-color: rgba(244, 63, 94, 0.5);
+    color: #fca5a5;
+    font-weight: 600;
+}
+
 .result-count {
     font-size: 0.88rem;
     color: var(--text-secondary);

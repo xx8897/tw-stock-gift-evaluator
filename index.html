@@ -156,20 +156,7 @@
             </div>
         </section>
 
-        <section class="filters-secondary glass-panel">
-            <div class="filters-secondary-group">
-                <label class="filter-btn filter-circle annual-checkbox-label">
-                    <input type="checkbox" id="annualFilter">
-                    <span>連續</span>
-                    <span>五年</span>
-                </label>
-                <label class="filter-btn filter-circle id-exclude-label">
-                    <input type="checkbox" id="excludeIdFilter">
-                    <span>排除</span>
-                    <span>身分證</span>
-                </label>
-            </div>
-        </section>
+        <section class="filters-secondary glass-panel"></section>
 
         <div class="table-container glass-panel">
             <div class="loading-state" id="loadingState" style="width: 100%; padding: 0;">
@@ -210,6 +197,16 @@
                                 style="padding: 0 0.8rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; transition: all 0.2s; height: 32px; display: inline-flex; align-items: center; gap: 0.4rem; box-sizing: border-box;">
                                 <i class="fa-solid fa-cart-shopping" style="font-size: 0.75rem; opacity: 0.4;"></i>
                                 顯示未持有</button>
+                            <label class="tag-btn square-tag annual-checkbox-label" title="只看連續 5 年發放">
+                                <input type="checkbox" id="annualFilter">
+                                <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+                                連續五年
+                            </label>
+                            <label class="tag-btn square-tag id-exclude-label" title="排除需出示身分證">
+                                <input type="checkbox" id="excludeIdFilter">
+                                <i class="fa-solid fa-id-card" aria-hidden="true"></i>
+                                排除身分證
+                            </label>
                         </div>
                         <div class="filter-divider"></div>
                         <!-- 未登入：雲端同步按鈕 -->
