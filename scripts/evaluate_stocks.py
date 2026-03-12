@@ -303,7 +303,7 @@ def calculate_cp_and_score(row):
     except:
         freq_val = 1.0
         
-    cp_val = round((val / price) * (freq_val / 5), 2)
+    cp_val = float(round((val / price) * (freq_val / 5), 2))
     
     if cp_val >= 2.0:
          score = '5 星'

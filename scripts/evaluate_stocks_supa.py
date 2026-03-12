@@ -344,7 +344,7 @@ def calculate_cp_and_score(row):
     except:
         freq_val = 1.0
         
-    cp_val = round((val / price) * (freq_val / 5), 2)
+    cp_val = float(round((val / price) * (freq_val / 5), 2))
     
     if cp_val >= 2.0:
          score = '5 星'
@@ -435,7 +435,7 @@ print(f"Evaluated {len(df)} total stocks")
 def safe_float(val):
     try:
         v = float(val)
-        return None if math.isnan(v) else round(v, 4)
+        return None if math.isnan(v) else float(round(v, 4))
     except (TypeError, ValueError):
         return None
 
@@ -488,10 +488,12 @@ if SUPABASE_KEY:
     
     success_count = 0
     for i in range(total_batches):
-        batch = records[i * BATCH_SIZE : (i + 1) * BATCH_SIZE]
+        start_idx = int(i * BATCH_SIZE)
+        end_idx = int((i + 1) * BATCH_SIZE)
+        batch = records[start_idx : end_idx]
         resp = requests.post(url, headers=headers, data=json.dumps(batch))
         if resp.status_code in (200, 201):
-            success_count += len(batch)
+            success_count = int(success_count + len(batch))
             print(f'   ✅ 批次 {i+1}/{total_batches} 上傳成功 ({len(batch)} 筆)')
         else:
             print(f'   ❌ 批次 {i+1}/{total_batches} 失敗: {resp.status_code} {resp.text[:300]}')
