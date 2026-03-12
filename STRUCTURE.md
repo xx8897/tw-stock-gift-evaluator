@@ -11,28 +11,32 @@
 ├── LICENSE                     # 版權授權聲明
 ├── .gitignore                  # Git 忽略清單
 │
+├── .venv/                      # 🐍 Python 虛擬環境（本地開發用，不進 Git）
+│
+├── docs/                       # 📖 專案文件與教學
+│   ├── google_oauth_setup_guide.md
+│   └── uuid_versions_guide.md
+│
+├── debug/                      # 🛠️ 偵錯工具與暫存檔
+│   └── debug_auth.html         # 驗證流程偵錯工具
+│
 ├── data/                       # 📊 資料檔案目錄（Excel）
 │   ├── 2021-2025_推薦評分.xlsx # evaluate_stocks.py 讀寫：完整評分名單（網站讀取此檔）
 │   └── 2021-2025_年年發放.xlsx # evaluate_stocks.py 產出：僅五年年年發放的篩選版
 │
-├── css/                        # 🎨 樣式表模組（共 6 個檔案）
+├── css/                        # 🎨 樣式表模組
 │   ├── variables.css           # CSS 自訂變數：顏色、星級、漸層等設計 token
 │   ├── base.css                # 全域重置、body、字體、背景 blob 動畫
 │   ├── layout.css              # 容器、標頭、頁尾、控制區排版 + 完整 RWD 斷點
-│   ├── components.css          # 表格（9 欄固定寬度）、按鈕、卡片、搜尋框、
-│   │                           #   星級篩選、策略卡片、分頁器、禮物歷史彈窗、
-│   │                           #   紀念品代領攻略、手機版卡片化佈局
+│   ├── components.css          # 表格、按鈕、星級篩選、分頁器、彈窗、手機版佈局
 │   ├── modal.css               # 說明彈窗、贊助彈窗、估值表格
-│   └── utilities.css           # 通用類別（.hidden、.spinner）、金幣爆炸特效動畫
+│   └── utilities.css           # 通用類別、金幣爆炸特效動畫
 │
-├── js/                         # ⚙️ JavaScript 模組（共 4 個檔案）
-│   ├── data.js                 # 資料層：SheetJS 載入 Excel、GitHub API 時間備援、
-│   │                           #   AppState 全域狀態、localStorage 買入紀錄
-│   ├── table.js                # 表格層：renderTable() 渲染 9 欄表格、排序、
-│   │                           #   多維度過濾、分頁、頁碼跳轉、禮物歷史彈窗
-│   ├── ui.js                   # 介面層：彈窗（說明/贊助）控制、金幣爆炸特效、
-│   │                           #   排序按鈕初始化、買入篩選按鈕綁定
-│   └── main.js                 # 程式進入點：DOMContentLoaded → initUI() + loadData()
+├── js/                         # ⚙️ JavaScript 模組
+│   ├── data.js                 # 資料層：Excel 載入、AppState 全域狀態
+│   ├── table.js                # 表格層：渲染、排序、過濾、分頁、彈窗
+│   ├── ui.js                   # 介面層：事件綁定、彈窗控制、特效
+│   └── main.js                 # 程式進入點
 │
 ├── assets/                     # 🖼️ 靜態資源
 │   └── favicon.png             # 瀏覽器分頁縮圖 icon
@@ -40,7 +44,7 @@
 └── .github/
     └── workflows/
         ├── static.yml          # GitHub Actions：自動部署至 GitHub Pages
-        └── update-prices.yml   # GitHub Actions：旺季每週／淡季每月自動更新股價
+        └── update-prices.yml   # GitHub Actions：自動更新股價
 ```
 
 ---
