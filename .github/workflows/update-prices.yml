@@ -24,21 +24,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: 安裝 Python 依賴套件
-        run: pip install pandas requests openpyxl
-
-      - name: 執行股價更新腳本
-        run: python scripts/evaluate_stocks.py
-
-      - name: 同步更新至 Supabase
+      - name: 執行 Supabase 專用股價更新腳本
         env:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-        run: python scripts/upload_stocks.py
-
-      - name: Commit 並 Push 更新後的資料
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/2021-2025_推薦評分.xlsx data/2021-2025_年年發放.xlsx
-          git commit -m "auto: 每週股價更新 $(date -u '+%Y-%m-%d')" || echo "No price changes, skipping commit."
-          git push
+        run: python scripts/evaluate_stocks_supa.py
