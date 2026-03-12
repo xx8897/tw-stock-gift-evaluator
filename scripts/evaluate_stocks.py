@@ -305,13 +305,13 @@ def calculate_cp_and_score(row):
         
     cp_val = float(round((val / price) * (freq_val / 5), 2))
     
-    if cp_val >= 2.0:
+    if cp_val >= 2.0:  # type: ignore
          score = '5 星'
-    elif cp_val >= 1.0:
+    elif cp_val >= 1.0:  # type: ignore
          score = '4 星'
-    elif cp_val >= 0.5:
+    elif cp_val >= 0.5:  # type: ignore
          score = '3 星'
-    elif cp_val >= 0.1:
+    elif cp_val >= 0.1:  # type: ignore
          score = '2 星'
     else:
          score = '1 星'
