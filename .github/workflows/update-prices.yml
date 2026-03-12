@@ -24,6 +24,9 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: 安裝必要套件
+        run: pip install pandas requests openpyxl
+
       - name: 執行 Supabase 專用股價更新腳本
         env:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
