@@ -564,9 +564,9 @@ td:has(.gift-cell) {
 
 .table-toolbar .square-tag.annual-checkbox-label input:checked + span,
 .table-toolbar .square-tag.annual-checkbox-label:has(input:checked) {
-    background: rgba(16, 185, 129, 0.2);
-    border-color: rgba(16, 185, 129, 0.5);
-    color: #34d399;
+    background: rgba(168, 85, 247, 0.2);
+    border-color: rgba(168, 85, 247, 0.5);
+    color: #c084fc;
     font-weight: 600;
 }
 
@@ -575,6 +575,14 @@ td:has(.gift-cell) {
     background: rgba(244, 63, 94, 0.2);
     border-color: rgba(244, 63, 94, 0.5);
     color: #fca5a5;
+    font-weight: 600;
+}
+
+.table-toolbar .square-tag.ticket-filter-label input:checked + span,
+.table-toolbar .square-tag.ticket-filter-label:has(input:checked) {
+    background: rgba(56, 189, 248, 0.2);
+    border-color: rgba(56, 189, 248, 0.5);
+    color: #7dd3fc;
     font-weight: 600;
 }
 
