@@ -30,6 +30,11 @@ jobs:
       - name: 執行股價更新腳本
         run: python scripts/evaluate_stocks.py
 
+      - name: 同步更新至 Supabase
+        env:
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: python scripts/upload_stocks.py
+
       - name: Commit 並 Push 更新後的資料
         run: |
           git config user.name "github-actions[bot]"
