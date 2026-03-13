@@ -221,15 +221,48 @@
 
             <div id="tableWrapper" class="hidden">
                 <div class="table-toolbar">
-                    <div class="toolbar-left" style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; flex: 1; min-width: 0;">
-                        <div class="result-count" id="resultCount"></div>
-                        <div class="purchase-tags-group" style="display: flex; gap: 0.5rem; flex-wrap: wrap; flex-shrink: 1; min-width: 0;">
-                            <button class="tag-btn" id="filterPurchased" title="只看已持有股票"
-                                style="padding: 0 0.8rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; transition: all 0.2s; height: 32px; display: inline-flex; align-items: center; gap: 0.4rem; box-sizing: border-box;">
-                                <i class="fa-solid fa-cart-shopping" style="font-size: 0.75rem;"></i> 顯示已持有</button>
-                            <button class="tag-btn" id="filterUnpurchased" title="只看未持有股票"
-                                style="padding: 0 0.8rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; transition: all 0.2s; height: 32px; display: inline-flex; align-items: center; gap: 0.4rem; box-sizing: border-box;">
-                                <i class="fa-solid fa-cart-shopping" style="font-size: 0.75rem; opacity: 0.4;"></i>
+                    <!-- 第一行：核心狀態 (數據計數 + 帳號同步) -->
+                    <div class="toolbar-row">
+                        <div class="toolbar-left">
+                            <div class="result-count" id="resultCount"></div>
+                            
+                            <!-- 帳號與同步區塊 -->
+                            <div class="toolbar-auth-group">
+                                <!-- 未登入：雲端同步按鈕 -->
+                                <button class="tag-btn cloud-sync-btn" id="loginBtn" onclick="openLoginModal()" title="同步您的投資紀錄至雲端">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> 雲端同步
+                                </button>
+                                <!-- 已登入：使用者名稱 + 下拉選單 -->
+                                <div class="user-inline hidden" id="userMenu">
+                                    <button class="tag-btn cloud-sync-btn" id="userMenuBtn" title="同步您的投資紀錄至雲端">
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                        <span id="userEmailShort"></span> ▾
+                                    </button>
+                                    <div class="user-dropdown" id="userDropdown">
+                                        <button class="dropdown-item" onclick="openNicknameModal()">
+                                            <i class="fa-solid fa-user-pen"></i> 修改暱稱
+                                        </button>
+                                        <button class="dropdown-item signout-btn" onclick="signOut()">
+                                            <i class="fa-solid fa-right-from-bracket"></i> 登出
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- 已登入：手動儲存按鈕 + 同步狀態 -->
+                                <button class="tag-btn sync-save-btn hidden" id="syncSaveBtn" onclick="syncToCloud()">
+                                    <i class="fa-solid fa-floppy-disk"></i> 手動儲存
+                                </button>
+                                <span class="sync-status-text hidden" id="syncStatusText" title="💡 每次操作後 15 分鐘若無新動作，會自動儲存一次"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 第二行：操作項目 (篩選按鈕 + 每頁顯示) -->
+                    <div class="toolbar-sub-row">
+                        <div class="purchase-tags-group">
+                            <button class="tag-btn" id="filterPurchased" title="只看已持有股票">
+                                <i class="fa-solid fa-cart-shopping"></i> 顯示已持有</button>
+                            <button class="tag-btn" id="filterUnpurchased" title="只看未持有股票">
+                                <i class="fa-solid fa-cart-shopping"></i>
                                 顯示未持有</button>
                             <label class="tag-btn square-tag annual-checkbox-label" title="只看連續 5 年發放">
                                 <input type="checkbox" id="annualFilter">
@@ -247,47 +280,17 @@
                                 只看票券
                             </label>
                         </div>
-                        <div class="filter-divider"></div>
-                        <!-- 未登入：雲端同步按鈕 -->
-                        <button class="tag-btn cloud-sync-btn" id="loginBtn" onclick="openLoginModal()"
-                            style="padding: 0 0.8rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; background: transparent; border: 1px solid rgba(66, 133, 244, 0.4); color: #93c5fd; transition: all 0.2s; height: 32px; display: inline-flex; align-items: center; gap: 0.4rem; box-sizing: border-box;"
-                            title="同步您的投資紀錄至雲端">
-                            <i class="fa-solid fa-cloud-arrow-up"></i> 雲端同步
-                        </button>
-                        <!-- 已登入：使用者名稱 + 下拉選單 -->
-                        <div class="user-inline hidden" id="userMenu" style="height: 32px;">
-                            <button class="tag-btn cloud-sync-btn" id="userMenuBtn"
-                                style="padding: 0 0.8rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; background: transparent; border: 1px solid rgba(66, 133, 244, 0.4); color: #93c5fd; transition: all 0.2s; height: 32px; display: inline-flex; align-items: center; gap: 0.4rem; box-sizing: border-box;"
-                                title="同步您的投資紀錄至雲端">
-                                <i class="fa-solid fa-cloud-arrow-up"></i>
-                                <span id="userEmailShort"></span> ▾
-                            </button>
-                            <div class="user-dropdown" id="userDropdown">
-                                <button class="dropdown-item" onclick="openNicknameModal()">
-                                    <i class="fa-solid fa-user-pen"></i> 修改暱稱
-                                </button>
-                                <button class="dropdown-item signout-btn" onclick="signOut()">
-                                    <i class="fa-solid fa-right-from-bracket"></i> 登出
-                                </button>
-                            </div>
+
+                        <div class="page-size-control">
+                            <label for="pageSizeSelect">每頁顯示</label>
+                            <select id="pageSizeSelect">
+                                <option value="25" selected>25</option>
+                                <option value="50">50</option>
+                                <option value="75">75</option>
+                                <option value="100">100</option>
+                            </select>
+                            <span>筆</span>
                         </div>
-                        <!-- 已登入：手動儲存按鈕 + 同步狀態 -->
-                        <button class="tag-btn sync-save-btn hidden" id="syncSaveBtn" onclick="syncToCloud()"
-                            style="padding: 0 0.8rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; background: transparent; border: 1px solid rgba(52, 211, 153, 0.35); color: #6ee7b7; transition: all 0.2s; height: 32px; display: inline-flex; align-items: center; gap: 0.4rem; box-sizing: border-box;">
-                            <i class="fa-solid fa-floppy-disk"></i> 手動儲存
-                        </button>
-                        <span class="sync-status-text hidden" id="syncStatusText" title="💡 每次操作後 15 分鐘若無新動作，會自動儲存一次"
-                            style="font-size: 0.75rem; color: var(--text-secondary); display: flex; align-items: center; height: 32px;"></span>
-                    </div>
-                    <div class="page-size-control">
-                        <label for="pageSizeSelect">每頁顯示</label>
-                        <select id="pageSizeSelect">
-                            <option value="25" selected>25</option>
-                            <option value="50">50</option>
-                            <option value="75">75</option>
-                            <option value="100">100</option>
-                        </select>
-                        <span>筆</span>
                     </div>
                 </div>
 
