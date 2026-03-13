@@ -107,7 +107,7 @@ function renderTable() {
         const historyTag = historyHtml
             ? `<button class="history-btn" onclick="toggleHistoryPopup(this)" title="查看五年歷史"><i class="fa-solid fa-clock-rotate-left"></i></button><div class="history-popup">${historyHtml}</div>`
             : '';
-        const condDisplay = condText.length > 16 ? condText.slice(0, 16) + '…' : condText;
+        const condDisplay = condText;
 
         const tr = document.createElement('tr');
         if (isPurchased) tr.classList.add('purchased-row');

@@ -653,11 +653,12 @@ td:has(.gift-cell) {
 
 .hist-row {
     display: flex;
-    gap: 8px;
-    padding: 4px 0;
+    align-items: flex-start; /* 確保年份與內容頂部對齊 */
+    gap: 12px;
+    padding: 6px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    font-size: 0.83rem;
-    line-height: 1.4;
+    font-size: 0.85rem;
+    line-height: 1.5;
 }
 
 .hist-row:last-child {
@@ -666,15 +667,20 @@ td:has(.gift-cell) {
 
 .hist-year {
     flex-shrink: 0;
+    width: 42px; /* 固定年份寬度，確保內容對齊起始點 */
     font-family: 'Outfit', monospace;
     color: #60a5fa;
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
+    text-align: left;
 }
 
 .hist-gift {
+    flex: 1;
     color: var(--text-secondary);
     word-break: break-all;
+    white-space: normal; /* 准許換行 */
+    text-align: left;    /* 強制靠左 */
 }
 
 /* ==========================================

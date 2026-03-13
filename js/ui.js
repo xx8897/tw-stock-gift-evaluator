@@ -252,18 +252,25 @@ window.toggleHistoryPopup = function(btn) {
     if (!isOpen) {
         popup.classList.add('open');
         
-        // 智慧型邊界偵測：檢查是否超出面板容器 (.table-container)
-        const container = document.querySelector('.table-container');
-        const buffer = 40; // 預留邊距
-        
+        // 智慧型邊界偵測：優先「向下」開啟，只有底部空間不足且頂部空間足夠時才翻轉
         const popupRect = popup.getBoundingClientRect();
+        const btnRect = btn.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const container = document.querySelector('.table-container');
         const containerRect = container ? container.getBoundingClientRect() : null;
         
-        // 如果彈窗底部 超過 (視窗底部 - buffer) 或者 超過 (面板容器底部 - buffer)
-        let shouldFlip = popupRect.bottom > window.innerHeight - buffer;
+        let shouldFlip = false;
         
-        if (containerRect && !shouldFlip) {
-            shouldFlip = popupRect.bottom > containerRect.bottom - 10;
+        // 門檻：當彈窗底部超出 螢幕底部 或 容器底部
+        const isBottomOverWindow = popupRect.bottom > viewportHeight - 10;
+        const isBottomOverContainer = containerRect && popupRect.bottom > containerRect.bottom - 5;
+        
+        if (isBottomOverWindow || isBottomOverContainer) {
+            // 只有當「向上」的空間比「向下」寬裕時才翻轉
+            // 向上空間 = 按鈕頂部距離視窗頂部
+            if (btnRect.top > popupRect.height + 40) {
+                shouldFlip = true;
+            }
         }
         
         if (shouldFlip) {
