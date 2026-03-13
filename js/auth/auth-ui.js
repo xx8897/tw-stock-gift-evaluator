@@ -91,7 +91,7 @@ function closeLoginModal() {
             btn.innerHTML = '<i class="fa-regular fa-eye-slash"></i>';
         });
         document.querySelectorAll('input[type="text"]').forEach(input => {
-            if (input.id !== 'authNickname') input.type = 'password';
+            if (input.id !== 'authNickname' && input.id !== 'nicknameInput') input.type = 'password';
         });
     }, 300);
 }

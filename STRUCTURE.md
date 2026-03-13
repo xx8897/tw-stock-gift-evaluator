@@ -14,6 +14,7 @@
 ├── .venv/                      # 🐍 Python 虛擬環境（本地開發用，不進 Git）
 │
 ├── docs/                       # 📖 專案文件與教學
+│   ├── ai_agent_customization_guide.md # AI Agent (Antigravity) 規則與技能設定指南
 │   ├── google_oauth_setup_guide.md
 │   └── uuid_versions_guide.md
 │

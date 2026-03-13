@@ -333,4 +333,64 @@ async function signOut() {
 window.signInWithGoogle = signInWithGoogle;
 window.signOut = signOut;
 
+// ---- 修改暱稱 ----
+function openNicknameModal() {
+    // 關閉下拉選單
+    document.getElementById('userMenu')?.classList.remove('open');
+    // 預填現有暱稱
+    const currentNickname = AppState.currentUser?.user_metadata?.nickname || '';
+    const input = document.getElementById('nicknameInput');
+    if (input) {
+        input.value = currentNickname;
+        setTimeout(() => input.focus(), 100);
+    }
+    document.getElementById('nicknameError').style.display = 'none';
+    document.getElementById('nicknameModal')?.classList.remove('hidden');
+}
+
+function closeNicknameModal() {
+    document.getElementById('nicknameModal')?.classList.add('hidden');
+}
+
+async function saveNickname() {
+    const input = document.getElementById('nicknameInput');
+    const errorEl = document.getElementById('nicknameError');
+    const btn = document.getElementById('saveNicknameBtn');
+    const nickname = input?.value.trim();
+
+    errorEl.style.display = 'none';
+
+    if (!nickname) {
+        errorEl.textContent = '暱稱不能為空白';
+        errorEl.style.display = 'block';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 儲存中...';
+
+    try {
+        const { error } = await window.supabaseClient.auth.updateUser({
+            data: { nickname }
+        });
+        if (error) throw error;
+
+        // 更新顯示
+        const userEmailShort = document.getElementById('userEmailShort');
+        if (userEmailShort) userEmailShort.textContent = nickname;
+
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> 已儲存！';
+        setTimeout(() => closeNicknameModal(), 800);
+    } catch (err) {
+        errorEl.textContent = '儲存失敗：' + (err.message || '請稍後再試');
+        errorEl.style.display = 'block';
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> 儲存';
+        btn.disabled = false;
+    }
+}
+
+window.openNicknameModal = openNicknameModal;
+window.closeNicknameModal = closeNicknameModal;
+window.saveNickname = saveNickname;
+
 console.log('[Auth API]: 初始化完成');

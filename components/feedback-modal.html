@@ -1,0 +1,114 @@
+<!-- Feedback Modal -->
+<div id="feedbackModal" class="modal-overlay hidden">
+    <div class="feedback-modal-wrapper">
+        <button class="close-btn external-close-btn" id="closeFeedbackModalBtn">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="modal-content feedback-modal-card">
+
+            <!-- Header -->
+            <div class="feedback-header">
+                <div class="feedback-header-icon">
+                    <i class="fa-regular fa-comment-dots"></i>
+                </div>
+                <h2>意見回饋</h2>
+                <p>您的意見對我們非常重要！</p>
+            </div>
+
+            <!-- Type Selector -->
+            <div class="feedback-type-group">
+                <label class="feedback-type-label">回饋類型</label>
+                <div class="feedback-type-pills" id="feedbackTypePills">
+                    <button class="feedback-type-pill active" data-type="suggestion">
+                        <span class="pill-icon">💡</span>
+                        <span class="pill-label">功能建議</span>
+                    </button>
+                    <button class="feedback-type-pill" data-type="bug">
+                        <span class="pill-icon">🐛</span>
+                        <span class="pill-label">問題回報</span>
+                    </button>
+                    <button class="feedback-type-pill" data-type="collab">
+                        <span class="pill-icon">💼</span>
+                        <span class="pill-label">開發合作</span>
+                    </button>
+                </div>
+            </div>
+
+            <form id="feedbackForm" class="feedback-form" novalidate>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="feedbackEmail">
+                        <i class="fa-regular fa-envelope"></i>
+                        📧 Email
+                        <span class="label-optional">（選填）</span>
+                    </label>
+                    <input
+                        type="email"
+                        id="feedbackEmail"
+                        placeholder="如需回覆請留下您的 Email"
+                        autocomplete="email"
+                    >
+                </div>
+
+                <!-- Content -->
+                <div class="form-group">
+                    <label for="feedbackContent">
+                        📝 詳細內容
+                        <span class="label-required">*</span>
+                    </label>
+                    <div class="feedback-textarea-wrapper">
+                        <textarea
+                            id="feedbackContent"
+                            class="feedback-textarea"
+                            placeholder="請描述您遇到的問題，包括操作步驟和錯誤訊息..."
+                            maxlength="1000"
+                            required
+                        ></textarea>
+                        <div class="feedback-char-counter">
+                            <span id="feedbackCharCount">0</span> / 1000 字
+                        </div>
+                    </div>
+                    <div class="feedback-validation-msg hidden" id="feedbackValidationMsg">
+                        <i class="fa-solid fa-circle-exclamation"></i> 請填寫詳細內容
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <!-- Cloudflare Turnstile 驗證元件 -->
+            <div class="feedback-turnstile-container" style="margin-bottom: 0.5rem; display: flex; justify-content: center;">
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAACqFZT_CjPSB7byN" data-theme="dark"></div>
+            </div>
+
+            <div class="feedback-actions">
+                    <button type="button" class="feedback-cancel-btn" id="feedbackCancelBtn">取消</button>
+                    <button type="submit" class="feedback-submit-btn" id="feedbackSubmitBtn">
+                        <span class="btn-text">
+                            <i class="fa-solid fa-paper-plane"></i> 送出
+                        </span>
+                        <div class="btn-spinner hidden">
+                            <i class="fa-solid fa-spinner fa-spin"></i> 傳送中...
+                        </div>
+                        <div class="btn-success hidden">
+                            <i class="fa-solid fa-check"></i> 已送出！
+                        </div>
+                    </button>
+                </div>
+
+            </form>
+
+            <!-- Success State -->
+            <div class="feedback-success-state hidden" id="feedbackSuccessState">
+                <div class="success-icon-wrap">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h3>感謝您的回饋！</h3>
+                <p>您的意見已成功送出，我們會盡快處理。</p>
+                <button class="feedback-submit-btn" id="feedbackDoneBtn" style="margin-top: 1.5rem; width: 100%;">
+                    <i class="fa-solid fa-xmark"></i> 關閉
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

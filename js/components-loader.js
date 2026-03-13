@@ -37,13 +37,24 @@ async function initComponents() {
     document.body.appendChild(infoContainer);
     await loadComponent('infoContainer', 'components/info-modals.html');
 
+    // 建立第三個容器放回饋彈窗
+    const feedbackContainer = document.createElement('div');
+    feedbackContainer.id = 'feedbackContainer';
+    document.body.appendChild(feedbackContainer);
+    await loadComponent('feedbackContainer', 'components/feedback-modal.html');
+
     console.log('[Component Loader]: 所有 HTML 組件已就緒');
 
     // 組件載入後，手動觸發初始化
     if (typeof bindAuthEvents === 'function') {
         bindAuthEvents();
     }
+
+    if (typeof initFeedbackModal === 'function') {
+        initFeedbackModal();
+    }
 }
 
 // 暴露給全域
 window.initComponents = initComponents;
+

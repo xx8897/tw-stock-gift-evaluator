@@ -304,12 +304,50 @@ td:has(.gift-cell) {
     box-shadow: 0 10px 20px -10px rgba(236, 72, 153, 0.4);
 }
 
+.glass-btn.feedback-trigger {
+    background: rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.3);
+    color: #c4b5fd;
+}
+
+.glass-btn.feedback-trigger:hover {
+    background: rgba(139, 92, 246, 0.25);
+    border-color: #8b5cf6;
+    box-shadow: 0 10px 20px -10px rgba(139, 92, 246, 0.3);
+}
+
 .glass-btn i {
     font-size: 1.1rem;
 }
 
 .sponsor-trigger i {
     animation: pulse 2s infinite;
+}
+
+/* Footer elements */
+.footer-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-top p {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-github-btn {
+    padding: 0.35rem 0.75rem !important;
+    font-size: 0.8rem !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+}
+
+.footer-github-btn i {
+    font-size: 0.9rem;
 }
 
 .intro-section {
