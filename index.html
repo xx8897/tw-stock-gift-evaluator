@@ -35,6 +35,15 @@
     <link rel="stylesheet" href="css/auth.css?v=6">
     <link rel="stylesheet" href="css/utilities.css?v=6">
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    
+    <!-- Google tag (gtag.js) - GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JRSHD5Q6L4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-JRSHD5Q6L4');
+    </script>
 </head>
 
 <body>
@@ -119,6 +128,22 @@
                 <span class="tip"><i class="fa-solid fa-star" style="color: #fbbf24;"></i> 5 星神股 CP 值 ≥
                     2.0，光靠紀念品就能回本</span>
                 <span class="tip"><i class="fa-solid fa-calendar" style="color: #60a5fa;"></i> 股價基準日：2026/02/25</span>
+            </div>
+        </section>
+        
+        <!-- Ranking Section -->
+        <section class="ranking-section">
+            <div class="ranking-card glass-panel" id="topHotSection">
+                <h3><i class="fa-solid fa-fire" style="color: #f87171;"></i> 30日關注榜</h3>
+                <div class="ranking-list" id="topHotList">
+                    <div class="ranking-item loading">載入中...</div>
+                </div>
+            </div>
+            <div class="ranking-card glass-panel" id="topOwnedSection">
+                <h3><i class="fa-solid fa-gem" style="color: #60a5fa;"></i> 熱門持股榜</h3>
+                <div class="ranking-list" id="topOwnedList">
+                    <div class="ranking-item loading">載入中...</div>
+                </div>
             </div>
         </section>
 
@@ -378,6 +403,9 @@
             </div>
             <div class="footer-top"
                 style="display: flex; flex-direction: column; gap: 0.6rem; align-items: center; justify-content: center; text-align: center;">
+                <p id="visitorCounterContainer" class="hidden" style="margin-bottom: 0.4rem; font-size: 0.9rem; opacity: 0.8; color: var(--text-secondary);">
+                    <i class="fa-solid fa-eye"></i> 累積瀏覽人數：<span id="totalVisitors" style="color: var(--accent-primary); font-weight: bold;">...</span> 次
+                </p>
                 <span>合作、意見回饋請洽作者，作者信箱 zhixiang8897@gmail.com</span>
                 <div style="display: flex; gap: 0.6rem; align-items: center; justify-content: center; flex-wrap: wrap;">
                     <a class="glass-btn secondary" href="https://github.com/xx8897/tw-stock-gift-evaluator" target="_blank"
@@ -434,6 +462,7 @@
 
     <!-- App Scripts -->
     <script src="js/components-loader.js?v=1"></script>
+    <script src="js/analytics.js?v=1"></script>
     <script src="js/data.js?v=7"></script>
     <script src="js/table.js?v=7"></script>
     <script src="js/ui.js?v=7"></script>

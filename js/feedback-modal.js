@@ -161,6 +161,12 @@
 
                 // 5. 成功紀錄與畫面切換
                 localStorage.setItem('last_feedback_submit', Date.now().toString());
+                
+                // [Analytics] 追蹤回饋送出成功
+                if (typeof trackUIEvent === 'function') {
+                    trackUIEvent('feedback_submit_success', typeLabel);
+                }
+
                 hide(form);
                 show($('feedbackSuccessState'));
 

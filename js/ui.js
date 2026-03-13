@@ -44,10 +44,20 @@ function initUI() {
     const pageSizeSelect = document.getElementById('pageSizeSelect');
     const sortHeaders = document.querySelectorAll('th.sortable');
 
+    let searchTimer = null;
     searchInput?.addEventListener('input', () => {
         if (!AppState.globalData.length) return;
         AppState.currentPage = 1;
         renderTable();
+
+        // 搜尋行為點擊追蹤 (防抖 1秒)
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+            const val = searchInput.value.trim();
+            if (val && typeof trackUIEvent === 'function') {
+                trackUIEvent('search_query', val);
+            }
+        }, 1000);
     });
 
     // 星星過濾器 (多選邏輯)

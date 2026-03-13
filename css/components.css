@@ -1217,3 +1217,84 @@ td:has(.gift-cell) {
 .user-inline.open .user-dropdown {
     display: block;
 }
+/* --- Ranking Section --- */
+.ranking-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.ranking-card {
+    padding: 1.25rem 1.5rem;
+}
+
+.ranking-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text-primary);
+}
+
+.ranking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ranking-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.ranking-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(4px);
+}
+
+.ranking-item .item-stock {
+    font-weight: 600;
+    color: var(--accent-primary);
+    width: 50px;
+}
+
+.ranking-item .item-name {
+    flex: 1;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ranking-item .item-value {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-family: 'Outfit', sans-serif;
+}
+
+.ranking-item.loading {
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-style: italic;
+    cursor: default;
+    border: none;
+    background: none;
+}
+
+@media (max-width: 768px) {
+    .ranking-section {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}

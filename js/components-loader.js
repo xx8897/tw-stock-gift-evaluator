@@ -57,4 +57,15 @@ async function initComponents() {
 
 // 暴露給全域
 window.initComponents = initComponents;
+window.SCRIPTS = [
+    'js/supabase-config.js',
+    'js/analytics.js',
+    'js/data.js',
+    'js/auth/auth-api.js',
+    'js/auth/auth-ui.js',
+    'js/sync.js',
+    'js/table.js',
+    'js/ui.js',
+    'js/feedback-modal.js'
+];
 

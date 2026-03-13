@@ -143,6 +143,11 @@ function renderTable() {
  * 切換買入狀態並重新渲染表格
  */
 function togglePurchaseAndRender(stockId) {
+    const stock = AppState.globalData.find(s => s.id === stockId);
+    if (stock && typeof trackStockEvent === 'function') {
+        const becomingPurchased = !AppState.purchasedStocks.has(stockId);
+        trackStockEvent(stockId, stock.name, becomingPurchased ? 'mark_purchased' : 'unmark_purchased');
+    }
     togglePurchase(stockId);
 }
 
