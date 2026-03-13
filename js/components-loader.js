@@ -60,6 +60,7 @@ window.initComponents = initComponents;
 window.SCRIPTS = [
     'js/supabase-config.js',
     'js/analytics.js',
+    'js/ranking-ui.js',
     'js/data.js',
     'js/auth/auth-api.js',
     'js/auth/auth-ui.js',

@@ -1,6 +1,10 @@
 function initUI() {
+    let step = 'start';
+    console.debug('[UI] initUI start');
+    try {
     // (主題切換功能已移除)
 
+    step = 'modals';
     const infoModal = document.getElementById('infoModal');
     const openModalBtn = document.getElementById('openModalBtn');
     const closeModalBtn = document.getElementById('closeModalBtn');
@@ -36,6 +40,7 @@ function initUI() {
     });
 
     // ── 搜尋、過濾、排序、分頁大小（僅在資料載入後作用）───────
+    step = 'filters';
     const searchInput = document.getElementById('searchInput');
     const starButtons = document.querySelectorAll('#starFilterGroup .filter-btn[data-star]');
     const annualFilter = document.getElementById('annualFilter');
@@ -142,6 +147,7 @@ function initUI() {
         renderTable();
     });
 
+    step = 'sorting';
     sortHeaders.forEach(header => {
         header.addEventListener('click', () => {
             if (!AppState.globalData.length) return;
@@ -174,6 +180,7 @@ function initUI() {
     }
 
     // ── 禮物 icon 金幣爆炸 ────────────────────────────────────
+    step = 'giftbox';
     const headerGiftBox = document.getElementById('headerGiftBox');
     if (headerGiftBox) {
         headerGiftBox.addEventListener('click', () => {
@@ -184,6 +191,11 @@ function initUI() {
             }
             createCoins(rect.left + rect.width / 2, rect.top + rect.height / 2);
         });
+    }
+    console.debug('[UI] initUI done');
+    } catch (e) {
+        console.error(`[UI] initUI failed at ${step}`, e);
+        throw e;
     }
 }
 

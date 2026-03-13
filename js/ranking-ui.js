@@ -1,0 +1,206 @@
+/**
+ * 台股紀念品指南 - 排行榜 UI 模組
+ * 功能：Supabase 資料獲取、排行榜渲染、彈窗控制
+ * 依賴：analytics.js (trackPageVisit), supabase-config.js
+ */
+
+(function() {
+    // 取得熱門股票排行 (30日點擊)
+    async function fetchTopStocks(limit = 10) {
+        if (!window.supabaseClient) {
+            console.warn('[RankingUI]: supabaseClient 未就緒');
+            return [];
+        }
+        try {
+            console.log(`[RankingUI]: 發送 top_stocks_30d 請求, limit=${limit}`);
+            const { data, error } = await window.supabaseClient
+                .from('top_stocks_30d')
+                .select('*')
+                .limit(limit);
+            if (error) throw error;
+            console.log('[RankingUI]: top_stocks_30d 獲取成功', data?.length);
+            return data;
+        } catch (e) {
+            console.error('[RankingUI]: Fetch Top Stocks Failed', e);
+            return [];
+        }
+    }
+
+    // 取得熱門持有排行
+    async function fetchTopOwned(limit = 10) {
+        if (!window.supabaseClient) {
+            console.warn('[RankingUI]: supabaseClient 未就緒');
+            return [];
+        }
+        try {
+            console.log(`[RankingUI]: 發送 top_owned_stocks 請求, limit=${limit}`);
+            const { data, error } = await window.supabaseClient
+                .from('top_owned_stocks')
+                .select('*')
+                .limit(limit);
+            if (error) throw error;
+            console.log('[RankingUI]: top_owned_stocks 獲取成功', data?.length);
+            return data;
+        } catch (e) {
+            console.error('[RankingUI]: Fetch Top Owned Failed', e);
+            return [];
+        }
+    }
+
+    // 渲染首頁排行榜 UI
+    async function renderRankings() {
+        console.log('[RankingUI]: 開始獲取排行榜數據...');
+        try {
+            const [hotData, ownedData] = await Promise.all([
+                fetchTopStocks(5),
+                fetchTopOwned(5)
+            ]);
+            console.log('[RankingUI]: 數據獲取完成', { hotData, ownedData });
+
+            const mkItem = (id, name, valueText) => {
+                const item = document.createElement('div');
+                item.className = 'ranking-item';
+                item.innerHTML = `
+                    <div class="item-stock">${id}</div>
+                    <div class="item-name">${name || '—'}</div>
+                    <div class="item-value" style="font-size: 0.75rem; opacity: 0.7;">${valueText}</div>
+                `;
+                item.onclick = () => {
+                    const searchInput = document.getElementById('searchInput');
+                    if (searchInput) {
+                        searchInput.value = id;
+                        searchInput.dispatchEvent(new Event('input'));
+                        const controls = document.querySelector('.controls');
+                        if (controls) controls.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                };
+                return item;
+            };
+
+            // 渲染 30日關注榜
+            const hotList = document.getElementById('topHotList');
+            if (hotList) {
+                if (hotData && hotData.length > 0) {
+                    hotList.innerHTML = '';
+                    hotData.forEach(d => hotList.appendChild(mkItem(d.stock_code, d.stock_name, `${d.click_count} 次點擊`)));
+                } else {
+                    hotList.innerHTML = '<div class="ranking-item loading">暫無熱度數據</div>';
+                }
+            }
+
+            // 渲染股東大戶榜
+            const ownedList = document.getElementById('topOwnedList');
+            if (ownedList) {
+                if (ownedData && ownedData.length > 0) {
+                    ownedList.innerHTML = '';
+                    ownedData.forEach(d => {
+                        const name = (typeof AppState !== 'undefined' && AppState?.globalData) 
+                            ? AppState.globalData.find(s => s.id === d.stock_id)?.name 
+                            : d.stock_id;
+                        ownedList.appendChild(mkItem(d.stock_id, name || d.stock_id, `${d.owner_count} 位持有`));
+                    });
+                } else {
+                    ownedList.innerHTML = '<div class="ranking-item loading">尚未有持有數據</div>';
+                }
+            }
+        } catch (error) {
+            console.error('[RankingUI]: renderRankings 發生異常', error);
+        }
+    }
+
+    // 開啟排行彈窗
+    async function openRankingModal(type) {
+        const modal = document.getElementById('rankingModal');
+        const title = document.getElementById('rankingModalTitle');
+        const body = document.getElementById('rankingModalBody');
+        if (!modal || !body) return;
+
+        modal.classList.remove('hidden');
+        body.innerHTML = '<div class="ranking-item loading">資料載入中...</div>';
+
+        if (type === 'hot') {
+            title.innerText = '🔥 30日關注榜 Top 50';
+            const data = await fetchTopStocks(50);
+            renderModalList(data, 'hot');
+        } else {
+            title.innerText = '💎 資深小資選 Top 50';
+            const data = await fetchTopOwned(50);
+            renderModalList(data, 'owned');
+        }
+    }
+
+    function closeRankingModal() {
+        const modal = document.getElementById('rankingModal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    // 渲染彈窗清單
+    function renderModalList(data, type) {
+        const body = document.getElementById('rankingModalBody');
+        if (!body) return;
+
+        if (!data || data.length === 0) {
+            body.innerHTML = '<div class="ranking-item loading">暫無排名資料</div>';
+            return;
+        }
+
+        body.innerHTML = '';
+        data.forEach((d, i) => {
+            const id = type === 'hot' ? d.stock_code : d.stock_id;
+            const name = type === 'hot'
+                ? d.stock_name
+                : (AppState?.globalData?.find(s => s.id === d.stock_id)?.name || d.stock_id);
+            const valueText = type === 'hot' ? `${d.click_count} 次` : `${d.owner_count} 位`;
+
+            const item = document.createElement('div');
+            item.className = 'ranking-item';
+            item.innerHTML = `
+                <div class="rank-num">${i + 1}</div>
+                <div class="item-stock">${id}</div>
+                <div class="item-name">${name || '—'}</div>
+                <div class="item-value">${valueText}</div>
+            `;
+            item.onclick = () => {
+                const searchInput = document.getElementById('searchInput');
+                if (searchInput) {
+                    searchInput.value = id;
+                    searchInput.dispatchEvent(new Event('input'));
+                    const controls = document.querySelector('.controls');
+                    if (controls) controls.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                closeRankingModal();
+            };
+            body.appendChild(item);
+        });
+    }
+
+    // 初始化排行榜
+    async function initRankingUI() {
+        console.log('[RankingUI]: 開始初始化排行榜...');
+        if (typeof trackPageVisit === 'function') {
+            // Don't block rankings on analytics/network latency.
+            trackPageVisit().catch(err => {
+                console.warn('[RankingUI]: trackPageVisit failed', err);
+            });
+        }
+        await renderRankings();
+        
+        // 點擊外部關閉排行彈窗
+        const modal = document.getElementById('rankingModal');
+        if (modal) {
+            modal.addEventListener('click', e => {
+                if (e.target === modal) closeRankingModal();
+            });
+        }
+        console.log('[RankingUI]: 排行榜初始化完成');
+    }
+
+    // 暴露至全域
+    window.openRankingModal = openRankingModal;
+    window.closeRankingModal = closeRankingModal;
+    window.renderRankings = renderRankings;
+    window.fetchTopStocks = fetchTopStocks;
+    window.initRankingUI = initRankingUI;
+
+    console.log('[RankingUI]: 排行榜模組加載完成');
+})();
