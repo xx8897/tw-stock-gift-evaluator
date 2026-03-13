@@ -2,6 +2,7 @@
 <html lang="zh-TW">
 
 <head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://www.googletagmanager.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; connect-src 'self' https://challenges.cloudflare.com https://www.google-analytics.com https://stats.g.doubleclick.net https://*.supabase.co https://cdn.jsdelivr.net; img-src 'self' data: https://www.gstatic.com https://www.google-analytics.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>台股股東會紀念品攻略 🎁</title>
@@ -156,8 +157,9 @@
 
         <section class="controls glass-panel">
             <div class="search-box">
+                <label for="searchInput" class="visually-hidden">搜尋股票代號、公司名稱或紀念品</label>
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="搜尋股號、公司名稱或紀念品品項...">
+                <input type="text" id="searchInput" placeholder="搜尋股號、公司名稱或紀念品品項..." autocomplete="off">
             </div>
 
             <div class="filters" id="starFilterGroup">
@@ -438,11 +440,13 @@
             </div>
             <div class="modal-body">
                 <p style="margin-bottom: 1rem; font-size: 0.9rem;">輸入新的暱稱，最多 20 個字元。</p>
+                <label for="nicknameInput" class="visually-hidden">輸入新暱稱</label>
                 <input
                     type="text"
                     id="nicknameInput"
                     maxlength="20"
                     placeholder="輸入新暱稱..."
+                    autocomplete="off"
                     style="width: 100%; padding: 0.7rem 1rem; border-radius: 10px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); font-size: 0.95rem; font-family: inherit; box-sizing: border-box; transition: all 0.3s ease; outline: none;"
                     onfocus="this.style.borderColor='#8b5cf6'; this.style.boxShadow='0 0 0 3px rgba(139,92,246,0.2)'"
                     onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.boxShadow='none'"

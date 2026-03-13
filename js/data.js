@@ -25,6 +25,10 @@ function processDataAndRender(options = {}) {
     if (resetPage) AppState.currentPage = 1;
     if (AppState.globalData.length > 0 && typeof renderTable === 'function') {
         renderTable();
+        // 當全體資料載入完成，同步更新排行榜中的公司名稱
+        if (typeof renderRankings === 'function') {
+            renderRankings();
+        }
     }
 }
 

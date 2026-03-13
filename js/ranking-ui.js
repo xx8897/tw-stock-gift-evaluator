@@ -60,9 +60,15 @@
             const mkItem = (id, name, valueText) => {
                 const item = document.createElement('div');
                 item.className = 'ranking-item';
+                // 如果名稱暫時找不到，且 AppState 已就緒，嘗試再次尋找
+                let displayName = name;
+                if ((!displayName || displayName === id) && typeof AppState !== 'undefined' && AppState?.globalData?.length) {
+                    displayName = AppState.globalData.find(s => s.id === id)?.name || id;
+                }
+
                 item.innerHTML = `
                     <div class="item-stock">${id}</div>
-                    <div class="item-name">${name || '—'}</div>
+                    <div class="item-name">${displayName || '—'}</div>
                     <div class="item-value" style="font-size: 0.75rem; opacity: 0.7;">${valueText}</div>
                 `;
                 item.onclick = () => {

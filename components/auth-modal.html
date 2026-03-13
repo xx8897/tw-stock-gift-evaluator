@@ -22,6 +22,7 @@
 
                     <!-- Honeypot field for bot protection -->
                     <div style="position: absolute; left: -9999px;">
+                        <label for="website_b_firstname">Firstname</label>
                         <input type="text" id="website_b_firstname" name="b_firstname" class="honeypot-field"
                             tabindex="-1" autocomplete="off">
                     </div>
@@ -29,8 +30,8 @@
                     <div class="form-group signup-only hidden">
                         <label for="authNickname"><i class="fa-regular fa-user"></i> 暱稱 (選填)</label>
                         <div class="input-with-counter">
-                            <input type="text" id="authNickname" placeholder="設定您的專屬暱稱" maxlength="20"
-                                autocomplete="nickname" tabindex="3">
+                            <input type="text" id="authNickname" placeholder="設定您的專屬稱呼" maxlength="20"
+                                autocomplete="off" tabindex="3">
                             <span class="char-counter" id="nicknameCounter">0/20</span>
                         </div>
                     </div>
@@ -92,6 +93,7 @@
                     <div id="otpErrorMsg" class="auth-error-msg hidden"></div>
 
                     <div class="form-group">
+                        <label for="otpInput" class="visually-hidden">驗證碼</label>
                         <input type="text" id="otpInput" class="otp-input" placeholder="請輸入 6 位數驗證碼" required
                             pattern="\d{6}" maxlength="6" autocomplete="one-time-code" tabindex="1">
                     </div>
@@ -151,6 +153,7 @@
                     <div id="recoverOtpMsg" class="auth-error-msg hidden"></div>
 
                     <div class="form-group">
+                        <label for="recoverOtpInput" class="visually-hidden">密碼重置驗證碼</label>
                         <input type="text" id="recoverOtpInput" class="otp-input" placeholder="請輸入 6 位數驗證碼" required
                             pattern="\d{6}" maxlength="6" autocomplete="one-time-code" tabindex="1">
                     </div>
