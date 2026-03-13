@@ -105,7 +105,7 @@ function renderTable() {
         }
         const condText = (row.cond && row.cond !== 'nan' && row.cond.trim()) ? row.cond.trim() : '—';
         const historyTag = historyHtml
-            ? `<button class="history-btn" onclick="event.stopPropagation();this.closest('.gift-cell').querySelector('.history-popup').classList.toggle('open')" title="查看五年歷史"><i class="fa-solid fa-clock-rotate-left"></i></button><div class="history-popup">${historyHtml}</div>`
+            ? `<button class="history-btn" onclick="toggleHistoryPopup(this)" title="查看五年歷史"><i class="fa-solid fa-clock-rotate-left"></i></button><div class="history-popup">${historyHtml}</div>`
             : '';
         const condDisplay = condText.length > 16 ? condText.slice(0, 16) + '…' : condText;
 

@@ -35,8 +35,18 @@ function initUI() {
     });
 
     // ── 點擊其他地方收起歷史彈窗 ─────────────────────────────
-    document.addEventListener('click', () => {
-        document.querySelectorAll('.history-popup.open').forEach(el => el.classList.remove('open'));
+    document.addEventListener('click', (e) => {
+        const historyBtn = e.target.closest('.history-btn');
+        const insidePopup = e.target.closest('.history-popup');
+
+        // 如果點擊的是按鈕，交給 toggleHistoryPopup 處理，此處不動作
+        if (historyBtn) return;
+
+        // 如果點擊的是彈窗內部，保持開啟
+        if (insidePopup) return;
+
+        // 點擊其他地方，關閉所有開啟中的彈窗
+        document.querySelectorAll('.history-popup.open').forEach(el => el.classList.remove('open', 'popup-upward'));
     });
 
     // ── 搜尋、過濾、排序、分頁大小（僅在資料載入後作用）───────
@@ -220,3 +230,48 @@ function createCoins(lx, ly) {
         coin.onanimationend = () => coin.remove();
     }
 }
+
+/**
+ * 切換歷年紀念品彈窗 (唯一化管理 + 智慧型邊界偵測)
+ */
+window.toggleHistoryPopup = function(btn) {
+    const parent = btn.closest('.gift-cell');
+    if (!parent) return;
+    
+    const popup = parent.querySelector('.history-popup');
+    if (!popup) return;
+
+    const isOpen = popup.classList.contains('open');
+
+    // 1. 先關閉其它所有開啟中的彈窗
+    document.querySelectorAll('.history-popup.open').forEach(el => {
+        if (el !== popup) el.classList.remove('open', 'popup-upward');
+    });
+
+    // 2. 切換當前彈窗
+    if (!isOpen) {
+        popup.classList.add('open');
+        
+        // 智慧型邊界偵測：檢查是否超出面板容器 (.table-container)
+        const container = document.querySelector('.table-container');
+        const buffer = 40; // 預留邊距
+        
+        const popupRect = popup.getBoundingClientRect();
+        const containerRect = container ? container.getBoundingClientRect() : null;
+        
+        // 如果彈窗底部 超過 (視窗底部 - buffer) 或者 超過 (面板容器底部 - buffer)
+        let shouldFlip = popupRect.bottom > window.innerHeight - buffer;
+        
+        if (containerRect && !shouldFlip) {
+            shouldFlip = popupRect.bottom > containerRect.bottom - 10;
+        }
+        
+        if (shouldFlip) {
+            popup.classList.add('popup-upward');
+        } else {
+            popup.classList.remove('popup-upward');
+        }
+    } else {
+        popup.classList.remove('open', 'popup-upward');
+    }
+};

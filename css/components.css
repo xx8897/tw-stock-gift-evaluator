@@ -644,6 +644,13 @@ td:has(.gift-cell) {
     display: block;
 }
 
+/* 智慧防裁切：當空間不足時向上彈出 */
+.history-popup.popup-upward {
+    top: auto;
+    bottom: calc(100% + 10px);
+    box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.85);
+}
+
 .hist-row {
     display: flex;
     gap: 8px;
