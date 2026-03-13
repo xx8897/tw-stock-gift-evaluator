@@ -538,6 +538,14 @@
     display: none;
 }
 
+.feedback-turnstile-container {
+    visibility: hidden;  /* 隱身但 Widget 仍於背景渲染取 token */
+    height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
 /* Actions */
 .feedback-actions {
     display: flex;

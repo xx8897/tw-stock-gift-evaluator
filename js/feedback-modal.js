@@ -23,11 +23,12 @@
     function $(id) { return document.getElementById(id); }
     function hide(el) { el && el.classList.add('hidden'); }
     function show(el) { el && el.classList.remove('hidden'); }
-
+    
     // ---- 開關彈窗 ----
     function openFeedbackModal() {
         const modal = $('feedbackModal');
         if (!modal) return;
+        
         resetModal();
         show(modal);
         document.body.style.overflow = 'hidden';
@@ -119,11 +120,12 @@
             }
             if (validMsg) hide(validMsg);
 
-            // 2. 取得 Turnstile Token
-            // 注意：如果 Turnstile 未通過，token 會是空的
-            const turnstileResponse = turnstile.getResponse();
-            if (!turnstileResponse) {
-                alert('請先完成安全驗證 (Turnstile)');
+            // 2. 檢查頻率限制 (Rate Limiting) - 每 1 分鐘只能送一次
+            const lastSubmit = localStorage.getItem('last_feedback_submit');
+            const now = Date.now();
+            if (lastSubmit && (now - parseInt(lastSubmit)) < 1 * 60 * 1000) {
+                const waitSec = Math.ceil((1 * 60 * 1000 - (now - parseInt(lastSubmit))) / 1000);
+                alert(`您送得太快囉！請稍等 ${waitSec} 秒後再試。`);
                 return;
             }
 
@@ -137,36 +139,34 @@
             if (btnSpinner) show(btnSpinner);
 
             try {
-                // 4. 準備準備資料
+                // 4. 準備資料
                 const email = ($('feedbackEmail') || {}).value?.trim() || '';
                 const typeLabel = TYPE_SUBJECTS[currentType] || '【回饋】';
+                const GAS_URL = 'https://script.google.com/macros/s/AKfycbxlu25qzMK_OHuNuAUwHju2Pl6klhgQ-haxjLEUMr20dvrM8WqwbnhxGWNN3u5rcluF/exec';
                 
-                // 將資料送往 Google Apps Script
-                // 注意：這裡的 URL 需要使用者部署後提供
-                const GAS_URL = 'https://script.google.com/macros/s/AKfycbyRR5oUUJrygGPbFWmHzLGuViXmFw2Bm2YsqA21cxos_UKTRBVY61zlii0kN_wEcou6/exec';
-                
-                const formData = new FormData();
-                formData.append('type', typeLabel);
-                formData.append('email', email);
-                formData.append('content', content);
-                formData.append('turnstileToken', turnstileResponse);
+                // 使用 URLSearchParams 以確保 GAS e.parameter 能正確解析
+                const params = new URLSearchParams();
+                params.append('type', typeLabel);
+                params.append('email', email);
+                params.append('content', content);
 
-                const response = await fetch(GAS_URL, {
+                console.log('[Feedback]: 開始傳送...', typeLabel);
+
+                // 發送請求
+                await fetch(GAS_URL, {
                     method: 'POST',
-                    body: formData,
-                    mode: 'no-cors' // GAS Web App 限制通常需要 no-cors 或特殊處理
+                    body: params,
+                    mode: 'no-cors' // GAS 必須使用 no-cors 模式
                 });
 
-                // 因為 no-cors 無法讀取 response body，我們假設 200 OK
-                // (GAS 只要沒報 500 通常就是成功)
-                
-                // 5. 顯示成功畫面
+                // 5. 成功紀錄與畫面切換
+                localStorage.setItem('last_feedback_submit', Date.now().toString());
                 hide(form);
                 show($('feedbackSuccessState'));
 
             } catch (error) {
                 console.error('[Feedback]: 送出失敗', error);
-                alert('伺服器忙碌中，請稍後再試或直接 Email 給作者。');
+                alert('傳送時發生網路錯誤，請稍後再試。');
                 
                 // 恢復按鈕
                 if (submitBtn) submitBtn.disabled = false;
@@ -215,7 +215,7 @@
         bindCharCounter();
         bindFormSubmit();
         bindCloseEvents();
-        console.log('[FeedbackModal]: 初始化完成');
+        console.log('[FeedbackModal]: 初始化完成（無驗證碼模式）');
     }
 
     // ---- 暴露至全域 ----
