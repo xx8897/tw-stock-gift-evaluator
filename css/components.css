@@ -1222,7 +1222,6 @@ td:has(.gift-cell) {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
-    margin-bottom: 2rem;
 }
 
 .ranking-card {
@@ -1231,11 +1230,50 @@ td:has(.gift-cell) {
 
 .ranking-card h3 {
     font-size: 1.1rem;
-    margin-bottom: 1rem;
     display: flex;
     align-items: center;
     gap: 0.6rem;
     color: var(--text-primary);
+    margin: 0;
+}
+
+.ranking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.view-more-btn {
+    background: none;
+    border: none;
+    color: var(--accent-primary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 2px 4px;
+    opacity: 0.8;
+    transition: all 0.2s;
+}
+
+.feedback-modal-content {
+    position: relative;
+    /* ... 略過 ... */
+}
+
+/* Custom scrollbar for modal list */
+.ranking-list-modal::-webkit-scrollbar {
+    width: 6px;
+}
+.ranking-list-modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+.ranking-list-modal::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+.ranking-list-modal::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .ranking-list {
@@ -1243,6 +1281,33 @@ td:has(.gift-cell) {
     flex-direction: column;
     gap: 0.5rem;
 }
+
+/* Modal Ranking List Styles */
+.ranking-list-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ranking-list-modal .ranking-item .rank-num {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    border-radius: 50%;
+    margin-right: 0.2rem;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.ranking-list-modal .ranking-item:nth-child(1) .rank-num { color: #fbbf24; background: rgba(251, 191, 36, 0.1); }
+.ranking-list-modal .ranking-item:nth-child(2) .rank-num { color: #cbd5e1; background: rgba(203, 213, 225, 0.1); }
+.ranking-list-modal .ranking-item:nth-child(3) .rank-num { color: #cd7f32; background: rgba(205, 127, 50, 0.1); }
 
 .ranking-item {
     display: flex;
@@ -1255,6 +1320,7 @@ td:has(.gift-cell) {
     transition: all 0.2s ease;
     cursor: pointer;
 }
+
 
 .ranking-item:hover {
     background: rgba(255, 255, 255, 0.06);

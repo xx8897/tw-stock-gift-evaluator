@@ -281,9 +281,27 @@
     z-index: 1100;
 }
 
-/* ==========================================
-   Feedback Modal
-   ========================================== */
+.feedback-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.feedback-modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
 
 .feedback-modal-wrapper {
     position: relative;

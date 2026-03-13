@@ -126,7 +126,7 @@
             item.innerHTML = `
                 <div class="item-stock">${id}</div>
                 <div class="item-name">${name || '—'}</div>
-                <div class="item-value">${valueText}</div>
+                <div class="item-value" style="font-size: 0.75rem; opacity: 0.7;">${valueText}</div>
             `;
             item.onclick = () => {
                 const searchInput = document.getElementById('searchInput');
@@ -169,12 +169,79 @@
         }
     }
 
+
+    // 開啟排行彈窗
+    async function openRankingModal(type) {
+        const modal = document.getElementById('rankingModal');
+        const title = document.getElementById('rankingModalTitle');
+        const body = document.getElementById('rankingModalBody');
+        if (!modal || !body) return;
+
+        modal.classList.remove('hidden');
+        body.innerHTML = '<div class="ranking-item loading">資料載入中...</div>';
+        
+        if (type === 'hot') {
+            title.innerText = '🔥 30日關注榜 Top 50';
+            const data = await fetchTopStocks(50);
+            renderModalList(data, 'hot');
+        } else {
+            title.innerText = '💎 資深小資選 Top 50';
+            const data = await fetchTopOwned(50);
+            renderModalList(data, 'owned');
+        }
+    }
+
+    function closeRankingModal() {
+        const modal = document.getElementById('rankingModal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    // 輔助函式：渲染彈窗清單
+    function renderModalList(data, type) {
+        const body = document.getElementById('rankingModalBody');
+        if (!body) return;
+        
+        if (!data || data.length === 0) {
+            body.innerHTML = '<div class="ranking-item loading">暫無排名資料</div>';
+            return;
+        }
+
+        body.innerHTML = '';
+        data.forEach((d, i) => {
+            const id = type === 'hot' ? d.stock_code : d.stock_id;
+            const name = type === 'hot' ? d.stock_name : (AppState?.globalData?.find(s => s.id === d.stock_id)?.name || d.stock_id);
+            const valueText = type === 'hot' ? `${d.click_count} 次` : `${d.owner_count} 位`;
+
+            const item = document.createElement('div');
+            item.className = 'ranking-item';
+            item.innerHTML = `
+                <div class="rank-num">${i + 1}</div>
+                <div class="item-stock">${id}</div>
+                <div class="item-name">${name || '—'}</div>
+                <div class="item-value">${valueText}</div>
+            `;
+            item.onclick = () => {
+                const searchInput = document.getElementById('searchInput');
+                if (searchInput) {
+                    searchInput.value = id;
+                    searchInput.dispatchEvent(new Event('input'));
+                    const controls = document.querySelector('.controls');
+                    if (controls) controls.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                closeRankingModal();
+            };
+            body.appendChild(item);
+        });
+    }
+
     // 暴露至全域
     window.trackStockEvent = trackStockEvent;
     window.trackUIEvent = trackUIEvent;
     window.fetchTopStocks = fetchTopStocks;
     window.trackPageVisit = trackPageVisit;
     window.renderRankings = renderRankings;
+    window.openRankingModal = openRankingModal;
+    window.closeRankingModal = closeRankingModal;
 
     console.log('[Analytics]: 追蹤模組初始化完成');
     
@@ -184,5 +251,13 @@
             await trackPageVisit();
             await renderRankings();
         }, 1500); 
+
+        // 點擊外部關閉排行彈窗
+        const modal = document.getElementById('rankingModal');
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeRankingModal();
+            });
+        }
     });
 })();

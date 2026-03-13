@@ -134,13 +134,19 @@
         <!-- Ranking Section -->
         <section class="ranking-section">
             <div class="ranking-card glass-panel" id="topHotSection">
-                <h3><i class="fa-solid fa-fire" style="color: #f87171;"></i> 30日關注榜</h3>
+                <div class="ranking-header">
+                    <h3><i class="fa-solid fa-fire" style="color: #f87171;"></i> 30日關注榜</h3>
+                    <button class="view-more-btn" onclick="openRankingModal('hot')">查看更多</button>
+                </div>
                 <div class="ranking-list" id="topHotList">
                     <div class="ranking-item loading">載入中...</div>
                 </div>
             </div>
             <div class="ranking-card glass-panel" id="topOwnedSection">
-                <h3><i class="fa-solid fa-gem" style="color: #60a5fa;"></i> 熱門持股榜</h3>
+                <div class="ranking-header">
+                    <h3><i class="fa-solid fa-gem" style="color: #60a5fa;"></i> 資深小資選</h3>
+                    <button class="view-more-btn" onclick="openRankingModal('owned')">查看更多</button>
+                </div>
                 <div class="ranking-list" id="topOwnedList">
                     <div class="ranking-item loading">載入中...</div>
                 </div>
@@ -448,6 +454,21 @@
                 <button class="feedback-submit-btn" onclick="saveNickname()" id="saveNicknameBtn">
                     <i class="fa-solid fa-check"></i> 儲存
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ranking Detail Modal -->
+    <div id="rankingModal" class="feedback-modal-overlay hidden">
+        <div class="feedback-modal-content glass-panel" style="max-width: 500px; width: 90%; max-height: 85vh; padding: 1.5rem 0; position: relative;">
+            <button class="feedback-close-btn" onclick="closeRankingModal()" style="position: absolute; top: 1.25rem; right: 1.25rem; background: none; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; z-index: 10;">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="feedback-modal-header" style="padding: 0 1.5rem 1rem;">
+                <h2 id="rankingModalTitle">完整排行榜</h2>
+            </div>
+            <div id="rankingModalBody" class="ranking-list-modal" style="padding: 0 1.5rem; overflow-y: auto; max-height: calc(85vh - 120px);">
+                <!-- 動態注入排行 -->
             </div>
         </div>
     </div>
