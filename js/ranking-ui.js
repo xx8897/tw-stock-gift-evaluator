@@ -130,7 +130,7 @@
         body.innerHTML = '<div class="ranking-item loading">資料載入中...</div>';
 
         if (type === 'hot') {
-            title.innerText = '🔥 30日關注榜 Top 50';
+            title.innerText = '⭐ 收藏熱度榜 Top 50';
             const data = await fetchTopStocks(50);
             renderModalList(data, 'hot');
         } else {
