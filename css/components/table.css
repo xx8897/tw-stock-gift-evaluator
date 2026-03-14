@@ -48,7 +48,7 @@ th.th-purchased, td.purchase-cell {
 
 .interest-btn,
 .purchase-btn {
-    font-size: 1.15rem; /* 還原按鈕字體大小 */
+    font-size: 1rem; /* 縮小按鈕內部圖示 */
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -63,8 +63,8 @@ th.th-purchased i {
     opacity: 0.8;
 }
 /* 文字類欄位對齊：微調左邊間隔，增加對齊感但保持置左 */
-td.stock-id, td.stock-name, td.price {
-    padding-left: 1rem !important;
+td.stock-id, td.price {
+    padding-left: 1.15rem !important;
 }
 
 /* 標題基礎樣式 */
@@ -92,7 +92,7 @@ tbody tr:nth-child(even) {
 /* 推薦評分特別處理 (第10欄)：同步微調左邊間隔 */
 td:nth-child(10) {
     text-align: left;
-    padding-left: 1rem !important;
+    padding-left: 1.15rem !important;
 }
 
 /* 依照要求置中特定標題與欄位 */
@@ -102,6 +102,7 @@ th:nth-child(5), /* 最近價格標題 */
 th:nth-child(7), /* 五年內發放標題 */
 th:nth-child(8), /* 新版性價比標題 */
 th:nth-child(9), /* 去年條件標題 */
+td.stock-name,    /* 公司內容 */
 .freq-cell {      /* 五年內發放下方的欄位 */
     text-align: center !important;
 }
@@ -368,8 +369,8 @@ td:has(.gift-cell) {
 }
 
 .purchase-btn {
-    width: 28px;
-    height: 28px;
+    width: 24px;  /* 依照要求縮小按鈕 */
+    height: 24px;
     border-radius: 6px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(255, 255, 255, 0.05);
@@ -379,7 +380,7 @@ td:has(.gift-cell) {
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
-    font-size: 0.95rem; /* 稍微放大 + 號以平衡視覺權重 */
+    font-size: 0.85rem; /* 縮小內部的 + 號 */
 }
 
 .purchase-btn:hover {
