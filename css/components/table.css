@@ -112,6 +112,7 @@ td.stock-name,    /* 公司內容 */
 th.sortable {
     text-align: inherit; /* 讓 text-align: center 發揮作用 */
     position: relative;
+    padding-left: 1.5rem !important; /* 新增偏移補償：左右對稱才能確保文字絕對置中 */
     padding-right: 1.5rem !important; /* 為右側圖示留空間 */
 }
 
