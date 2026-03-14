@@ -266,7 +266,14 @@ def estimate_gift_value(gift_name):
     if any(k in gift for k in ['膠帶', '工具組', '螺絲', '扳手']):
         return 60
     
-    return 40  # 其他未分類品項，保守估 40 元
+    val = 40  # 其他未分類品項，保守估 40 元
+    
+    # 【聯名款加成】 修正係數 1.2 (20%)
+    co_branding_keywords = ['聯名', '合作', 'Kitty', '史努比', 'Snoopy', '咖波', '迪士尼', 'Disney', '拉拉熊', '角落小夥伴', '卡娜赫拉']
+    if any(k.lower() in gift.lower() for k in co_branding_keywords):
+        val = int(val * 1.2)
+        
+    return val
 
 # ============================================================
 # 4. 計算推薦評分
@@ -350,23 +357,34 @@ def calc_new_cp(row):
     price = row['最新股價']
     total_val = row['五年紀念品總估值']
     freq = row['五年內發放次數']
+    cond = str(row.get('去年條件', ''))
+    
     if price <= 0 or total_val == 0:
         return 0.0
+        
     try:
         freq_val = float(freq)
         if pd.isna(freq_val): freq_val = 1.0
     except:
         freq_val = 1.0
-    return round((total_val / price) * (freq_val / 5), 2)
+    
+    # 1. 基礎性價比 * 穩定性比例 (freq/5)
+    cp = (total_val / price) * (freq_val / 5)
+    
+    # 2. 身分證門檻懲罰 (扣除 30% -> 乘以 0.7)
+    if '身分證' in cond or '本人' in cond:
+        cp *= 0.7
+        
+    return round(cp, 2)
 
 df['新版性價比'] = df.apply(calc_new_cp, axis=1)
 
 def calc_new_score(cp):
-    if cp >= 2.0:
+    if cp >= 1.5:
         return '5 星'
-    elif cp >= 1.0:
+    elif cp >= 0.8:
         return '4 星'
-    elif cp >= 0.5:
+    elif cp >= 0.4:
         return '3 星'
     elif cp >= 0.1:
         return '2 星'

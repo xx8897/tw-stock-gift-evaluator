@@ -102,7 +102,7 @@ def upload_data():
         batch = records[start_idx:end_idx]
         
         try:
-            resp = requests.post(url, headers=headers, data=json.dumps(batch))
+            resp = requests.post(url, headers=upload_headers, data=json.dumps(batch))
             if resp.status_code in (200, 201):
                 success_count += len(batch)
                 print(f'   ✅ 批次 {i+1}/{total_batches} 上傳成功 ({len(batch)} 筆)')
