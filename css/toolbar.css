@@ -146,6 +146,14 @@
     font-weight: 600;
 }
 
+.table-toolbar .square-tag.interest-filter-label input:checked + span,
+.table-toolbar .square-tag.interest-filter-label:has(input:checked) {
+    background: rgba(244, 63, 94, 0.2);
+    border-color: rgba(244, 63, 94, 0.5);
+    color: #fca5a5;
+    font-weight: 600;
+}
+
 .result-count {
     font-size: 0.88rem;
     color: var(--text-secondary);

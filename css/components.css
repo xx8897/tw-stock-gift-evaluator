@@ -34,11 +34,18 @@ table {
 }
 
 /* Column widths — 9 columns total */
-th.th-purchased {
-    width: 50px;
+th.th-interest {
+    width: 44px;
     text-align: center;
-    padding-left: 1rem;
-    padding-right: 0.5rem;
+    padding-left: 0.8rem;
+    padding-right: 0.2rem;
+}
+
+th.th-purchased {
+    width: 44px;
+    text-align: center;
+    padding-left: 0.2rem;
+    padding-right: 0.8rem;
 }
 
 /* 股號 */
@@ -741,6 +748,29 @@ td:has(.gift-cell) {
 
 .page-jump input:focus {
     border-color: var(--accent-primary);
+}
+
+/* ==========================================
+   Interest Button Styles
+   ========================================== */
+.interest-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.2);
+    transition: all 0.2s;
+    padding: 2px;
+}
+
+.interest-btn:hover {
+    transform: scale(1.2);
+    color: rgba(251, 191, 36, 0.4);
+}
+
+.interest-btn.active {
+    color: #fbbf24;
+    filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.4));
 }
 
 /* ==========================================

@@ -88,7 +88,12 @@
             if (hotList) {
                 if (hotData && hotData.length > 0) {
                     hotList.innerHTML = '';
-                    hotData.forEach(d => hotList.appendChild(mkItem(d.stock_code, d.stock_name, `${d.click_count} 次點擊`)));
+                    hotData.forEach(d => {
+                        const name = (typeof AppState !== 'undefined' && AppState?.globalData) 
+                            ? AppState.globalData.find(s => s.id === d.stock_id)?.name 
+                            : d.stock_id;
+                        hotList.appendChild(mkItem(d.stock_id, name || d.stock_id, `${d.interest_count} 人收藏`));
+                    });
                 } else {
                     hotList.innerHTML = '<div class="ranking-item loading">暫無熱度數據</div>';
                 }
@@ -152,11 +157,11 @@
 
         body.innerHTML = '';
         data.forEach((d, i) => {
-            const id = type === 'hot' ? d.stock_code : d.stock_id;
-            const name = type === 'hot'
-                ? d.stock_name
-                : (AppState?.globalData?.find(s => s.id === d.stock_id)?.name || d.stock_id);
-            const valueText = type === 'hot' ? `${d.click_count} 次` : `${d.owner_count} 位`;
+            const id = d.stock_id || d.stock_code;
+            const name = (typeof AppState !== 'undefined' && AppState?.globalData)
+                ? AppState.globalData.find(s => s.id === id)?.name
+                : (d.stock_name || id);
+            const valueText = type === 'hot' ? `${d.interest_count} 人收藏` : `${d.owner_count} 位持有`;
 
             const item = document.createElement('div');
             item.className = 'ranking-item';

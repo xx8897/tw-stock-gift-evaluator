@@ -136,7 +136,7 @@
         <section class="ranking-section">
             <div class="ranking-card glass-panel" id="topHotSection">
                 <div class="ranking-header">
-                    <h3><i class="fa-solid fa-fire" style="color: #f87171;"></i> 30日關注榜</h3>
+                    <h3><i class="fa-solid fa-star" style="color: #fbbf24;"></i> 收藏熱度榜</h3>
                     <button class="view-more-btn" onclick="openRankingModal('hot')">查看更多</button>
                 </div>
                 <div class="ranking-list" id="topHotList">
@@ -284,6 +284,11 @@
                                 <i class="fa-solid fa-box-open" aria-hidden="true"></i>
                                 只看物品
                             </label>
+                            <label class="tag-btn square-tag interest-filter-label" title="只看收藏中的興趣清單">
+                                <input type="checkbox" id="interestFilter">
+                                <i class="fa-solid fa-star" aria-hidden="true"></i>
+                                只看興趣
+                            </label>
                         </div>
 
                         <div class="page-size-control">
@@ -302,6 +307,7 @@
                 <table id="dataTable">
                     <thead>
                         <tr>
+                            <th class="th-interest" title="收藏感興趣的股票"><i class="fa-solid fa-star"></i></th>
                             <th class="th-purchased" title="標記已買入股票"><i class="fa-solid fa-cart-shopping"></i></th>
                             <th class="sortable" data-sort="id">股號 <i class="fa-solid fa-sort"></i></th>
                             <th class="sortable" data-sort="name">公司 <i class="fa-solid fa-sort"></i></th>

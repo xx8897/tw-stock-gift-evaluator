@@ -27,21 +27,24 @@ async function checkAndMergeData() {
             return;
         }
 
-        const localStocks = [...AppState.purchasedStocks];
+        const localPurchased = [...AppState.purchasedStocks];
+        const localInterest = [...AppState.interestStocks];
 
         try {
             // Fetch cloud data
             const { data, error } = await client
                 .from('user_stocks')
-                .select('stock_id')
+                .select('stock_id, type')
                 .eq('user_id', user.id);
             if (error) throw error;
 
-            const cloudStocks = data ? data.map(r => r.stock_id) : [];
-
-            // Case 1: 雲端為空，本地有資料 -> 保留本地並寫入雲端
-            if (cloudStocks.length === 0) {
-                if (localStocks.length > 0) await syncToCloud(false); // background sync
+            const cloudData = data || [];
+            
+            // Case 1: 雲端為空，本地有資料 -> 執行同步
+            if (cloudData.length === 0) {
+                if (localPurchased.length > 0 || localInterest.length > 0) {
+                    await syncToCloud(false);
+                }
                 resolve(false);
                 return;
             }
@@ -81,9 +84,14 @@ async function syncToCloud(showLoading = true) {
             .eq('user_id', user.id);
         if (delErr) throw delErr;
 
-        const stocks = [...AppState.purchasedStocks];
-        if (stocks.length > 0) {
-            const rows = stocks.map(stockId => ({ user_id: user.id, stock_id: stockId }));
+        const purchased = [...AppState.purchasedStocks];
+        const interests = [...AppState.interestStocks];
+        
+        const rows = [];
+        purchased.forEach(id => rows.push({ user_id: user.id, stock_id: id, type: 'purchased' }));
+        interests.forEach(id => rows.push({ user_id: user.id, stock_id: id, type: 'interest' }));
+
+        if (rows.length > 0) {
             const { error: insErr } = await client.from('user_stocks').insert(rows);
             if (insErr) throw insErr;
         }
@@ -119,15 +127,23 @@ async function loadFromCloud() {
             .eq('user_id', user.id);
         if (error) throw error;
 
-        const cloudStocks = data ? data.map(r => r.stock_id) : [];
+        const cloudData = data || [];
+        const cloudPurchased = cloudData.filter(r => r.type === 'purchased' || !r.type).map(r => String(r.stock_id));
+        const cloudInterest = cloudData.filter(r => r.type === 'interest').map(r => String(r.stock_id));
+
         if (typeof window.replacePurchasedStocks === 'function') {
-            window.replacePurchasedStocks(cloudStocks, { source: 'cloud', render: true });
+            window.replacePurchasedStocks(cloudPurchased, { source: 'cloud', render: false });
         } else {
-            AppState.purchasedStocks = new Set(cloudStocks.map(String));
+            AppState.purchasedStocks = new Set(cloudPurchased);
             localStorage.setItem('purchased_stocks', JSON.stringify([...AppState.purchasedStocks]));
-            if (typeof window.processDataAndRender === 'function') window.processDataAndRender();
         }
-        emitSyncEvent('sync:applied', { source: 'cloud', count: cloudStocks.length });
+
+        AppState.interestStocks = new Set(cloudInterest);
+        localStorage.setItem('interest_stocks', JSON.stringify([...AppState.interestStocks]));
+
+        if (typeof window.processDataAndRender === 'function') window.processDataAndRender();
+        
+        emitSyncEvent('sync:applied', { source: 'cloud', count: cloudData.length });
 
         // 顯示上次同步時間
         const savedTime = localStorage.getItem(SYNC_LS_KEY);

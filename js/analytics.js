@@ -25,12 +25,16 @@
         
         // 1. 發送至 GA4
         if (typeof gtag !== 'undefined') {
-            gtag('event', `stock_${eventType}`, {
+            const gaEventName = (eventType === 'mark_interest' || eventType === 'unmark_interest') 
+                ? eventType 
+                : `stock_${eventType}`;
+            
+            gtag('event', gaEventName, {
                 'stock_code': stockCode,
                 'stock_name': stockName,
                 'timestamp': timestamp
             });
-            console.log(`[Analytics]: GA4 Event -> stock_${eventType}`, stockCode);
+            console.log(`[Analytics]: GA4 Event -> ${gaEventName}`, stockCode);
         }
 
         // 2. 寫入 Supabase (stock_events 表)

@@ -6,6 +6,7 @@ const AppState = {
     filteredData: [],
     currentSort: { column: 'score', direction: 'desc' },
     purchasedStocks: new Set(), // 儲存已買入的股號 (String)
+    interestStocks: new Set(),  // 儲存感興趣的股號 (String)
     filters: {
         search: '',
         stars: [], // 改為陣列，儲存選取的星級 (如 [5, 4])，為空時代表「全部」
@@ -13,6 +14,7 @@ const AppState = {
         excludeId: false,
         ticketOnly: false,
         objectOnly: false,
+        interestOnly: false,
         purchaseFilter: 'all' // 'all' | 'purchased' | 'unpurchased'
     },
     currentPage: 1,
@@ -52,23 +54,31 @@ function replacePurchasedStocks(stockIds, options = {}) {
 }
 
 /**
- * 載入已買入清單 (從 LocalStorage)
+ * 載入已買入與興趣清單 (從 LocalStorage)
  */
-function loadPurchased() {
+function loadUserData() {
     try {
-        const saved = localStorage.getItem('purchased_stocks');
-        if (saved) {
-            const list = JSON.parse(saved);
+        const savedPurchased = localStorage.getItem('purchased_stocks');
+        if (savedPurchased) {
+            const list = JSON.parse(savedPurchased);
             replacePurchasedStocks(list, { source: 'local', render: false });
         }
+        const savedInterest = localStorage.getItem('interest_stocks');
+        if (savedInterest) {
+            const list = JSON.parse(savedInterest);
+            AppState.interestStocks = new Set(list.map(String));
+        }
     } catch (e) {
-        console.error('無法從 LocalStorage 載入買入清單:', e);
-        AppState.purchasedStocks = new Set();
+        console.error('無法從 LocalStorage 載入用戶資料:', e);
     }
 }
 
+function saveInterestStocks() {
+    localStorage.setItem('interest_stocks', JSON.stringify([...AppState.interestStocks]));
+}
+
 /**
- * 切換買入狀態並同步至 LocalStorage，並安排雲端自動同步
+ * 切換買入狀態
  */
 function togglePurchase(stockId) {
     stockId = String(stockId);
@@ -77,18 +87,29 @@ function togglePurchase(stockId) {
     } else {
         AppState.purchasedStocks.add(stockId);
     }
-
-    // 同步到 LocalStorage 並立即刷新前端
     savePurchasedStocks('local');
     processDataAndRender();
+    if (typeof scheduleAutoSync === 'function') scheduleAutoSync();
+}
 
-    // 若已登入，安排 15 分鐘後自動同步至雲端
+/**
+ * 切換興趣狀態
+ */
+function toggleInterest(stockId) {
+    stockId = String(stockId);
+    if (AppState.interestStocks.has(stockId)) {
+        AppState.interestStocks.delete(stockId);
+    } else {
+        AppState.interestStocks.add(stockId);
+    }
+    saveInterestStocks();
+    processDataAndRender();
     if (typeof scheduleAutoSync === 'function') scheduleAutoSync();
 }
 
 async function loadData() {
-    // 優先載入已買入狀態
-    loadPurchased();
+    // 優先載入用戶狀態
+    loadUserData();
 
     const loadingState = document.getElementById('loadingState');
     const tableWrapper = document.getElementById('tableWrapper');
@@ -214,3 +235,4 @@ async function loadExcelDataFallback(loadingState, tableWrapper, lastUpdated) {
 
 window.processDataAndRender = processDataAndRender;
 window.replacePurchasedStocks = replacePurchasedStocks;
+window.toggleInterest = toggleInterest;

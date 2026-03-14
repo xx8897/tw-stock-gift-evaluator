@@ -29,12 +29,16 @@ function renderTable() {
 
         // 買入/未買過濾 (互斥)
         const isPurchased = AppState.purchasedStocks.has(row.id);
+        const isInterest = AppState.interestStocks.has(row.id);
         let matchPurchase = true;
         if (AppState.filters.purchaseFilter === 'purchased') {
             matchPurchase = isPurchased;
         } else if (AppState.filters.purchaseFilter === 'unpurchased') {
             matchPurchase = !isPurchased;
         }
+
+        // 興趣過濾
+        const matchInterest = AppState.filters.interestOnly ? isInterest : true;
 
         // 票券/物品過濾 (互斥)
         let matchGiftType = true;
@@ -58,7 +62,7 @@ function renderTable() {
             matchGiftType = !finalIsTicket && !isNoGift;
         }
 
-        return matchSearch && matchStar && matchAnnual && matchExcludeId && matchPurchase && matchGiftType;
+        return matchSearch && matchStar && matchAnnual && matchExcludeId && matchPurchase && matchGiftType && matchInterest;
     });
 
     AppState.filteredData.sort((a, b) => {
@@ -117,8 +121,16 @@ function renderTable() {
 
         const tr = document.createElement('tr');
         if (isPurchased) tr.classList.add('purchased-row');
+        const isInterest = AppState.interestStocks.has(row.id);
 
         tr.innerHTML = `
+            <td data-label="興趣" class="interest-cell">
+                <button class="interest-btn ${isInterest ? 'active' : ''}" 
+                        onclick="toggleInterestAndRender('${row.id}')" 
+                        title="${isInterest ? '取消收藏' : '加入收藏'}">
+                    <i class="fa-solid fa-star"></i>
+                </button>
+            </td>
             <td data-label="已買" class="purchase-cell">
                 <button class="purchase-btn ${isPurchased ? 'active' : ''}" 
                         onclick="togglePurchaseAndRender('${row.id}')" 
@@ -155,6 +167,18 @@ function togglePurchaseAndRender(stockId) {
         trackStockEvent(stockId, stock.name, becomingPurchased ? 'mark_purchased' : 'unmark_purchased');
     }
     togglePurchase(stockId);
+}
+
+/**
+ * 切換興趣狀態並重新渲染
+ */
+function toggleInterestAndRender(stockId) {
+    const stock = AppState.globalData.find(s => s.id === stockId);
+    if (stock && typeof trackStockEvent === 'function') {
+        const becomingInterest = !AppState.interestStocks.has(stockId);
+        trackStockEvent(stockId, stock.name, becomingInterest ? 'mark_interest' : 'unmark_interest');
+    }
+    toggleInterest(stockId);
 }
 
 function renderPagination(totalPages) {
