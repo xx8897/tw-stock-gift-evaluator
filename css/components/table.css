@@ -38,16 +38,17 @@ table {
 /* 基礎對齊定義：固定 Icon 欄位寬度並強制置中 */
 th.th-interest, td.interest-cell,
 th.th-purchased, td.purchase-cell {
-    width: 55px; /* 固定 Icon 欄位寬度 */
+    width: 60px; /* 稍微增加寬度以便對齊標題 */
     text-align: center !important;
     padding: 1rem 0 !important;
     vertical-align: middle;
+    font-size: 0 !important; /* 消除空白字元寬度 */
+    line-height: 0 !important;
 }
 
-/* 內容按鈕回歸物理中心，移除所有相對偏移 */
 .interest-btn,
 .purchase-btn {
-    position: static; /* 移除 relative */
+    font-size: 1.15rem; /* 還原按鈕字體大小 */
     display: inline-flex;
     align-items: center;
     justify-content: center;

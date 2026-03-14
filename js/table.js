@@ -127,20 +127,8 @@ function renderTable() {
         const isInterest = AppState.interestStocks.has(row.id);
 
         tr.innerHTML = `
-            <td data-label="興趣" class="interest-cell">
-                <button class="interest-btn ${isInterest ? 'active' : ''}" 
-                        onclick="toggleInterestAndRender('${row.id}')" 
-                        title="${isInterest ? '取消收藏' : '加入收藏'}">
-                    <i class="fa-solid fa-star"></i>
-                </button>
-            </td>
-            <td data-label="已買" class="purchase-cell">
-                <button class="purchase-btn ${isPurchased ? 'active' : ''}" 
-                        onclick="togglePurchaseAndRender('${row.id}')" 
-                        title="${isPurchased ? '已買入' : '標記買入'}">
-                    <i class="fa-solid ${isPurchased ? 'fa-check' : 'fa-plus'}"></i>
-                </button>
-            </td>
+            <td data-label="興趣" class="interest-cell"><button class="interest-btn ${isInterest ? 'active' : ''}" onclick="toggleInterestAndRender('${row.id}')" title="${isInterest ? '取消收藏' : '加入收藏'}"><i class="fa-solid fa-star"></i></button></td>
+            <td data-label="已買" class="purchase-cell"><button class="purchase-btn ${isPurchased ? 'active' : ''}" onclick="togglePurchaseAndRender('${row.id}')" title="${isPurchased ? '已買入' : '標記買入'}"><i class="fa-solid ${isPurchased ? 'fa-check' : 'fa-plus'}"></i></button></td>
             <td data-label="股號" class="stock-id">${row.id}</td>
             <td data-label="公司" class="stock-name">${row.name}</td>
             <td data-label="最近價格" class="price">${row.price.toFixed(2)}</td>
