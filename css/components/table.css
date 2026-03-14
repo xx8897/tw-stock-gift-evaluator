@@ -109,11 +109,12 @@ td.stock-name,    /* 公司內容 */
     text-align: center !important;
 }
 
-/* 欄位寬度微調 (權重重新分配) */
-th:nth-child(3) { width: 120px; } /* 股號：增加空間以利絕對置中視覺感 */
-th:nth-child(6) { width: 200px; } /* 上次紀念品：壓縮空間分配給其他欄位 */
-th:nth-child(8) { width: 225px; } /* 新版性價比：增加空間以便顯示長數據 */
-th:nth-child(9) { width: 85px; }  /* 去年條件：保持窄寬度 */
+/* 欄位寬度微調 (權重六次修正：紀念品極致優先) */
+th:nth-child(3) { width: 85px !important; }  /* 股號：維持標準寬度 */
+th:nth-child(6) { width: 320px !important; } /* 上次紀念品：極致空間，資訊重心 */
+th:nth-child(8) { width: 135px !important; } /* 性價比+：緊湊微增，非主導 */
+th:nth-child(9) { width: 110px !important; } /* 去年條件：精準容納 6 中文字 */
+th:nth-child(10){ width: 100px !important; } /* 推薦評分：精簡收納，消除留白 */
 
 /* 「上次紀念品」溢出省略處理 */
 .gift-text {
