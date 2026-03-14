@@ -180,7 +180,22 @@ def estimate_gift_value(gift_name):
     #           但對個人實際使用而言，單人入園門票約 300 元
     if '佐登妮絲' in gift:
         return 300
-    
+
+def get_yahoo_price(symbol):
+    """Yahoo Finance 備援機制 (針對 API 較不穩定的週末或節假日)"""
+    for suffix in ['.TW', '.TWO']:
+        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}{suffix}?interval=1d&range=1d"
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        try:
+            r = requests.get(url, headers=headers, timeout=5)
+            if r.status_code == 200:
+                data = r.json()
+                price = data['chart']['result'][0]['meta']['regularMarketPrice']
+                return float(price)
+        except:
+            pass
+    return None
+
     # ─── 第三層：細分類估值（市場行情） ───
     
     # 【食品/調味料類】 市價 30~80 元
@@ -330,9 +345,18 @@ df['最新股價'] = df['最新股價'].fillna(0.0).round(2)
 
 # 統計來源
 yahoo_count = int(df['股號'].map(price_dict).notna().sum())
-fallback_count = len(df) - yahoo_count
+zero_stocks = df[df['最新股價'] == 0]['股號'].tolist()
+
+if zero_stocks:
+    print(f"  [INFO] Attempting to fix {len(zero_stocks)} zero prices via Yahoo Finance for Supabase sync...")
+    for sid in zero_stocks:
+        y_price = get_yahoo_price(sid)
+        if y_price:
+            df.loc[df['股號'] == sid, '最新股價'] = y_price
+            price_dict[sid] = y_price
+
 still_zero = int((df['最新股價'] == 0).sum())
-print(f"  -> API matched: {yahoo_count}, Fallback to old price: {fallback_count - still_zero}, Still zero: {still_zero}")
+print(f"  -> Original API: {yahoo_count}, Fixed via Yahoo: {len(zero_stocks) - still_zero}, Still zero: {still_zero}")
 
 df['紀念品預估價值'] = df['上次紀念品'].apply(estimate_gift_value)
 
