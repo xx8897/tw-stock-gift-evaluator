@@ -62,9 +62,9 @@ th.th-purchased i {
     color: var(--text-secondary);
     opacity: 0.8;
 }
-/* 文字類欄位對齊 */
+/* 文字類欄位對齊：微調左邊間隔，增加對齊感但保持置左 */
 td.stock-id, td.stock-name, td.price {
-    padding-left: 0.75rem;
+    padding-left: 1rem !important;
 }
 
 /* 標題基礎樣式 */
@@ -89,10 +89,26 @@ tbody tr:nth-child(even) {
     background: rgba(255, 255, 255, 0.012);
 }
 
-/* 推薦評分特別處理 (第10欄) */
+/* 推薦評分特別處理 (第10欄)：同步微調左邊間隔 */
 td:nth-child(10) {
     text-align: left;
-    padding-left: 0.75rem;
+    padding-left: 1rem !important;
+}
+
+/* 依照要求置中特定標題與欄位 */
+th:nth-child(3), /* 股號標題 */
+th:nth-child(4), /* 公司標題 */
+th:nth-child(5), /* 最近價格標題 */
+th:nth-child(7), /* 五年內發放標題 */
+th:nth-child(8), /* 新版性價比標題 */
+th:nth-child(9), /* 去年條件標題 */
+.freq-cell {      /* 五年內發放下方的欄位 */
+    text-align: center !important;
+}
+
+/* 修正置中後，排序圖示的位置建議緊貼文字 */
+th.sortable {
+    text-align: inherit; /* 讓 text-align: center 發揮作用 */
 }
 
 th,
@@ -359,7 +375,7 @@ td:has(.gift-cell) {
     background: rgba(255, 255, 255, 0.05);
     color: var(--text-secondary);
     cursor: pointer;
-    display: flex;
+    display: inline-flex; /* 修正：改為 inline-flex 以便受 text-align: center 控制 */
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
