@@ -35,11 +35,13 @@ table {
    Table Column Alignment & Aesthetic Styling
    ========================================== */
 
-/* 基礎對齊定義 */
+/* 基礎對齊定義：固定 Icon 欄位寬度並強制置中 */
 th.th-interest, td.interest-cell,
 th.th-purchased, td.purchase-cell {
+    width: 55px; /* 固定 Icon 欄位寬度 */
     text-align: center !important;
-    padding: 1rem 0;
+    padding: 1rem 0 !important;
+    vertical-align: middle;
 }
 
 /* 內容按鈕回歸物理中心，移除所有相對偏移 */
@@ -344,9 +346,8 @@ td:has(.gift-cell) {
 /* --- Purchase Button & Cell --- */
 
 .purchase-cell {
-    text-align: center;
-    padding-left: 1rem !important;
-    padding-right: 0.5rem !important;
+    text-align: center !important;
+    padding: 1rem 0 !important;
 }
 
 .purchase-btn {
