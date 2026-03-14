@@ -8,6 +8,16 @@
     const eventCache = new Map();
     const COOLING_MS = 10000; // 10秒冷卻時間
 
+    // 取得或生成唯一訪客 ID (V4.9.0)
+    function getVisitorId() {
+        let vid = localStorage.getItem('guest_visitor_id');
+        if (!vid) {
+            vid = 'v_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+            localStorage.setItem('guest_visitor_id', vid);
+        }
+        return vid;
+    }
+
     // 追蹤股票相關事件
     async function trackStockEvent(stockCode, stockName, eventType = 'view') {
         const now = Date.now();
@@ -22,6 +32,7 @@
         eventCache.set(cacheKey, now);
 
         const timestamp = new Date().toISOString();
+        const visitorId = getVisitorId();
         
         // 1. 發送至 GA4
         if (typeof gtag !== 'undefined') {
@@ -32,6 +43,7 @@
             gtag('event', gaEventName, {
                 'stock_code': stockCode,
                 'stock_name': stockName,
+                'visitor_id': visitorId,
                 'timestamp': timestamp
             });
             console.log(`[Analytics]: GA4 Event -> ${gaEventName}`, stockCode);
@@ -46,7 +58,8 @@
                     .insert({
                         stock_code: stockCode,
                         stock_name: stockName,
-                        event_type: eventType
+                        event_type: eventType,
+                        visitor_id: visitorId // 附帶唯一 ID 以計算人數 (V4.9.0)
                     })
                     .then(({ error }) => {
                         if (error) console.warn('[Analytics]: Supabase Insert Error', error);

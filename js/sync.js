@@ -123,7 +123,7 @@ async function loadFromCloud() {
         emitSyncEvent('sync:started', { mode: 'load-cloud' });
         const { data, error } = await client
             .from('user_stocks')
-            .select('stock_id')
+            .select('stock_id, type') // 補齊 type 欄位 (V4.10.0)
             .eq('user_id', user.id);
         if (error) throw error;
 
@@ -138,8 +138,12 @@ async function loadFromCloud() {
             localStorage.setItem('purchased_stocks', JSON.stringify([...AppState.purchasedStocks]));
         }
 
-        AppState.interestStocks = new Set(cloudInterest);
-        localStorage.setItem('interest_stocks', JSON.stringify([...AppState.interestStocks]));
+        // 若雲端有 interest 資料才覆蓋；否則保留 loadUserData() 已從 localStorage 讀入的狀態
+        if (cloudInterest.length > 0) {
+            AppState.interestStocks = new Set(cloudInterest);
+            localStorage.setItem('interest_stocks', JSON.stringify(cloudInterest));
+        }
+        // cloudInterest 為空時，AppState.interestStocks 保持 loadUserData 讀入的值不變
 
         if (typeof window.processDataAndRender === 'function') window.processDataAndRender();
         

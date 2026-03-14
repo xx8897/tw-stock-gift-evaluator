@@ -27,6 +27,9 @@ function renderTable() {
         // 排除身分證過濾
         const matchExcludeId = AppState.filters.excludeId ? !row.cond.includes('身分證') : true;
 
+        // 需要身分證過濾
+        const matchIncludeId = AppState.filters.includeId ? row.cond.includes('身分證') : true;
+
         // 買入/未買過濾 (互斥)
         const isPurchased = AppState.purchasedStocks.has(row.id);
         const isInterest = AppState.interestStocks.has(row.id);
@@ -62,7 +65,7 @@ function renderTable() {
             matchGiftType = !finalIsTicket && !isNoGift;
         }
 
-        return matchSearch && matchStar && matchAnnual && matchExcludeId && matchPurchase && matchGiftType && matchInterest;
+        return matchSearch && matchStar && matchAnnual && matchExcludeId && matchIncludeId && matchPurchase && matchGiftType && matchInterest;
     });
 
     AppState.filteredData.sort((a, b) => {

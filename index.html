@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://www.googletagmanager.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; connect-src 'self' https://challenges.cloudflare.com https://www.google-analytics.com https://stats.g.doubleclick.net https://*.supabase.co https://cdn.jsdelivr.net; img-src 'self' data: https://www.gstatic.com https://www.google-analytics.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://www.googletagmanager.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; connect-src 'self' https://challenges.cloudflare.com https://www.google-analytics.com https://stats.g.doubleclick.net https://*.supabase.co https://cdn.jsdelivr.net; img-src 'self' data: https://www.gstatic.com https://www.google-analytics.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>台股股東會紀念品攻略 🎁</title>
@@ -252,6 +252,7 @@
                                     <i class="fa-solid fa-floppy-disk"></i> 手動儲存
                                 </button>
                                 <span class="sync-status-text hidden" id="syncStatusText" title="💡 每次操作後 15 分鐘若無新動作，會自動儲存一次"></span>
+                                <span class="sync-hint-text hidden" id="syncHintText">💡 每 15 分鐘自動同步，離開頁面前建議手動儲存</span>
                             </div>
                         </div>
                     </div>
@@ -273,6 +274,11 @@
                                 <input type="checkbox" id="excludeIdFilter">
                                 <i class="fa-solid fa-id-card" aria-hidden="true"></i>
                                 排除身分證
+                            </label>
+                            <label class="tag-btn square-tag id-include-label" title="只看需出示身分證">
+                                <input type="checkbox" id="includeIdFilter">
+                                <i class="fa-solid fa-address-card" aria-hidden="true"></i>
+                                需身分證
                             </label>
                             <label class="tag-btn square-tag ticket-filter-label" title="只看票券、點數卡、商品卡類紀念品">
                                 <input type="checkbox" id="ticketFilter">

@@ -116,7 +116,7 @@
 
 .table-toolbar .square-tag.annual-checkbox-label input:checked + span,
 .table-toolbar .square-tag.annual-checkbox-label:has(input:checked) {
-    background: rgba(168, 85, 247, 0.2);
+    background: rgba(168, 85, 247, 0.2); /* 紫色 Purple */
     border-color: rgba(168, 85, 247, 0.5);
     color: #c084fc;
     font-weight: 600;
@@ -124,15 +124,23 @@
 
 .table-toolbar .square-tag.id-exclude-label input:checked + span,
 .table-toolbar .square-tag.id-exclude-label:has(input:checked) {
-    background: rgba(244, 63, 94, 0.2);
+    background: rgba(244, 63, 94, 0.2); /* 玫瑰紅 Rose */
     border-color: rgba(244, 63, 94, 0.5);
     color: #fca5a5;
     font-weight: 600;
 }
 
+.table-toolbar .square-tag.id-include-label input:checked + span,
+.table-toolbar .square-tag.id-include-label:has(input:checked) {
+    background: rgba(249, 115, 22, 0.2); /* 亮橘 Orange */
+    border-color: rgba(249, 115, 22, 0.5);
+    color: #fb923c;
+    font-weight: 600;
+}
+
 .table-toolbar .square-tag.ticket-filter-label input:checked + span,
 .table-toolbar .square-tag.ticket-filter-label:has(input:checked) {
-    background: rgba(56, 189, 248, 0.2);
+    background: rgba(56, 189, 248, 0.2); /* 天藍 Sky */
     border-color: rgba(56, 189, 248, 0.5);
     color: #7dd3fc;
     font-weight: 600;
@@ -140,17 +148,17 @@
 
 .table-toolbar .square-tag.object-filter-label input:checked + span,
 .table-toolbar .square-tag.object-filter-label:has(input:checked) {
-    background: rgba(99, 102, 241, 0.2);
-    border-color: rgba(99, 102, 241, 0.5);
-    color: #a5b4fc;
+    background: rgba(236, 72, 153, 0.2); /* 粉紅 Pink */
+    border-color: rgba(236, 72, 153, 0.5);
+    color: #f472b6;
     font-weight: 600;
 }
 
 .table-toolbar .square-tag.interest-filter-label input:checked + span,
 .table-toolbar .square-tag.interest-filter-label:has(input:checked) {
-    background: rgba(16, 185, 129, 0.2);
-    border-color: rgba(16, 185, 129, 0.5);
-    color: #34d399;
+    background: rgba(245, 158, 11, 0.2); /* 金黃 Amber */
+    border-color: rgba(245, 158, 11, 0.5);
+    color: #fbbf24;
     font-weight: 700;
 }
 
@@ -248,15 +256,15 @@
 }
 
 .purchase-tags-group #filterPurchased.active {
-    background: rgba(16, 185, 129, 0.2) !important;
+    background: rgba(16, 185, 129, 0.2) !important; /* 翠綠 Emerald */
     border-color: rgba(16, 185, 129, 0.5) !important;
     color: #34d399 !important;
 }
 
 .purchase-tags-group #filterUnpurchased.active {
-    background: rgba(245, 158, 11, 0.2) !important;
-    border-color: rgba(245, 158, 11, 0.5) !important;
-    color: #fbbf24 !important;
+    background: rgba(99, 102, 241, 0.2) !important; /* 靛青 Indigo */
+    border-color: rgba(99, 102, 241, 0.5) !important;
+    color: #a5b4fc !important;
 }
 
 .purchase-tags-group .tag-btn.active i {
@@ -282,5 +290,25 @@
 
     .table-toolbar .toolbar-left {
         width: 100%;
+    }
+}
+
+/* ── 同步提示小字 ───────────────────────────────────────── */
+.sync-hint-text {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    opacity: 0.6;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    height: 32px;
+    padding-left: 0.5rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    margin-left: 0.1rem;
+}
+
+@media (max-width: 768px) {
+    .sync-hint-text {
+        display: none;
     }
 }

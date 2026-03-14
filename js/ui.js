@@ -113,8 +113,24 @@ function initUI() {
     });
 
     const excludeIdFilter = document.getElementById('excludeIdFilter');
+    const includeIdFilter = document.getElementById('includeIdFilter');
+
     excludeIdFilter?.addEventListener('change', () => {
         AppState.filters.excludeId = excludeIdFilter.checked;
+        if (excludeIdFilter.checked && includeIdFilter) {
+            includeIdFilter.checked = false;
+            AppState.filters.includeId = false;
+        }
+        if (!AppState.globalData.length) return;
+        AppState.currentPage = 1;
+        renderTable();
+    });
+    includeIdFilter?.addEventListener('change', () => {
+        AppState.filters.includeId = includeIdFilter.checked;
+        if (includeIdFilter.checked && excludeIdFilter) {
+            excludeIdFilter.checked = false;
+            AppState.filters.excludeId = false;
+        }
         if (!AppState.globalData.length) return;
         AppState.currentPage = 1;
         renderTable();

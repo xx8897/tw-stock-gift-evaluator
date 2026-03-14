@@ -97,14 +97,22 @@ function togglePurchase(stockId) {
  */
 function toggleInterest(stockId) {
     stockId = String(stockId);
+    let isMarking = false;
     if (AppState.interestStocks.has(stockId)) {
         AppState.interestStocks.delete(stockId);
     } else {
         AppState.interestStocks.add(stockId);
+        isMarking = true;
     }
     saveInterestStocks();
     processDataAndRender();
     if (typeof scheduleAutoSync === 'function') scheduleAutoSync();
+
+    // 觸發星號收藏事件追蹤 (V4.8.2)
+    if (isMarking && typeof trackStockEvent === 'function') {
+        const stock = AppState.globalData.find(s => s.id === stockId);
+        trackStockEvent(stockId, stock ? stock.name : stockId, 'mark_interest');
+    }
 }
 
 async function loadData() {

@@ -240,6 +240,7 @@ function updateAuthUI(user) {
         userMenu?.classList.remove('hidden');
         syncSaveBtn?.classList.remove('hidden');
         syncStatusText?.classList.remove('hidden');
+        document.getElementById('syncHintText')?.classList.remove('hidden');
         if (userEmailShort) {
             userEmailShort.textContent = user.user_metadata?.nickname || user.email?.split('@')[0] || '使用者';
         }
@@ -249,6 +250,7 @@ function updateAuthUI(user) {
         userMenu?.classList.remove('open');
         syncSaveBtn?.classList.add('hidden');
         syncStatusText?.classList.add('hidden');
+        document.getElementById('syncHintText')?.classList.add('hidden');
     }
 }
 

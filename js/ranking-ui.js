@@ -92,7 +92,7 @@
                         const name = (typeof AppState !== 'undefined' && AppState?.globalData) 
                             ? AppState.globalData.find(s => s.id === d.stock_id)?.name 
                             : d.stock_id;
-                        hotList.appendChild(mkItem(d.stock_id, name || d.stock_id, `${d.interest_count} 人收藏`));
+                        hotList.appendChild(mkItem(d.stock_id, name || d.stock_id, `${d.interest_count} 個收藏`));
                     });
                 } else {
                     hotList.innerHTML = '<div class="ranking-item loading">暫無熱度數據</div>';
@@ -161,7 +161,7 @@
             const name = (typeof AppState !== 'undefined' && AppState?.globalData)
                 ? AppState.globalData.find(s => s.id === id)?.name
                 : (d.stock_name || id);
-            const valueText = type === 'hot' ? `${d.interest_count} 人收藏` : `${d.owner_count} 位持有`;
+            const valueText = type === 'hot' ? `${d.interest_count} 個收藏` : `${d.owner_count} 位持有`;
 
             const item = document.createElement('div');
             item.className = 'ranking-item';
