@@ -191,6 +191,37 @@ function initUI() {
         renderTable();
     });
 
+    const showGridlinesToggle = document.getElementById('showGridlinesToggle');
+    const tableContainer = document.querySelector('.table-container');
+    const gridlinesIcon = document.getElementById('gridlinesIcon');
+
+    const updateGridlinesUI = (isShow) => {
+        if (isShow) {
+            tableContainer?.classList.add('show-gridlines');
+            localStorage.setItem('showGridlines', 'true');
+            if (gridlinesIcon) gridlinesIcon.className = 'fa-solid fa-eye';
+        } else {
+            tableContainer?.classList.remove('show-gridlines');
+            localStorage.setItem('showGridlines', 'false');
+            if (gridlinesIcon) gridlinesIcon.className = 'fa-solid fa-eye-slash';
+        }
+    };
+
+    if (showGridlinesToggle) {
+        // 讀取本地格線狀態，預設為隱藏 (false)
+        if (localStorage.getItem('showGridlines') === 'true') {
+            showGridlinesToggle.checked = true;
+            updateGridlinesUI(true);
+        } else {
+            showGridlinesToggle.checked = false;
+            updateGridlinesUI(false);
+        }
+
+        showGridlinesToggle.addEventListener('change', () => {
+            updateGridlinesUI(showGridlinesToggle.checked);
+        });
+    }
+
     pageSizeSelect?.addEventListener('change', () => {
         AppState.pageSize = parseInt(pageSizeSelect.value, 10);
         if (!AppState.globalData.length) return;

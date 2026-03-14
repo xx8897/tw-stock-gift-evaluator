@@ -1067,3 +1067,36 @@ td:has(.gift-cell) {
     display: block;
 }
 
+/* ==========================================
+   表單隱藏格線功能
+   ========================================== */
+.table-container.hide-gridlines table th,
+.table-container.hide-gridlines table td {
+    border-bottom: 0px solid transparent !important;
+}
+
+
+/* ==========================================
+   New Gridlines CSS
+   ========================================== */
+.table-container:not(.show-gridlines) table th,
+.table-container:not(.show-gridlines) table td {
+    border-bottom-color: transparent !important;
+    border-right-color: transparent !important;
+}
+
+.table-container.show-gridlines table th,
+.table-container.show-gridlines table td {
+    border-bottom: 1px solid var(--border-subtle) !important;
+    border-right: 1px solid var(--border-subtle) !important;
+}
+
+.table-container.show-gridlines table th {
+    border-bottom: 2px solid var(--border-subtle) !important;
+}
+
+.table-container.show-gridlines table {
+    border-left: 1px solid var(--border-subtle);
+    border-top: 1px solid var(--border-subtle);
+}
+

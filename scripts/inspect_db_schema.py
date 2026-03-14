@@ -1,0 +1,28 @@
+import requests
+import json
+
+SUPABASE_URL = 'https://jyoaoepcrqxzrtdkldfg.supabase.co'
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5b2FvZXBjcnF4enJ0ZGtsZGZnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Mjg2MjEwNiwiZXhwIjoyMDg4NDM4MTA2fQ.BFxnlPwH89UlJWbTj07lLm0rZgsMgnvCyxnfXTZ8Xhs"
+
+headers = {
+    'apikey': SUPABASE_KEY,
+    'Authorization': f'Bearer {SUPABASE_KEY}',
+    'Accept': 'application/openapi+json'
+}
+
+print("--- Inspecting Current DB Schema ---")
+resp = requests.get(f"{SUPABASE_URL}/rest/v1/", headers=headers)
+if resp.status_code == 200:
+    spec = resp.json()
+    definitions = spec.get('definitions', {})
+    print("Existing Tables/Views:", list(definitions.keys()))
+    
+    # Check user_stocks columns
+    user_stocks = definitions.get('user_stocks', {}).get('properties', {})
+    print("\nuser_stocks columns:", list(user_stocks.keys()))
+    
+    # Check top_stocks_30d columns
+    top_stocks_30d = definitions.get('top_stocks_30d', {}).get('properties', {})
+    print("top_stocks_30d columns:", list(top_stocks_30d.keys()))
+else:
+    print(f"Error: {resp.status_code} {resp.text}")

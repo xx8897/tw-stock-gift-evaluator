@@ -162,6 +162,25 @@
     font-weight: 700;
 }
 
+/* 預設(隱藏格線)狀態：變暗變灰 */
+.table-toolbar .square-tag.show-gridlines-btn {
+    opacity: 0.5;
+    color: var(--text-secondary);
+    transition: opacity 0.2s, color 0.2s;
+}
+
+.table-toolbar .square-tag.show-gridlines-btn:hover {
+    opacity: 0.8;
+}
+
+/* 開啟(顯示格線)狀態：高亮 */
+.table-toolbar .square-tag.show-gridlines-btn:has(#showGridlinesToggle:checked) {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    color: #fff;
+    opacity: 1;
+}
+
 .result-count {
     font-size: 0.88rem;
     color: var(--text-secondary);

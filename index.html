@@ -295,6 +295,10 @@
                                 <i class="fa-solid fa-star" aria-hidden="true"></i>
                                 只看興趣
                             </label>
+                            <label class="tag-btn square-tag show-gridlines-btn" title="顯示表格完整格線 (含直線)" style="padding: 0 0.6rem;">
+                                <input type="checkbox" id="showGridlinesToggle">
+                                <i class="fa-solid fa-eye-slash" id="gridlinesIcon" style="margin: 0;"></i>
+                            </label>
                         </div>
 
                         <div class="page-size-control">
@@ -333,17 +337,13 @@
                             <th>上次紀念品</th>
                             <th class="sortable" data-sort="freq"
                                 title="近五年內（2021–2025）有發放紀念品的次數，滿分為 5 次。建議選擇長期穩定發放的標的。">五年內發放 <i
-                                    class="fa-regular fa-circle-question info-icon"></i> <i
                                     class="fa-solid fa-sort"></i></th>
                             <th class="sortable highlight-col" data-sort="cp"
                                 title="新版性價比 = (五年紀念品總估值 ÷ 最近價格) × (五年內發放次數 ÷ 5)。數值越高代表越划算，≥ 2.0 為 5 星神股。">新版性價比 <i
-                                    class="fa-regular fa-circle-question info-icon"></i> <i
                                     class="fa-solid fa-sort"></i></th>
-                            <th title="領取紀念品的前置條件（如需電子投票、身分證影本等），視各公司規定而定。">去年條件 <i
-                                    class="fa-regular fa-circle-question info-icon"></i></th>
+                            <th title="領取紀念品的前置條件（如需電子投票、身分證影本等），視各公司規定而定。">去年條件</th>
                             <th class="sortable" data-sort="score"
                                 title="綜合 CP 值給出的推薦星級：5星(CP≥2.0)、4星(CP≥1.0)、3星(CP≥0.5)、2星(CP≥0.1)、1星(CP<0.1)。">推薦評分 <i
-                                    class="fa-regular fa-circle-question info-icon"></i> <i
                                     class="fa-solid fa-sort"></i></th>
                         </tr>
                     </thead>
@@ -502,6 +502,7 @@
             </button>
             <div class="feedback-modal-header" style="padding: 0 1.5rem 1rem;">
                 <h2 id="rankingModalTitle">完整排行榜</h2>
+                <p id="rankingModalDesc" style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.5rem; line-height: 1.4; opacity: 0.8;"></p>
             </div>
             <div id="rankingModalBody" class="ranking-list-modal" style="padding: 0 1.5rem; overflow-y: auto; max-height: calc(85vh - 120px);">
                 <!-- 動態注入排行 -->

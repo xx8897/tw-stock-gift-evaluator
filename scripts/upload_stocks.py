@@ -6,10 +6,23 @@ import math
 
 # 配置資訊
 SUPABASE_URL = 'https://jyoaoepcrqxzrtdkldfg.supabase.co'
-SUPABASE_KEY = os.environ.get('SUPABASE_SERVICE_KEY', '')
 TABLE_NAME = 'stocks'
-# INPUT_FILE = 'data/2021-2025_推薦評分.xlsx'
 INPUT_FILE = 'data/2021-2025_推薦v2.xlsx'
+
+# 嘗試從環境變數或 .secret 檔案讀取 Key
+def get_service_key():
+    key = os.environ.get('SUPABASE_SERVICE_KEY', '')
+    if not key and os.path.exists('.secret'):
+        try:
+            with open('.secret', 'r', encoding='utf-8') as f:
+                for line in f:
+                    if line.startswith('SUPABASE_SERVICE_KEY='):
+                        return line.split('=', 1)[1].strip()
+        except:
+            pass
+    return key
+
+SUPABASE_KEY = get_service_key()
 
 def safe_float(val):
     try:
@@ -74,7 +87,7 @@ def upload_data():
     
     # 1. 刪除所有現有資料
     print("🧹 正在清理 Supabase 中的舊資料...")
-    del_url = f'{SUPABASE_URL}/rest/v1/{TABLE_NAME}'
+    del_url = f'{SUPABASE_URL}/rest/v1/{TABLE_NAME}?stock_id=not.is.null'
     del_resp = requests.delete(del_url, headers=headers)
     if del_resp.status_code not in (200, 204):
         print(f"⚠️ 清理舊資料失敗: {del_resp.status_code} {del_resp.text}")

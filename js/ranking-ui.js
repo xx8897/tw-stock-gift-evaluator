@@ -123,6 +123,7 @@
     async function openRankingModal(type) {
         const modal = document.getElementById('rankingModal');
         const title = document.getElementById('rankingModalTitle');
+        const desc = document.getElementById('rankingModalDesc');
         const body = document.getElementById('rankingModalBody');
         if (!modal || !body) return;
 
@@ -131,10 +132,12 @@
 
         if (type === 'hot') {
             title.innerText = '⭐ 收藏熱度榜 Top 50';
+            if (desc) desc.innerText = '歷史總會員「收藏」個數 ＋ 近 30 天內訪客的「關注」個數';
             const data = await fetchTopStocks(50);
             renderModalList(data, 'hot');
         } else {
             title.innerText = '💎 資深小資選 Top 50';
+            if (desc) desc.innerText = '註冊會員將該股票設定為「已持有」的總人數進行排行';
             const data = await fetchTopOwned(50);
             renderModalList(data, 'owned');
         }
