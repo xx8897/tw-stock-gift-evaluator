@@ -122,7 +122,7 @@ function renderTable() {
             </td>
             <td data-label="股號" class="stock-id">${row.id}</td>
             <td data-label="公司" class="stock-name">${row.name}</td>
-            <td data-label="最新股價" class="price">${row.price.toFixed(2)}</td>
+            <td data-label="最近價格" class="price">${row.price.toFixed(2)}</td>
             <td data-label="上次紀念品">
                 <div class="gift-cell"><span class="gift-text" title="${row.gift}">${displayGift}</span>${historyTag}</div>
             </td>

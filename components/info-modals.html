@@ -8,37 +8,36 @@
         <div class="modal-body">
 
             <h4>📂 資料來源</h4>
-            <p>本站發放紀錄涵蓋
-                2021–2025 年全台上市/上櫃公司股東會紀念品歷史，共 <strong>881 筆</strong>公開事實數據。股價採用三層備援（台灣證交所 → 櫃買中心 → 歷史紀錄），基準日為
-                <strong>2026/02/25</strong>。
+            <p>本站發放紀錄涵蓋 2021–2025 年全台上市/上櫃公司股東會紀念品歷史。價格資料直接串接 <strong>台灣證交所 (TWSE)</strong> 與 <strong>櫃買中心 (TPEx)</strong> 之官方 OpenAPI 數據。
             </p>
 
             <h4>📐 新版性價比公式</h4>
             <p>以「五年紀念品總值」為基礎計算，而非單次紀念品：</p>
-            <code>新版性價比 = (五年紀念品總估值 ÷ 最新股價) × (五年內發放次數 ÷ 5)</code>
+            <code>新版性價比 = (五年紀念品總估值 ÷ 最近價格) × (五年內發放次數 ÷ 5)</code>
             <p style="margin-top: 0.5rem;">此公式同時反映了「紀念品值多少」和「這家公司發放頻率有多穩定」。</p>
 
-            <h4>🏷️ 紀念品估值模型（參考市場實際行情）</h4>
+            <h4>🛡️ 估值模型 V3.1 — 保守估算策略</h4>
+            <p style="color: var(--accent-primary); font-weight: 500;">本站採用保守估算基準：每筆紀念品估值皆已預先扣除「代領花費」。</p>
+            <ul style="font-size: 0.9rem; color: var(--text-secondary); margin: 0.5rem 0 1rem 1.2rem;">
+                <li>禮券 / 商品卡類：每次發放估值 <strong>-15 元</strong></li>
+                <li>實體物品類：每次發放估值 <strong>-20 元</strong></li>
+            </ul>
+            <p style="font-size: 0.85rem; opacity: 0.8;">※ 此扣除僅為提供更務實的性價比參考，並不代表您實際支出的領取成本。</p>
+
+            <h4>🏷️ 紀念品估值模型 (V3 基準行情)</h4>
             <div class="valuation-table">
                 <div class="val-row"><span>現金 / 商品卡 / 禮物卡</span><span class="val-price">面額</span></div>
-                <div class="val-row highlight"><span>六福村主題樂園門票</span><span class="val-price">1,199 元</span>
-                </div>
-                <div class="val-row highlight"><span>大魯閣消費抵用券+買1送1</span><span class="val-price">800 元</span>
-                </div>
-                <div class="val-row"><span>王品股東大禮包</span><span class="val-price">400 元</span></div>
-                <div class="val-row"><span>佐登妮絲城堡入園</span><span class="val-price">300 元</span></div>
-                <div class="val-row"><span>蓋毯 / 毛毯</span><span class="val-price">200 元</span></div>
-                <div class="val-row"><span>保溫杯 / 保溫瓶</span><span class="val-price">150 元</span></div>
-                <div class="val-row"><span>食用油（橄欖油/苦茶油）</span><span class="val-price">120 元</span></div>
-                <div class="val-row"><span>不鏽鋼餐具 / 砧板 / 保鮮盒</span><span class="val-price">120 元</span></div>
-                <div class="val-row"><span>保健品 / 膠囊 / 維生素</span><span class="val-price">100 元</span></div>
-                <div class="val-row"><span>杯子 / 馬克杯</span><span class="val-price">80 元</span></div>
-                <div class="val-row"><span>個人衛生用品（香皂/沐浴乳）</span><span class="val-price">60 元</span></div>
-                <div class="val-row"><span>食品（火鍋湯/拌麵/零食）</span><span class="val-price">50 元</span></div>
-                <div class="val-row"><span>清潔用品（洗衣精/洗碗精）</span><span class="val-price">50 元</span></div>
-                <div class="val-row"><span>環保袋 / 購物袋</span><span class="val-price">50 元</span></div>
-                <div class="val-row"><span>濕紙巾 / 衛生紙</span><span class="val-price">30 元</span></div>
-                <div class="val-row"><span>其他未分類品項</span><span class="val-price">40 元</span></div>
+                <div class="val-row highlight"><span>六福村主題樂園門票 / 門票類</span><span class="val-price">400~1,199 元</span></div>
+                <div class="val-row highlight"><span>大魯閣消費抵用券 / 王品大禮包</span><span class="val-price">400~800 元</span></div>
+                <div class="val-row"><span>小家電 (循環扇/行動電源)</span><span class="val-price">300~400 元</span></div>
+                <div class="val-row"><span>不鏽鋼保溫杯 / 隔熱餐具</span><span class="val-price">150~200 元</span></div>
+                <div class="val-row"><span>陶瓷 / 骨瓷 / 耐熱玻璃餐具</span><span class="val-price">80~120 元</span></div>
+                <div class="val-row"><span>工具組 / 自動傘 / 抗UV傘</span><span class="val-price">180~200 元</span></div>
+                <div class="val-row"><span>食用油 / 品牌毛巾 / 浴巾</span><span class="val-price">120 元</span></div>
+                <div class="val-row"><span>基本日用品 (洗面乳/洗碗精)</span><span class="val-price">50~60 元</span></div>
+                <div class="val-row"><span>零食 / 拌麵 / 衛生紙類</span><span class="val-price">30~50 元</span></div>
+                <div class="val-row"><span>其他未分類品項 (保底估值)</span><span class="val-price">40 元</span></div>
+                <div class="val-row"><span>※ 以上為原始價值，計算時會再執行代領費扣除</span></div>
             </div>
 
             <h4>⭐ 推薦評級對照</h4>
@@ -47,7 +46,7 @@
                 <p><span class="badge badge-4">4 星推薦</span> CP 值 ≥ 1.0（回本有餘）</p>
                 <p><span class="badge badge-3">3 星尚可</span> CP 值 ≥ 0.5</p>
                 <p><span class="badge badge-2">2 星不推</span> CP 值 ≥ 0.1</p>
-                <p><span class="badge badge-1">1 星極差</span> CP 值 &lt; 0.1 或無發放</p>
+                <p><span class="badge badge-1">1 星極差</span> CP 值 < 0.1 或無發放</p>
             </div>
 
             <h4>💡 選股小撇步</h4>
