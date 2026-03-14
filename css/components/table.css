@@ -108,6 +108,18 @@ td.stock-name,    /* 公司內容 */
     text-align: center !important;
 }
 
+/* 欄位寬度與對齊進階微調 */
+th:nth-child(9),
+.cond-cell {
+    width: 90px !important;    /* 縮小寬度 */
+    min-width: 90px !important;
+    max-width: 90px !important;
+    white-space: normal !important; /* 允許文字換行以利縮小寬度 */
+    word-break: break-all;
+    padding-left: 0.5rem !important; /* 適度縮小左右間距 */
+    padding-right: 0.5rem !important;
+}
+
 /* 修正置中後，排序圖示的位置建議緊貼文字 */
 th.sortable {
     text-align: inherit; /* 讓 text-align: center 發揮作用 */
