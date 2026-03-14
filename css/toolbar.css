@@ -148,9 +148,9 @@
 
 .table-toolbar .square-tag.interest-filter-label input:checked + span,
 .table-toolbar .square-tag.interest-filter-label:has(input:checked) {
-    background: rgba(245, 158, 11, 0.25);
-    border-color: rgba(245, 158, 11, 0.6);
-    color: #fbbf24;
+    background: rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.5);
+    color: #34d399;
     font-weight: 700;
 }
 
