@@ -1,5 +1,5 @@
-const EXCEL_URL = 'data/2021-2025_推薦評分.xlsx';
-const GITHUB_API_URL = 'https://api.github.com/repos/xx8897/tw-stock-gift-evaluator/commits?path=data%2F2021-2025_%E6%8E%A8%E8%96%A6%E8%A9%95%E5%88%86.xlsx&page=1&per_page=1';
+const EXCEL_URL = 'data/2021-2025_推薦v2.xlsx';
+const GITHUB_API_URL = 'https://api.github.com/repos/xx8897/tw-stock-gift-evaluator/commits?path=data%2F2021-2025_%E6%8E%A8%E8%96%A6v2.xlsx&page=1&per_page=1';
 
 const AppState = {
     globalData: [],

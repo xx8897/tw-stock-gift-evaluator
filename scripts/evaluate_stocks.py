@@ -9,8 +9,10 @@ _BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _DATA_DIR = os.path.join(_BASE_DIR, 'data')
 os.makedirs(_DATA_DIR, exist_ok=True)
 
-INPUT_FILE  = os.path.join(_DATA_DIR, '2021-2025_推薦評分.xlsx')
-OUTPUT_FILE = os.path.join(_DATA_DIR, '2021-2025_推薦評分.xlsx')
+# INPUT_FILE  = os.path.join(_DATA_DIR, '2021-2025_推薦評分.xlsx')
+# OUTPUT_FILE = os.path.join(_DATA_DIR, '2021-2025_推薦評分.xlsx')
+INPUT_FILE  = os.path.join(_DATA_DIR, '2021-2025_推薦v2.xlsx')
+OUTPUT_FILE = os.path.join(_DATA_DIR, '2021-2025_推薦v2.xlsx')
 
 # ============================================================
 # 1. 讀取原始資料
@@ -272,8 +274,9 @@ def estimate_gift_value(gift_name):
 print("Calculating CP scores...")
 df['最新股價'] = df['股號'].map(price_dict)
 
-# Fallback: 用原始 Excel 的「股價」欄位補上
-df['最新股價'] = df['最新股價'].fillna(pd.to_numeric(df['股價'], errors='coerce'))
+# Fallback: 用原始 Excel 的「股價」欄位補上 (v2 已刪除此欄位，全面改用最新股價)
+# df['最新股價'] = df['最新股價'].fillna(pd.to_numeric(df['股價'], errors='coerce'))
+df['最新股價'] = df['最新股價'].fillna(0.0) # v2 測試註記
 # 最後兜底：填 0.0
 df['最新股價'] = df['最新股價'].fillna(0.0).round(2)
 
@@ -376,8 +379,8 @@ df['新版推薦評分'] = df['新版性價比'].apply(calc_new_score)
 # 5. 確保輸出欄位與匯出
 # ============================================================
 final_columns = [
-    '股號', '股價', '公司', '五年內發放次數', '最近一次發放', '上次紀念品',
-    '最新股價', '紀念品預估價值', '性價比(CP值)', '推薦評分',
+    '股號', '公司', '五年內發放次數', '最近一次發放', '上次紀念品',
+    '最新股價', 
     '五年紀念品總估值', '新版性價比', '新版推薦評分',
     '去年條件', '五年發放紀念品'
 ]
