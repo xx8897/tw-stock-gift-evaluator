@@ -4,8 +4,23 @@
  */
 
 (function() {
+    // 用於防止重複點擊洗版 (冷卻時間機制)
+    const eventCache = new Map();
+    const COOLING_MS = 10000; // 10秒冷卻時間
+
     // 追蹤股票相關事件
     async function trackStockEvent(stockCode, stockName, eventType = 'view') {
+        const now = Date.now();
+        const cacheKey = `${eventType}_${stockCode}`;
+        const lastTime = eventCache.get(cacheKey) || 0;
+
+        // 如果在冷卻時間內重複觸發相同事件，則跳過
+        if (now - lastTime < COOLING_MS) {
+            console.debug(`[Analytics]: 事件已冷卻，跳過追蹤 (${cacheKey})`);
+            return;
+        }
+        eventCache.set(cacheKey, now);
+
         const timestamp = new Date().toISOString();
         
         // 1. 發送至 GA4
@@ -40,6 +55,13 @@
 
     // 追蹤一般 UI 動作
     function trackUIEvent(action, label = '') {
+        const now = Date.now();
+        const cacheKey = `ui_${action}_${label}`;
+        const lastTime = eventCache.get(cacheKey) || 0;
+
+        if (now - lastTime < 5000) return; // UI 動作 5 秒冷卻
+        eventCache.set(cacheKey, now);
+
         if (typeof gtag !== 'undefined') {
             gtag('event', 'ui_interaction', {
                 'action': action,

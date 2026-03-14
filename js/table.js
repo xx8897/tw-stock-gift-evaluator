@@ -36,23 +36,29 @@ function renderTable() {
             matchPurchase = !isPurchased;
         }
 
-        // 票券過濾
-        let matchTicket = true;
+        // 票券/物品過濾 (互斥)
+        let matchGiftType = true;
+        const giftText = String(row.gift);
+        const posKws = ['券', '劵', '卡', '門票', '點數', '抵用金', '購物金', '拿鐵', '美式'];
+        const negKws = ['卡套', '卡包', '卡夾', '夾', '撲克牌', '賀卡', '馬卡龍', '打卡', '微波', '保卡', '金屬', '金盞', '黃金', '馬克杯', '合金', '吸掛卡', '打卡板', '記憶卡', '卡片', '指甲剪', '口罩', '提籃'];
+        
+        let isTicket = posKws.some(kw => giftText.includes(kw));
+        let isExcluded = negKws.some(kw => giftText.includes(kw));
+        if (giftText.includes('錦明股東專屬會員卡')) {
+            isTicket = true;
+            isExcluded = false;
+        }
+        const finalIsTicket = isTicket && !isExcluded;
+
         if (AppState.filters.ticketOnly) {
-            const giftText = String(row.gift);
-            const posKws = ['券', '劵', '卡', '門票', '點數', '抵用金', '購物金', '拿鐵', '美式'];
-            const negKws = ['卡套', '卡包', '卡夾', '夾', '撲克牌', '賀卡', '馬卡龍', '打卡', '微波', '保卡', '金屬', '金盞', '黃金', '馬克杯', '合金', '吸掛卡', '打卡板', '記憶卡', '卡片', '指甲剪', '口罩', '提籃'];
-            
-            let isTicket = posKws.some(kw => giftText.includes(kw));
-            let isExcluded = negKws.some(kw => giftText.includes(kw));
-            if (giftText.includes('錦明股東專屬會員卡')) {
-                isTicket = true;
-                isExcluded = false;
-            }
-            matchTicket = isTicket && !isExcluded;
+            matchGiftType = finalIsTicket;
+        } else if (AppState.filters.objectOnly) {
+            // 物品定義：非票券 且 非空 且 非未發放
+            const isNoGift = !giftText || giftText === '-' || giftText.includes('未發放') || giftText.includes('不發放');
+            matchGiftType = !finalIsTicket && !isNoGift;
         }
 
-        return matchSearch && matchStar && matchAnnual && matchExcludeId && matchPurchase && matchTicket;
+        return matchSearch && matchStar && matchAnnual && matchExcludeId && matchPurchase && matchGiftType;
     });
 
     AppState.filteredData.sort((a, b) => {

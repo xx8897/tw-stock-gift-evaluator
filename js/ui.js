@@ -121,8 +121,25 @@ function initUI() {
     });
 
     const ticketFilter = document.getElementById('ticketFilter');
+    const objectFilter = document.getElementById('objectFilter');
+
     ticketFilter?.addEventListener('change', () => {
         AppState.filters.ticketOnly = ticketFilter.checked;
+        if (ticketFilter.checked && objectFilter) {
+            objectFilter.checked = false;
+            AppState.filters.objectOnly = false;
+        }
+        if (!AppState.globalData.length) return;
+        AppState.currentPage = 1;
+        renderTable();
+    });
+
+    objectFilter?.addEventListener('change', () => {
+        AppState.filters.objectOnly = objectFilter.checked;
+        if (objectFilter.checked && ticketFilter) {
+            ticketFilter.checked = false;
+            AppState.filters.ticketOnly = false;
+        }
         if (!AppState.globalData.length) return;
         AppState.currentPage = 1;
         renderTable();

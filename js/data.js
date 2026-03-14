@@ -12,6 +12,7 @@ const AppState = {
         annualOnly: false,
         excludeId: false,
         ticketOnly: false,
+        objectOnly: false,
         purchaseFilter: 'all' // 'all' | 'purchased' | 'unpurchased'
     },
     currentPage: 1,
