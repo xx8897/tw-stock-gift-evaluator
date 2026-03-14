@@ -278,30 +278,30 @@ def get_yahoo_price(symbol):
 # 4. 計算推薦評分
 # ============================================================
 print("Calculating CP scores...")
-df['最近價格'] = df['股號'].map(price_dict)
+df['最近股價'] = df['股號'].map(price_dict)
 
 # 最後兜底：填 0.0
-df['最近價格'] = df['最近價格'].fillna(0.0).round(2)
+df['最近股價'] = df['最近股價'].fillna(0.0).round(2)
 
 # 統計來源
 yahoo_count = df['股號'].map(price_dict).notna().sum()
-zero_stocks = df[df['最近價格'] == 0]['股號'].tolist()
+zero_stocks = df[df['最近股價'] == 0]['股號'].tolist()
 
 if zero_stocks:
     print(f"  [INFO] Attempting to fix {len(zero_stocks)} zero prices via Yahoo Finance...")
     for sid in zero_stocks:
         y_price = get_yahoo_price(sid)
         if y_price:
-            df.loc[df['股號'] == sid, '最近價格'] = y_price
+            df.loc[df['股號'] == sid, '最近股價'] = y_price
             price_dict[sid] = y_price
 
-still_zero = (df['最近價格'] == 0).sum()
+still_zero = (df['最近股價'] == 0).sum()
 print(f"  -> OpenAPI API: {yahoo_count}, Fixed via Yahoo: {len(zero_stocks) - still_zero}, Still zero: {still_zero}")
 
 df['紀念品預估價值'] = df['上次紀念品'].apply(estimate_gift_value)
 
 def calculate_cp_and_score(row):
-    price = row['最新股價']
+    price = row['最近股價']
     val = row['紀念品預估價值']
     cond = row['去年條件']
     freq = row['五年內發放次數']
