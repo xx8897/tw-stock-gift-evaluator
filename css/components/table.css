@@ -63,7 +63,7 @@ th.th-purchased i {
     opacity: 0.8;
 }
 /* 文字類欄位對齊：微調左邊間隔，增加對齊感但保持置左 */
-td.stock-id, td.price {
+td.price {
     padding-left: 1.15rem !important;
 }
 
@@ -103,6 +103,7 @@ th:nth-child(7), /* 五年內發放標題 */
 th:nth-child(8), /* 新版性價比標題 */
 th:nth-child(9), /* 去年條件標題 */
 th:nth-child(10), /* 推薦評分標題 */
+td.stock-id,      /* 股號內容 */
 td.stock-name,    /* 公司內容 */
 .freq-cell {      /* 五年內發放下方的欄位 */
     text-align: center !important;
