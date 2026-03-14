@@ -468,7 +468,8 @@ if SUPABASE_KEY:
                 'score':           safe_str(row.get('新版推薦評分')),
                 'five_year_gifts': safe_str(row.get('五年發放紀念品')),
                 'cond':            safe_str(row.get('去年條件')),
-                'gift_value':      safe_float(row.get('紀念品預估價值')),
+                # v2 不再需要紀念品預估價值，統一設為 None
+                'gift_value':      None,
                 'five_year_total': safe_float(row.get('五年紀念品總估值')),
                 'last_issued':     safe_str(row.get('最近一次發放')),
             })
