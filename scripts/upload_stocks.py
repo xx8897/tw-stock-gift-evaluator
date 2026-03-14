@@ -52,15 +52,13 @@ def upload_data():
             records.append({
                 'stock_id':        str(row.get('股號', '')).strip(),
                 'name':            safe_str(row.get('公司')),
-                'price':           safe_float(row.get('最新股價')),
+                'price':           safe_float(row.get('最近股價')),
                 'gift':            safe_str(row.get('上次紀念品')),
                 'freq':            safe_int(row.get('五年內發放次數')),
                 'cp':              safe_float(row.get('新版性價比')),
                 'score':           safe_str(row.get('新版推薦評分')),
                 'five_year_gifts': safe_str(row.get('五年發放紀念品')),
                 'cond':            safe_str(row.get('去年條件')),
-                # v2 不再需要紀念品預估價值，改傳五年總估值或設為 None
-                'gift_value':      None, 
                 'five_year_total': safe_float(row.get('五年紀念品總估值')),
                 'last_issued':     safe_str(row.get('最近一次發放')),
             })
