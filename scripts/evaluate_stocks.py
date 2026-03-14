@@ -89,55 +89,67 @@ def estimate_gift_value(gift_name):
     # ─── 第三層：精細分類估值 ───
     
     # 【小家電類】 200~500 元
-    if any(k in gift for k in ['電風扇', '循環扇', '捕蚊燈', '電熱毯']): return 400
-    if any(k in gift for k in ['行動電源', '耳機', '藍芽']): return 300
-    if any(k in gift for k in ['USB風扇', '手持扇', '體重計', '吸塵器']): return 200
+    if any(k in gift for k in ['電風扇', '循環扇', '捕蚊燈', '電熱毯']): val = 400
+    elif any(k in gift for k in ['行動電源', '耳機', '藍芽']): val = 300
+    elif any(k in gift for k in ['USB風扇', '手持扇', '體重計', '吸塵器']): val = 200
     
     # 【鍋具類深度細分】
-    if any(k in gift for k in ['炒鍋', '平底鍋', '鑄鐵鍋']): return 400
-    if any(k in gift for k in ['湯鍋', '燉鍋', '壓力鍋']): return 300
-    if any(k in gift for k in ['雪平鍋', '奶鍋', '單把鍋']): return 150
+    elif any(k in gift for k in ['炒鍋', '平底鍋', '鑄鐵鍋']): val = 400
+    elif any(k in gift for k in ['湯鍋', '燉鍋', '壓力鍋']): val = 300
+    elif any(k in gift for k in ['雪平鍋', '奶鍋', '單把鍋']): val = 150
     
     # 【餐具材質細分】
-    if any(k in gift for k in ['陶瓷', '骨瓷', '強化玻璃', '耐熱玻璃']):
-        if any(k in gift for k in ['盤', '碟']): return 100
-        if any(k in gift for k in ['碗', '盅']): return 80
-        return 120 # 其它陶瓷品
+    elif any(k in gift for k in ['陶瓷', '骨瓷', '強化玻璃', '耐熱玻璃']):
+        if any(k in gift for k in ['盤', '碟']): val = 100
+        elif any(k in gift for k in ['碗', '盅']): val = 80
+        else: val = 120 # 其它陶瓷品
     
-    if any(k in gift for k in ['不鏽鋼', '不銹鋼', '304', '316']):
-        if any(k in gift for k in ['保溫杯', '保溫瓶']): return 200
-        if any(k in gift for k in ['便當盒', '隔熱碗']): return 150
-        return 120 # 其它不鏽鋼件
+    elif any(k in gift for k in ['不鏽鋼', '不銹鋼', '304', '316']):
+        if any(k in gift for k in ['保溫杯', '保溫瓶']): val = 200
+        elif any(k in gift for k in ['便當盒', '隔熱碗']): val = 150
+        else: val = 120 # 其它不鏽鋼件
     
     # 【五金工具/戶外】
-    if any(k in gift for k in ['工具組', '工具套裝', '螺絲起子組']): return 180
-    if any(k in gift for k in ['露營燈', '帳篷', '野餐墊']): return 200
-    if any(k in gift for k in ['修容', '指甲剪']): return 80
+    elif any(k in gift for k in ['工具組', '工具套裝', '螺絲起子組']): val = 180
+    elif any(k in gift for k in ['露營燈', '帳篷', '野餐墊']): val = 200
+    elif any(k in gift for k in ['修容', '指甲剪']): val = 80
 
     # 【紡織品深度細分】
-    if any(k in gift for k in ['法蘭絨', '珊瑚絨', '毯']): return 250
-    if any(k in gift for k in ['浴巾', '大毛巾']): return 120
-    if any(k in gift for k in ['毛巾', '擦手巾', '運動巾']): return 60
-    if '傘' in gift:
-        if any(k in gift for k in ['自動', '抗UV', '折傘']): return 200
-        return 150
+    elif any(k in gift for k in ['法蘭絨', '珊瑚絨', '毯']): val = 250
+    elif any(k in gift for k in ['浴巾', '大毛巾']): val = 120
+    elif any(k in gift for k in ['毛巾', '擦手巾', '運動巾']): val = 60
+    elif '傘' in gift:
+        if any(k in gift for k in ['自動', '抗UV', '折傘']): val = 200
+        else: val = 150
         
     # 【食飲品類】
-    if any(k in gift for k in ['橄欖油', '葵花油', '苦茶油', '食用油', '麻油']): return 120
-    if any(k in gift for k in ['米', '白米', '香米', '糙米']) and '洗米' not in gift: return 70 # 米價略漲
-    if any(k in gift for k in ['火鍋', '鍋燒', '拌麵', '泡麵', '醬油', '罐頭', '咖啡', '零食']): return 50
+    elif any(k in gift for k in ['橄欖油', '葵花油', '苦茶油', '食用油', '麻油']): val = 120
+    elif any(k in gift for k in ['米', '白米', '香米', '糙米']) and '洗米' not in gift: val = 70
+    elif any(k in gift for k in ['火鍋', '鍋燒', '拌麵', '泡麵', '醬油', '罐頭', '咖啡', '零食']): val = 50
 
     # 其他基礎生活類
-    if any(k in gift for k in ['洗衣', '洗碗', '清潔劑', '皂', '洗髮', '牙膏']): return 50
-    if any(k in gift for k in ['濕紙巾', '衛生紙', '面紙', '抽取式']): return 30
+    elif any(k in gift for k in ['洗衣', '洗碗', '清潔劑', '皂', '洗髮', '牙膏']): val = 50
+    elif any(k in gift for k in ['濕紙巾', '衛生紙', '面紙', '抽取式']): val = 30
+    else:
+        val = 40 # 基礎保底
 
     # 【品牌/聯名加成】 1.25x
-    val = 40
     premium_brands = ['Kitty', 'Snoopy', '史努比', '迪士尼', 'Disney', 'LINE', '角落小夥伴', '卡娜赫拉', '拉拉熊', '小小兵', '皮克斯']
-    # 【保守扣除】若非複合品項且為頂層呼叫，在此判斷類別並扣除費
+    if any(b in gift for b in premium_brands):
+        val = int(val * 1.25)
+
+    # 【保守扣除】
     if is_top_level:
+        # 決定類型：是否為電子或純票券
         is_voucher = any(k in gift for k in ['禮券', '商品卡', '提貨券', '購物金', '折扣券', '兌換券', '貴賓券'])
-        cost = 15 if is_voucher else 20
+        # 新增：電子票券不扣代領費 (若名稱含電子、簡訊、APP、點數等)
+        is_digital = any(k in gift for k in ['電子', '簡訊', 'APP', '點數', '虛擬'])
+        
+        if is_digital:
+            cost = 0
+        else:
+            cost = 15 if is_voucher else 20
+        
         val = max(val - cost, 0)
 
     return val
@@ -147,8 +159,8 @@ def estimate_gift_value(gift_name):
 # ============================================================
 # 【評估說明】：五年紀念品總估值採用保守估算。
 # 每次(每年)發放之價值皆已預先扣除「代領花費」(禮券類-15元，物品類-20元)。
-# 此扣除僅為保守估算基準，並不代表實際之代領花費，僅供性價比(CP值)參考。
-print("Calculating CP scores based on existing stock prices (Conservative V3.1)...")
+# 電子類券(電子/點數/APP) 則不扣除代領費，因不須委託代領。
+print("Calculating CP scores based on V4.2 Model (Bug Fix & Digital Support)...")
 df['紀念品預估價值'] = df['上次紀念品'].apply(estimate_gift_value)
 
 def estimate_5year_total(text):
@@ -163,31 +175,51 @@ def estimate_5year_total(text):
 
 df['五年紀念品總估值'] = df['五年發放紀念品'].apply(estimate_5year_total)
 
-def calc_new_cp(row):
+def calc_v4_cp(row):
+    """
+    V4.2 CP 指數：五年期望回報率
+    公式：((五年總估值 / 5) * (次數 / 5)) / 最近股價
+    """
     price = row['最近股價']
     total_val = row['五年紀念品總估值']
     freq = row['五年內發放次數']
-    cond = str(row.get('去年條件', ''))
     
-    if price <= 0 or total_val == 0: return 0.0
-    try: freq_val = float(freq)
-    except: freq_val = 1.0
-    if pd.isna(freq_val): freq_val = 1.0
+    if price <= 0 or total_val <= 0: return 0.0
     
-    cp = (total_val / price) * (freq_val / 5)
-    if '身分證' in cond or '本人' in cond: cp *= 0.7
+    # 穩定度權重 (次數 / 5)
+    w_freq = freq / 5.0
+    
+    # 預期五年總收益率 (倍數)
+    cp = (total_val * w_freq) / price
+    
+    # 網頁呈現時上限鎖定 10.0，但 Excel 保留原始值供分析
     return round(cp, 2)
 
-df['新版性價比'] = df.apply(calc_new_cp, axis=1)
+df['新版性價比'] = df.apply(calc_v4_cp, axis=1)
 
-def calc_new_score(cp):
-    if cp >= 1.5: return '5 星'
-    elif cp >= 0.8: return '4 星'
-    elif cp >= 0.4: return '3 星'
-    elif cp >= 0.15: return '2 星'
-    else: return '1 星'
+def calc_v4_score(row):
+    """
+    V4.2 星級篩選器：金標五星門檻
+    """
+    cp = row['新版性價比']
+    freq = row['五年內發放次數']
+    cond = str(row.get('去年條件', ''))
+    
+    # 便利性過濾：排除需要身分證或本人的標的
+    is_convenient = not ('身分證' in cond or '本人' in cond)
+    
+    if cp >= 2.0 and freq >= 5 and is_convenient:
+        return '5 星'
+    elif cp >= 1.0 and freq >= 4 and is_convenient:
+        return '4 星'
+    elif cp >= 0.5 and freq >= 3:
+        return '3 星'
+    elif cp >= 0.1:
+        return '2 星'
+    else:
+        return '1 星'
 
-df['新版推薦評分'] = df['新版性價比'].apply(calc_new_score)
+df['新版推薦評分'] = df.apply(calc_v4_score, axis=1)
 
 # ============================================================
 # 5. 排序與存檔
