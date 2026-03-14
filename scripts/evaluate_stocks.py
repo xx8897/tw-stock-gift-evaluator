@@ -408,7 +408,7 @@ for col in final_columns:
         df[col] = ''
         
 df = df[final_columns]
-df = df.sort_values(by='新版性價比', ascending=False)
+df = df.sort_values(by='股號', ascending=True)
 
 df.to_excel(OUTPUT_FILE, index=False)
 print(f"Done! Evaluated {len(df)} total stocks and saved to {OUTPUT_FILE}")
