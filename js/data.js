@@ -186,7 +186,7 @@ async function loadExcelDataFallback(loadingState, tableWrapper, lastUpdated) {
         AppState.globalData = rawData.map(row => ({
             id: String(row['股號'] || ''),
             name: String(row['公司'] || ''),
-            price: parseFloat(row['最新股價']) || 0,
+            price: parseFloat(row['最近價格']) || 0,
             gift: String(row['上次紀念品'] || ''),
             freq: parseInt(row['五年內發放次數']) || 0,
             cp: parseFloat(row['新版性價比']) || 0,

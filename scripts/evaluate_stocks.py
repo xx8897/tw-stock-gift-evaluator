@@ -32,66 +32,50 @@ if '股號' in df.columns:
 print(f"Loaded {len(df)} rows from {INPUT_FILE}")
 
 # ============================================================
-# 2. 從台灣證交所 (TWSE) + 櫃買中心 (TPEX) 抓最新股價
 # ============================================================
-def fetch_twse_prices():
-    """從台灣證交所抓取所有上市股票的最新收盤價"""
-    url = "https://www.twse.com.tw/exchangeReport/STOCK_DAY_ALL?response=json"
-    headers = {"User-Agent": "Mozilla/5.0"}
+# 2. 從 OpenAPI 抓取最新收盤價 (上市 + 上櫃)
+# ============================================================
+def get_latest_market_data():
+    """抓取全台股最新收盤價 (上市 + 上櫃)"""
+    print("正在從 OpenAPI 抓取全台股最新收盤價...")
+    
+    # --- 1. 抓取上市 (TWSE) ---
     try:
-        resp = requests.get(url, headers=headers, timeout=30)
-        data = resp.json()
-        prices = {}
-        for row in data.get("data", []):
-            # row: [代號, 名稱, 成交股數, 成交金額, 開盤價, 最高價, 最低價, 收盤價, 漲跌價差, 成交筆數]
-            stock_id = str(row[0]).strip()
-            try:
-                close_price = float(row[7].replace(",", ""))
-                prices[stock_id] = close_price
-            except (ValueError, IndexError):
-                pass
-        return prices
+        twse_url = "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
+        twse_data = requests.get(twse_url, timeout=30).json()
+        df_twse = pd.DataFrame(twse_data)
+        df_twse = df_twse[['Code', 'Name', 'ClosingPrice']].rename(columns={'ClosingPrice': 'Price'})
+        print(f"  -> TWSE: 抓取到 {len(df_twse)} 筆")
     except Exception as e:
-        print(f"  [WARN] TWSE API failed: {e}")
-        return {}
+        print(f"  [Error] TWSE OpenAPI 失敗: {e}")
+        df_twse = pd.DataFrame(columns=['Code', 'Name', 'Price'])
 
-def fetch_tpex_prices():
-    """從櫃買中心抓取所有上櫃股票的最新收盤價"""
-    url = "https://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_result.php?l=zh-tw&o=json"
-    headers = {"User-Agent": "Mozilla/5.0"}
+    # --- 2. 抓取上櫃 (TPEx) ---
     try:
-        resp = requests.get(url, headers=headers, timeout=30)
-        data = resp.json()
-        prices = {}
-        for row in data.get("aaData", []):
-            # row: [代號, 名稱, 收盤, 漲跌, 開盤, 最高, 最低, 成交股數, ...]
-            stock_id = str(row[0]).strip()
-            try:
-                close_str = str(row[2]).replace(",", "").strip()
-                if close_str and close_str != "--":
-                    close_price = float(close_str)
-                    prices[stock_id] = close_price
-            except (ValueError, IndexError):
-                pass
-        return prices
+        tpex_url = "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes"
+        tpex_data = requests.get(tpex_url, timeout=30).json()
+        df_tpex = pd.DataFrame(tpex_data)
+        df_tpex = df_tpex[['SecCode', 'SecName', 'Close']].rename(columns={
+            'SecCode': 'Code', 
+            'SecName': 'Name', 
+            'Close': 'Price'
+        })
+        print(f"  -> TPEx: 抓取到 {len(df_tpex)} 筆")
     except Exception as e:
-        print(f"  [WARN] TPEX API failed: {e}")
-        return {}
+        print(f"  [Error] TPEx OpenAPI 失敗: {e}")
+        df_tpex = pd.DataFrame(columns=['Code', 'Name', 'Price'])
 
-print("Fetching latest prices from TWSE (上市)...")
-twse_prices = fetch_twse_prices()
-print(f"  -> Got {len(twse_prices)} listed stock prices")
+    # --- 3. 合併與清理 ---
+    df_all = pd.concat([df_twse, df_tpex], ignore_index=True)
+    
+    # 轉為數字型態，處理千分位
+    df_all['Price'] = pd.to_numeric(df_all['Price'].astype(str).str.replace(',', ''), errors='coerce')
+    
+    # 轉成 Dictionary { 'Code': Price }
+    price_dict = df_all.set_index('Code')['Price'].to_dict()
+    return price_dict
 
-time.sleep(1)
-
-print("Fetching latest prices from TPEX (上櫃)...")
-tpex_prices = fetch_tpex_prices()
-print(f"  -> Got {len(tpex_prices)} OTC stock prices")
-
-# 合併兩個來源
-price_dict = {}
-price_dict.update(twse_prices)
-price_dict.update(tpex_prices)
+price_dict = get_latest_market_data()
 print(f"Total unique prices fetched: {len(price_dict)}")
 
 # ============================================================
@@ -294,28 +278,25 @@ def get_yahoo_price(symbol):
 # 4. 計算推薦評分
 # ============================================================
 print("Calculating CP scores...")
-df['最新股價'] = df['股號'].map(price_dict)
+df['最近價格'] = df['股號'].map(price_dict)
 
-# Fallback: 用原始 Excel 的「股價」欄位補上 (v2 已刪除此欄位，全面改用最新股價)
-# df['最新股價'] = df['最新股價'].fillna(pd.to_numeric(df['股價'], errors='coerce'))
-df['最新股價'] = df['最新股價'].fillna(0.0) # v2 測試註記
 # 最後兜底：填 0.0
-df['最新股價'] = df['最新股價'].fillna(0.0).round(2)
+df['最近價格'] = df['最近價格'].fillna(0.0).round(2)
 
 # 統計來源
 yahoo_count = df['股號'].map(price_dict).notna().sum()
-zero_stocks = df[df['最新股價'] == 0]['股號'].tolist()
+zero_stocks = df[df['最近價格'] == 0]['股號'].tolist()
 
 if zero_stocks:
     print(f"  [INFO] Attempting to fix {len(zero_stocks)} zero prices via Yahoo Finance...")
     for sid in zero_stocks:
         y_price = get_yahoo_price(sid)
         if y_price:
-            df.loc[df['股號'] == sid, '最新股價'] = y_price
+            df.loc[df['股號'] == sid, '最近價格'] = y_price
             price_dict[sid] = y_price
 
-still_zero = (df['最新股價'] == 0).sum()
-print(f"  -> Original API: {yahoo_count}, Fixed via Yahoo: {len(zero_stocks) - still_zero}, Still zero: {still_zero}")
+still_zero = (df['最近價格'] == 0).sum()
+print(f"  -> OpenAPI API: {yahoo_count}, Fixed via Yahoo: {len(zero_stocks) - still_zero}, Still zero: {still_zero}")
 
 df['紀念品預估價值'] = df['上次紀念品'].apply(estimate_gift_value)
 
@@ -378,7 +359,7 @@ def estimate_5year_total(text):
 df['五年紀念品總估值'] = df['五年發放紀念品'].apply(estimate_5year_total)
 
 def calc_new_cp(row):
-    price = row['最新股價']
+    price = row['最近價格']
     total_val = row['五年紀念品總估值']
     freq = row['五年內發放次數']
     cond = str(row.get('去年條件', ''))
@@ -422,7 +403,7 @@ df['新版推薦評分'] = df['新版性價比'].apply(calc_new_score)
 # ============================================================
 final_columns = [
     '股號', '公司', '五年內發放次數', '最近一次發放', '上次紀念品',
-    '最新股價', 
+    '最近價格', 
     '五年紀念品總估值', '新版性價比', '新版推薦評分',
     '去年條件', '五年發放紀念品'
 ]
