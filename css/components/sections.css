@@ -1,0 +1,225 @@
+/* Footer elements */
+.footer-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-top p {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-github-btn {
+    padding: 0.35rem 0.75rem !important;
+    font-size: 0.8rem !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+}
+
+.footer-github-btn i {
+    font-size: 0.9rem;
+}
+
+.intro-section {
+    padding: 1.5rem 2rem;
+}
+
+.intro-section h3 {
+    margin-bottom: 0.8rem;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+.intro-section p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.intro-tips {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+}
+
+.tip {
+    background: var(--overlay-hover);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    color: var(--text-primary);
+}
+
+/* --- Strategy Cards --- */
+
+.strategy-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin: 1.25rem 0 1.25rem;
+}
+
+.strategy-card {
+    background: var(--overlay-hover);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 1.1rem 1rem;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.strategy-card:hover {
+    background: var(--overlay-active);
+    border-color: var(--border-strong);
+}
+
+.strategy-card>i {
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 0.6rem;
+}
+
+.strategy-card h4 {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+}
+
+.strategy-card p {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* Strategy Cards — Mobile overrides (must live here, after the base rule) */
+@media (max-width: 768px) {
+    .strategy-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .strategy-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .strategy-card h4 {
+        font-size: 1.05rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .strategy-card p {
+        font-size: 0.9rem;
+    }
+}
+
+/* --- Guide Section --- */
+
+.guide-section {
+    padding: 1.5rem 2rem;
+}
+
+.guide-section h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.2rem;
+}
+
+.guide-desc {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+}
+
+.guide-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.guide-step {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.guide-step:last-child {
+    border-bottom: none;
+}
+
+.step-num {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    font-family: 'Outfit', monospace;
+    color: #fff;
+    margin-top: 2px;
+}
+
+.step-body h4 {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 0.3rem;
+}
+
+.step-body p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.guide-note {
+    margin-top: 1rem;
+    background: rgba(96, 165, 250, 0.08);
+    border: 1px solid rgba(96, 165, 250, 0.2);
+    border-radius: 8px;
+    padding: 0.65rem 1rem;
+    font-size: 0.83rem;
+    color: #93c5fd;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    line-height: 1.55;
+}
+
+.guide-note i {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.info-icon {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-left: 4px;
+    cursor: help;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+

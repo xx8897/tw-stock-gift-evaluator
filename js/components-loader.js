@@ -43,6 +43,11 @@ async function initComponents() {
     document.body.appendChild(feedbackContainer);
     await loadComponent('feedbackContainer', 'components/feedback-modal.html');
 
+    // 載入新抽離的 footer 和彈窗
+    await loadComponent('footerContainer', 'components/footer.html');
+    await loadComponent('nicknameContainer', 'components/nickname-modal.html');
+    await loadComponent('rankingContainer', 'components/ranking-modal.html');
+
     console.log('[Component Loader]: 所有 HTML 組件已就緒');
 
     // 組件載入後，手動觸發初始化

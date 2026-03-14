@@ -1,0 +1,432 @@
+/* ==========================================
+   DataTable & Core Components
+   ========================================== */
+.table-container {
+    padding: 0;
+    overflow: hidden;
+}
+
+.table-sync-refresh {
+    animation: tableSyncFadeIn 180ms ease-out;
+}
+
+@keyframes tableSyncFadeIn {
+    from {
+        opacity: 0.72;
+        transform: translateY(2px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate; /* 改為 separate 以便細緻控制邊框與圓角 */
+    border-spacing: 0;
+    text-align: left;
+    background: var(--card-bg);
+}
+
+/* ==========================================
+   Table Column Alignment & Aesthetic Styling
+   ========================================== */
+
+/* 基礎對齊定義 */
+th.th-interest, td.interest-cell,
+th.th-purchased, td.purchase-cell {
+    text-align: center !important;
+    padding: 1rem 0;
+}
+
+/* 內容按鈕回歸物理中心，移除所有相對偏移 */
+.interest-btn,
+.purchase-btn {
+    position: static; /* 移除 relative */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 標題圖示等大化 (視覺平衡優化) */
+th.th-interest i,
+th.th-purchased i {
+    font-size: 1.05rem; /* 從 1.25rem 調回 1.05rem，更加精緻 */
+    vertical-align: middle;
+    color: var(--text-secondary);
+    opacity: 0.8;
+}
+/* 文字類欄位對齊 */
+td.stock-id, td.stock-name, td.price {
+    padding-left: 0.75rem;
+}
+
+/* 標題基礎樣式 */
+th {
+    background: var(--th-bg);
+    color: var(--text-secondary);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: none; /* 保持中文原始字體 */
+    letter-spacing: 0.05em;
+    padding: 1rem 0.75rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    white-space: nowrap;
+    border-bottom: 2px solid var(--border-subtle);
+    transition: background-color 0.2s;
+}
+
+/* 偶數行輕微底色，增加閱讀引導感 */
+tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.012);
+}
+
+/* 推薦評分特別處理 (第10欄) */
+td:nth-child(10) {
+    text-align: left;
+    padding-left: 0.75rem;
+}
+
+th,
+td {
+    padding: 1rem 0.85rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+th {
+    background: var(--th-bg);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    position: sticky;
+    top: 0;
+    white-space: nowrap;
+}
+
+th.sortable {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+th.sortable:hover {
+    color: var(--text-primary);
+}
+
+th.sortable i {
+    font-size: 0.8rem;
+    margin-left: 0.3rem;
+    opacity: 0.5;
+}
+
+th.sortable.active i {
+    opacity: 1;
+    color: var(--accent-primary);
+}
+
+tbody tr {
+    transition: background-color 0.2s ease, box-shadow 0.2s;
+}
+
+tbody tr:hover {
+    background: var(--overlay-hover);
+    /* inset left border highlight — no transform, no stacking context */
+    box-shadow: inset 4px 0 0 var(--accent-primary);
+}
+
+tbody tr.purchased-row {
+    background: rgba(52, 211, 153, 0.06);
+}
+
+tbody tr.purchased-row:hover {
+    background: rgba(52, 211, 153, 0.08);
+}
+
+td {
+    font-size: 0.95rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Gift td must be overflow:visible so popup shows */
+td:has(.gift-cell) {
+    overflow: visible;
+    position: relative;
+}
+
+.cond-cell {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+.stock-id {
+    font-family: 'Outfit', monospace;
+    font-weight: 600;
+    color: var(--accent-primary);
+}
+
+.stock-name {
+    font-weight: 500;
+}
+
+.price {
+    font-family: 'Outfit', monospace;
+}
+
+.cp-value {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--star-3);
+}
+
+/* ==========================================
+   Freq Cell — number only
+   ========================================== */
+.freq-cell {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.freq-num {
+    font-family: 'Outfit', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.freq-slash {
+    font-size: 0.75rem;
+    opacity: 0.45;
+    margin-left: 1px;
+}
+
+/* ==========================================
+   Page Jump Input
+   ========================================== */
+.page-jump {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 0.5rem;
+    padding-left: 0.75rem;
+    border-left: 1px solid var(--border-default);
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+}
+
+.page-jump input {
+    width: 52px;
+    text-align: center;
+    background: var(--input-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    padding: 0.25rem 0.4rem;
+    border-radius: 7px;
+    font-size: 0.83rem;
+    font-family: 'Outfit', monospace;
+    outline: none;
+    transition: border-color 0.2s;
+    /* hide number spinners */
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.page-jump input::-webkit-inner-spin-button,
+.page-jump input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+.page-jump input:focus {
+    border-color: var(--accent-primary);
+}
+
+/* ==========================================
+   Mobile card overrides for new cells
+   ========================================== */
+@media (max-width: 768px) {
+
+    /* Hide table header */
+    #dataTable thead {
+        display: none;
+    }
+
+    #dataTable,
+    #dataTable tbody,
+    #dataTable tr,
+    #dataTable td {
+        display: block;
+        width: 100%;
+    }
+
+    #dataTable tr {
+        margin-bottom: 1.25rem;
+        background: var(--glass-bg);
+        border: 1px solid var(--border-subtle);
+        border-radius: 12px;
+        padding: 0.5rem 0;
+    }
+
+    #dataTable tr:hover {
+        box-shadow: none;
+        background: var(--glass-bg);
+    }
+
+    #dataTable td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: right;
+        padding: 0.75rem 1.25rem;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    #dataTable td:last-child {
+        border-bottom: none;
+    }
+
+    #dataTable td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        margin-right: 1rem;
+        text-align: left;
+    }
+
+    /* Wrap pagination buttons */
+    .pagination {
+        flex-wrap: wrap;
+    }
+
+    .gift-cell {
+        flex-wrap: wrap;
+        white-space: normal;
+        justify-content: flex-end;
+    }
+
+    /* freq-cell: align right like other card cells */
+    .freq-cell {
+        justify-content: flex-end;
+    }
+
+    /* History popup: right-anchored on mobile */
+    .history-popup {
+        left: auto;
+        right: 0;
+        max-width: 90vw;
+    }
+
+    /* Page jump: show below buttons on mobile, centered */
+    .page-jump {
+        width: 100%;
+        justify-content: center;
+        margin-left: 0;
+        padding-left: 0;
+        border-left: none;
+        padding-top: 0.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        margin-top: 0.4rem;
+    }
+
+    /* Target purchased cell in mobile card */
+    td.purchase-cell {
+        justify-content: space-between !important;
+        padding-left: 1.25rem !important;
+    }
+}
+
+/* --- Purchase Button & Cell --- */
+
+.purchase-cell {
+    text-align: center;
+    padding-left: 1rem !important;
+    padding-right: 0.5rem !important;
+}
+
+.purchase-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 0.95rem; /* 稍微放大 + 號以平衡視覺權重 */
+}
+
+.purchase-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--text-primary);
+}
+
+.purchase-btn.active {
+    background: #10b981;
+    border-color: #10b981;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+.purchase-btn.active:hover {
+    background: #059669;
+    border-color: #059669;
+}
+
+/* Purchase filter toggle stye */
+.purchase-filter input[type="checkbox"]:checked+.filter-btn,
+.purchase-filter input[type="checkbox"]:checked {
+    box-shadow: 0 0 0 2px var(--star-3);
+}
+
+.filter-divider {
+    width: 2px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.15);
+    margin: 0 0.8rem;
+    border-radius: 2px;
+    align-self: center;
+}
+
+/* ==========================================
+   表單隱藏格線功能
+   ========================================== */
+.table-container.hide-gridlines table th,
+.table-container.hide-gridlines table td {
+    border-bottom: 0px solid transparent !important;
+}
+
+
+/* ==========================================
+   New Gridlines CSS
+   ========================================== */
+.table-container:not(.show-gridlines) table th,
+.table-container:not(.show-gridlines) table td {
+    border-bottom-color: transparent !important;
+    border-right-color: transparent !important;
+}
+
+.table-container.show-gridlines table th,
+.table-container.show-gridlines table td {
+    border-bottom: 1px solid var(--border-subtle) !important;
+    border-right: 1px solid var(--border-subtle) !important;
+}
+
+.table-container.show-gridlines table th {
+    border-bottom: 2px solid var(--border-subtle) !important;
+}
+
+.table-container.show-gridlines table {
+    border-left: 1px solid var(--border-subtle);
+    border-top: 1px solid var(--border-subtle);
+}
+

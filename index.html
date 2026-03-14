@@ -401,114 +401,19 @@
             </div>
         </section>
 
-        <footer class="footer">
-
-            <div class="footer-panel glass-panel" style="padding: 0; overflow: hidden;">
-                <div class="disclaimer-section" style="padding: 2rem;">
-                    <h3>📜 版權與免責聲明 (Copyright &amp; Disclaimer)</h3>
-                    <div class="disclaimer-body">
-                        <div class="disclaimer-item">
-                            <h4>資料來源與免責聲明</h4>
-                            <p>本工具所使用之紀念品歷史發放紀錄為公開之客觀事實數據。<br>
-                                股市資料來源為台灣證券交易所及櫃買中心公開資訊。<br>
-                                本工具僅對客觀數據進行自動化搜集、整理與分析計算。
-                            </p>
-                        </div>
-                        <div class="disclaimer-item">
-                            <h4>免責聲明</h4>
-                            <p>本工具資料與分析結果僅供參考使用，<strong>不構成任何形式的投資建議</strong>。<br>
-                                股價有漲有跌，投資必須自負風險。作者不對任何因使用本系統而產生的投資損失負責。
-                            </p>
-                        </div>
-                        <div class="disclaimer-item">
-                            <h4>程式碼授權聲明</h4>
-                            <p>Copyright &copy; 2026 xx8897. All Rights Reserved.<br>
-                                本專案程式碼保留所有權利。<br>
-                                未經作者事先書面同意，嚴禁任何人以任何形式複製、修改、散發、再授權或用於商業 / 非商業用途。
-                                詳細授權條款請參閱 <a
-                                    href="https://github.com/xx8897/tw-stock-gift-evaluator/blob/master/LICENSE"
-                                    target="_blank" rel="noopener noreferrer" style="color:#60a5fa;">LICENSE</a> 檔案。
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="auto-update-notice">
-                    <i class="fa-solid fa-rotate" style="color:#34d399;"></i>
-                    <span>股價資料由 <strong>GitHub Actions</strong> 透過官方 OpenAPI 自動更新，最近價格基準以「最後更新」標示為準。</span>
-                    <a href="https://github.com/xx8897/tw-stock-gift-evaluator/actions" target="_blank"
-                        rel="noopener noreferrer">
-                        <i class="fa-solid fa-circle-check"></i> 查看自動化執行紀錄
-                    </a>
-                </div>
-            </div>
-            <div class="footer-top"
-                style="display: flex; flex-direction: column; gap: 0.6rem; align-items: center; justify-content: center; text-align: center;">
-                <p id="visitorCounterContainer" class="hidden" style="margin-bottom: 0.4rem; font-size: 0.9rem; opacity: 0.8; color: var(--text-secondary);">
-                    <i class="fa-solid fa-eye"></i> 累積瀏覽人數：<span id="totalVisitors" style="color: var(--accent-primary); font-weight: bold;">...</span> 次
-                </p>
-                <span>合作、意見回饋請洽作者，作者信箱 zhixiang8897@gmail.com</span>
-                <div style="display: flex; gap: 0.6rem; align-items: center; justify-content: center; flex-wrap: wrap;">
-                    <a class="glass-btn secondary" href="https://github.com/xx8897/tw-stock-gift-evaluator" target="_blank"
-                        rel="noopener noreferrer" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; border-radius: 8px;">
-                        <i class="fa-brands fa-github"></i> GitHub
-                    </a>
-                    <span>Made with ❤️ by <a href="https://github.com/xx8897/tw-stock-gift-evaluator" target="_blank"
-                            rel="noopener noreferrer">xx8897</a></span>
-                </div>
-            </div>
-        </footer>
+        <!-- Dynamically loaded footer -->
+        <div id="footerContainer"></div>
     </main>
 
     <!-- Container for dynamically loaded modals -->
     <div id="modalContainer"></div>
     <div id="infoContainer"></div>
 
-    <!-- 修改暱稱彈窗 -->
-    <div class="modal-overlay hidden" id="nicknameModal">
-        <div class="modal-content mini-modal-card" style="max-width: 380px;">
-            <div class="modal-header">
-                <h2><i class="fa-solid fa-user-pen" style="color: #a78bfa; margin-right: 0.5rem;"></i> 修改暱稱</h2>
-                <button class="close-btn" onclick="closeNicknameModal()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="modal-body">
-                <p style="margin-bottom: 1rem; font-size: 0.9rem;">輸入新的暱稱，最多 20 個字元。</p>
-                <label for="nicknameInput" class="visually-hidden">輸入新暱稱</label>
-                <input
-                    type="text"
-                    id="nicknameInput"
-                    maxlength="20"
-                    placeholder="輸入新暱稱..."
-                    autocomplete="off"
-                    style="width: 100%; padding: 0.7rem 1rem; border-radius: 10px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); font-size: 0.95rem; font-family: inherit; box-sizing: border-box; transition: all 0.3s ease; outline: none;"
-                    onfocus="this.style.borderColor='#8b5cf6'; this.style.boxShadow='0 0 0 3px rgba(139,92,246,0.2)'"
-                    onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.boxShadow='none'"
-                >
-                <p id="nicknameError" style="color: #f87171; font-size: 0.82rem; margin-top: 0.5rem; display: none;"></p>
-            </div>
-            <div class="feedback-actions" style="padding: 1.25rem 0 0; margin-top: 0;">
-                <button class="feedback-cancel-btn" onclick="closeNicknameModal()">取消</button>
-                <button class="feedback-submit-btn" onclick="saveNickname()" id="saveNicknameBtn">
-                    <i class="fa-solid fa-check"></i> 儲存
-                </button>
-            </div>
-        </div>
-    </div>
+    <!-- Dynamically loaded nickname modal -->
+    <div id="nicknameContainer"></div>
 
-    <!-- Ranking Detail Modal -->
-    <div id="rankingModal" class="feedback-modal-overlay hidden">
-        <div class="feedback-modal-content glass-panel" style="max-width: 500px; width: 90%; max-height: 85vh; padding: 1.5rem 0; position: relative;">
-            <button class="feedback-close-btn" onclick="closeRankingModal()" style="position: absolute; top: 1.25rem; right: 1.25rem; background: none; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; z-index: 10;">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="feedback-modal-header" style="padding: 0 1.5rem 1rem;">
-                <h2 id="rankingModalTitle">完整排行榜</h2>
-                <p id="rankingModalDesc" style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.5rem; line-height: 1.4; opacity: 0.8;"></p>
-            </div>
-            <div id="rankingModalBody" class="ranking-list-modal" style="padding: 0 1.5rem; overflow-y: auto; max-height: calc(85vh - 120px);">
-                <!-- 動態注入排行 -->
-            </div>
-        </div>
-    </div>
+    <!-- Dynamically loaded ranking modal -->
+    <div id="rankingContainer"></div>
 
     <!-- SheetJS for local Excel parsing -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -523,7 +428,10 @@
     <script src="js/analytics.js?v=1"></script>
     <script src="js/data.js?v=7"></script>
     <script src="js/table.js?v=7"></script>
-    <script src="js/ui.js?v=7"></script>
+    <script src="js/ui/modals.js?v=1"></script>
+    <script src="js/ui/filters.js?v=1"></script>
+    <script src="js/ui/table-events.js?v=1"></script>
+    <script src="js/ui.js?v=8"></script>
     <script src="js/ranking-ui.js?v=1"></script>
     <script src="js/sync.js?v=7"></script>
 
