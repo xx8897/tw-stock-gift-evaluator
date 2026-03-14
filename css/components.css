@@ -29,73 +29,72 @@
 table {
     width: 100%;
     table-layout: fixed;
-    border-collapse: collapse;
+    border-collapse: separate; /* 改為 separate 以便細緻控制邊框與圓角 */
+    border-spacing: 0;
     text-align: left;
+    background: var(--card-bg);
 }
 
-/* Column widths — 9 columns total */
-th.th-interest {
-    width: 40px;
-    text-align: center;
-    padding: 0.75rem 0.2rem;
+/* ==========================================
+   Table Column Alignment & Aesthetic Styling
+   ========================================== */
+
+/* 基礎對齊定義 */
+th.th-interest, td.interest-cell,
+th.th-purchased, td.purchase-cell {
+    text-align: center !important;
+    padding: 1rem 0;
 }
 
-th.th-purchased {
-    width: 40px;
-    text-align: center;
-    padding: 0.75rem 0.2rem;
+/* 內容按鈕回歸物理中心，移除所有相對偏移 */
+.interest-btn,
+.purchase-btn {
+    position: static; /* 移除 relative */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* 股號 */
-th:nth-child(3) {
-    width: 65px;
-    padding-left: 0.5rem;
+/* 標題圖示等大化 (視覺平衡優化) */
+th.th-interest i,
+th.th-purchased i {
+    font-size: 1.05rem; /* 從 1.25rem 調回 1.05rem，更加精緻 */
+    vertical-align: middle;
+    color: var(--text-secondary);
+    opacity: 0.8;
+}
+/* 文字類欄位對齊 */
+td.stock-id, td.stock-name, td.price {
+    padding-left: 0.75rem;
 }
 
-/* 公司 */
-th:nth-child(4) {
-    width: 75px;
-    padding-left: 0.5rem;
+/* 標題基礎樣式 */
+th {
+    background: var(--th-bg);
+    color: var(--text-secondary);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: none; /* 保持中文原始字體 */
+    letter-spacing: 0.05em;
+    padding: 1rem 0.75rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    white-space: nowrap;
+    border-bottom: 2px solid var(--border-subtle);
+    transition: background-color 0.2s;
 }
 
-/* 最近價格 */
-th:nth-child(5) {
-    width: 75px;
-    padding-left: 0.5rem;
+/* 偶數行輕微底色，增加閱讀引導感 */
+tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.012);
 }
 
-/* 最新股價 */
-th:nth-child(4) {
-    width: 100px;
+/* 推薦評分特別處理 (第10欄) */
+td:nth-child(10) {
+    text-align: left;
+    padding-left: 0.75rem;
 }
-
-/* 上次紀念品 */
-th:nth-child(5) {
-    width: auto;
-    /* Take remaining space */
-}
-
-/* 五年內發放 */
-th:nth-child(6) {
-    width: 110px;
-}
-
-/* 新版性價比 */
-th:nth-child(7) {
-    width: 100px;
-}
-
-/* 去年條件 */
-th:nth-child(8) {
-    width: 150px;
-}
-
-/* 推薦評分 */
-th:nth-child(9) {
-    width: 120px;
-}
-
-/* 推薦評分 */
 
 th,
 td {
@@ -894,7 +893,7 @@ td:has(.gift-cell) {
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
-    font-size: 0.8rem;
+    font-size: 0.95rem; /* 稍微放大 + 號以平衡視覺權重 */
 }
 
 .purchase-btn:hover {
