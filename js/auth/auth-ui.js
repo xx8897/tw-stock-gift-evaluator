@@ -216,6 +216,7 @@ function updateAuthUI(user) {
         loginBtn?.classList.add('hidden');
         userMenu?.classList.remove('hidden');
         syncSaveBtn?.classList.remove('hidden');
+        document.getElementById('exportBtn')?.classList.remove('hidden');
         syncStatusText?.classList.remove('hidden');
         document.getElementById('syncHintText')?.classList.remove('hidden');
         if (userEmailShort) {
@@ -226,6 +227,7 @@ function updateAuthUI(user) {
         userMenu?.classList.add('hidden');
         userMenu?.classList.remove('open');
         syncSaveBtn?.classList.add('hidden');
+        document.getElementById('exportBtn')?.classList.add('hidden');
         syncStatusText?.classList.add('hidden');
         document.getElementById('syncHintText')?.classList.add('hidden');
     }

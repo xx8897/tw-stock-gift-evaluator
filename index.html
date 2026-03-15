@@ -247,9 +247,12 @@
                                         </button>
                                     </div>
                                 </div>
-                                <!-- 已登入：手動儲存按鈕 + 同步狀態 -->
+                                <!-- 已登入：手動儲存按鈕 + 匯出按鈕 + 同步狀態 -->
                                 <button class="tag-btn sync-save-btn hidden" id="syncSaveBtn" onclick="syncToCloud()">
                                     <i class="fa-solid fa-floppy-disk"></i> 手動儲存
+                                </button>
+                                <button class="tag-btn export-btn hidden" id="exportBtn" onclick="exportPurchasedList()">
+                                    <i class="fa-solid fa-file-arrow-down"></i> 匯出清單
                                 </button>
                                 <span class="sync-status-text hidden" id="syncStatusText" title="💡 每次操作後 15 分鐘若無新動作，會自動儲存一次"></span>
                                 <span class="sync-hint-text hidden" id="syncHintText">💡 每 15 分鐘自動同步，離開頁面前建議手動儲存</span>
@@ -440,6 +443,7 @@
     <script src="js/auth/auth-api.js?v=1"></script>
     <script src="js/auth/auth.js?v=8"></script>
     <script src="js/feedback-modal.js?v=1"></script>
+    <script src="js/export.js?v=1"></script>
     <script src="js/main.js?v=8"></script>
 </body>
 
