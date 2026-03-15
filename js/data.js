@@ -154,11 +154,11 @@ async function loadData() {
                     cond: String(row.cond || '')
                 };
             });
-            
+
             if (latestDate.getTime() === 0) latestDate = new Date();
-            
+
             lastUpdated.innerHTML = `<i class="fa-regular fa-calendar-check"></i> 最後更新: ${latestDate.toLocaleDateString('zh-TW')} ${latestDate.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })}`;
-            
+
             loadingState.classList.add('hidden');
             tableWrapper.classList.remove('hidden');
             processDataAndRender();
@@ -167,8 +167,9 @@ async function loadData() {
             throw new Error('Supabase 無資料，轉向備援');
         }
     } catch (primaryError) {
-        // Fallback 到 Excel 讀取機制
-        await loadExcelDataFallback(loadingState, tableWrapper, lastUpdated);
+        console.error('Supabase 載入失敗且已停用 Excel 備援:', primaryError);
+        // 暫時註解備援機制
+        // await loadExcelDataFallback(loadingState, tableWrapper, lastUpdated);
     }
 }
 
