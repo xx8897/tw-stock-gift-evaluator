@@ -4,6 +4,10 @@ import re
 import time
 import os
 import json
+from dotenv import load_dotenv
+
+# 載入 .env 檔案中的變數
+load_dotenv()
 
 # ── 使用腳本所在位置往上一層作為根目錄（因腳本放在 scripts/）──
 _BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -15,7 +19,7 @@ INPUT_FILE  = os.path.join(_DATA_DIR, '2021-2025_推薦v2.xlsx')
 # 1. 讀取原始資料 (從 Supabase 或 Excel 備援)
 # ============================================================
 SUPABASE_URL = 'https://jyoaoepcrqxzrtdkldfg.supabase.co'
-SUPABASE_KEY = os.environ.get('SUPABASE_SERVICE_KEY', '')
+SUPABASE_KEY = os.environ.get('SUPABASE_SERVICE_KEY')
 TABLE_NAME = 'stocks'
 
 if not SUPABASE_KEY:

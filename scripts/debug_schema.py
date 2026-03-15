@@ -1,5 +1,9 @@
 import requests
 import os
+from dotenv import load_dotenv
+
+# 載入 .env 檔案中的變數
+load_dotenv()
 
 # 模擬環境變數 (實際會從 .secret 或環境中取得)
 SUPABASE_URL = 'https://jyoaoepcrqxzrtdkldfg.supabase.co'

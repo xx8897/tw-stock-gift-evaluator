@@ -1,4 +1,8 @@
 import os
+from dotenv import load_dotenv
+
+# 載入 .env 檔案中的變數
+load_dotenv()
 import requests
 
 SUPABASE_URL = 'https://jyoaoepcrqxzrtdkldfg.supabase.co'

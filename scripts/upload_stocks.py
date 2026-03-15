@@ -1,8 +1,10 @@
-import pandas as pd
-import requests
 import os
 import json
 import math
+from dotenv import load_dotenv
+
+# 載入 .env 檔案中的變數
+load_dotenv()
 
 # 配置資訊
 SUPABASE_URL = 'https://jyoaoepcrqxzrtdkldfg.supabase.co'
