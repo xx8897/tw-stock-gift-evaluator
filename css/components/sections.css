@@ -31,7 +31,14 @@
 .intro-section h3 {
     margin-bottom: 0.8rem;
     font-size: 1.2rem;
+    font-weight: 700;
     color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-left: 0.85rem;
+    border-left: 3px solid;
+    border-image: linear-gradient(to bottom, #3b82f6, #8b5cf6) 1;
 }
 
 .intro-section p {
@@ -127,6 +134,13 @@
 .guide-section h3 {
     margin-bottom: 0.75rem;
     font-size: 1.2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-left: 0.85rem;
+    border-left: 3px solid;
+    border-image: linear-gradient(to bottom, #3b82f6, #8b5cf6) 1;
 }
 
 .guide-desc {

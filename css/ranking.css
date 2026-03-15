@@ -16,6 +16,8 @@
 
 .ranking-card h3 {
     font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
     display: flex;
     align-items: center;
     gap: 0.6rem;
@@ -23,10 +25,27 @@
     margin: 0;
 }
 
+/* icon 依類型上色 */
+.ranking-card h3 .fa-star {
+    color: var(--star-5);
+    filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.55));
+}
+.ranking-card h3 .fa-gem {
+    color: var(--accent-secondary);
+    filter: drop-shadow(0 0 5px rgba(139, 92, 246, 0.55));
+}
+.ranking-card h3 .fa-fire,
+.ranking-card h3 .fa-chart-line {
+    color: var(--accent-primary);
+    filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.55));
+}
+
 .ranking-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
     margin-bottom: 1rem;
 }
 
