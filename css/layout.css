@@ -129,9 +129,6 @@ h1 {
     color: var(--text-primary);
     margin-bottom: 1.5rem;
     padding-bottom: 0.8rem;
-    padding-left: 0.85rem;
-    border-left: 3px solid;
-    border-image: linear-gradient(to bottom, #3b82f6, #8b5cf6) 1;
     border-bottom: 1px solid var(--border-subtle);
 }
 
