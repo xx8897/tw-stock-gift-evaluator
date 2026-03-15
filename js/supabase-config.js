@@ -4,7 +4,7 @@
  */
 (function () {
     const SUPABASE_URL = 'https://jyoaoepcrqxzrtdkldfg.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5b2FvZXBjcnF4enJ0ZGtsZGZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4NjIxMDYsImV4cCI6MjA4ODQzODEwNn0.R3Ev_n7IJ4zXAGvTIQ5yFOAZIscfdkEC3gLD56hSzUM';
+    const SUPABASE_KEY = 'sb_publishable_IFSxZWya1imWZQzNwg90ZA_msTvVbsg';
 
     // 初始化 Supabase Client，掛上 window 供其他腳本使用
     if (window.supabase && typeof window.supabase.createClient === 'function') {
