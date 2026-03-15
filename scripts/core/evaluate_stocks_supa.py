@@ -6,44 +6,79 @@ import os
 import json
 from dotenv import load_dotenv
 
-# 載入 .env 檔案中的變數
+# 載入環境變數
 load_dotenv()
 
-# ── 使用腳本所在位置往上一層作為根目錄（因腳本放在 scripts/）──
+#Supabase Config
+SUPABASE_URL = os.getenv("SUPABASE_URL", "https://jyoaoepcrqxzrtdkldfg.supabase.co")
+SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+TABLE_NAME = "stocks"
+
+# ── 設定路徑 ──
 _BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 _DATA_DIR = os.path.join(_BASE_DIR, 'data')
-
 INPUT_FILE  = os.path.join(_DATA_DIR, '2021-2025_推薦v2.xlsx')
 
-# 優先讀取本地 Excel (因為之前的腳本會先更新它)
-print(f"Loading local data from: {INPUT_FILE}...")
+# ============================================================
+# 1. 讀取資料 (優先本地 Excel，備援 Supabase)
+# ============================================================
+print(f"Loading data from: {INPUT_FILE}...")
+df = None
+
 try:
-    df = pd.read_excel(INPUT_FILE)
-    print(f"Successfully loaded {len(df)} rows from Excel.")
+    if os.path.exists(INPUT_FILE):
+        df = pd.read_excel(INPUT_FILE)
+        print(f"Successfully loaded {len(df)} rows from Excel.")
+    else:
+        raise FileNotFoundError("Excel file not found.")
 except Exception as e:
-    print(f"Failed to load Excel: {e}. Falling back to Supabase.")
+    print(f"Excel loading failed: {e}. Attempting Supabase fallback...")
     if not SUPABASE_KEY:
-        print("ERROR: No SUPABASE_SERVICE_KEY or Excel file found.")
+        print("ERROR: SUPABASE_SERVICE_KEY is missing. Cannot fetch data.")
         exit(1)
     
-    url = f"{SUPABASE_URL}/rest/v1/{TABLE_NAME}?select=*"
-    headers = {'apikey': SUPABASE_KEY, 'Authorization': f'Bearer {SUPABASE_KEY}'}
-    resp = requests.get(url, headers=headers, timeout=30)
-    df = pd.DataFrame(resp.json())
-    rename_map = {
-        'stock_id': '股號', 'name': '公司', 'price': '最近股價',
-        'gift': '上次紀念品', 'freq': '五年內發放次數', 'cp': '舊版性價比',
-        'score': '舊版推薦評分', 'five_year_gifts': '五年發放紀念品',
-        'cond': '去年條件',
-        'five_year_total': '五年紀念品總估值', 'last_issued': '最近一次發放'
-    }
-    df = df.rename(columns=rename_map)
+    try:
+        url = f"{SUPABASE_URL}/rest/v1/{TABLE_NAME}?select=*"
+        headers = {
+            'apikey': SUPABASE_KEY,
+            'Authorization': f'Bearer {SUPABASE_KEY}',
+            'Range-Unit': 'items'
+        }
+        resp = requests.get(url, headers=headers, timeout=30)
+        resp.raise_for_status()
+        supa_json = resp.json()
+        
+        if supa_json:
+            df = pd.DataFrame(supa_json)
+            # 欄位映射還原為 Excel 格式以利計算
+            rename_map = {
+                'stock_id': '股號', 'name': '公司', 'price': '最近股價',
+                'gift': '上次紀念品', 'freq': '五年內發放次數',
+                'five_year_gifts': '五年發放紀念品', 'cond': '去年條件'
+            }
+            df = df.rename(columns={k: v for k, v in rename_map.items() if k in df.columns})
+            print(f"Successfully loaded {len(df)} rows from Supabase.")
+        else:
+            print("ERROR: Supabase returned empty data.")
+            exit(1)
+    except Exception as se:
+        print(f"CRITICAL ERROR: Failed to load data from any source: {se}")
+        exit(1)
 
+# 清理資料
 df.columns = df.columns.astype(str)
-if '股號' in df.columns: df['股號'] = df['股號'].astype(str).str.strip()
+if '股號' in df.columns:
+    df['股號'] = df['股號'].astype(str).str.strip()
+if '上次紀念品' in df.columns:
+    df['上次紀念品'] = df['上次紀念品'].astype(str).replace('nan', '')
+if '去年條件' in df.columns:
+    df['去年條件'] = df['去年條件'].astype(str).replace('nan', '')
+if '最近股價' not in df.columns:
+    df['最近股價'] = 0.0
+df['最近股價'] = pd.to_numeric(df['最近股價'], errors='coerce').fillna(0.0)
 
 # ============================================================
-# 2. 估值模型 v3.1 核心計分函式
+# 2. 紀念品估值模型 v3.1 — 核心邏輯
 # ============================================================
 def estimate_gift_value(gift_name):
     """
@@ -138,12 +173,10 @@ def estimate_5year_total(text):
     return total
 
 # ============================================================
-# 3. 執行評量計算
+# 3. 執行評量計算 (v4.2 Bug Fix & Digital Support)
 # ============================================================
-print("Evaluating V4.2 (Bug Fix & Digital Support)...")
-if '最近股價' not in df.columns: df['最近股價'] = 0.0
-df['最近股價'] = pd.to_numeric(df['最近股價'], errors='coerce').fillna(0.0)
-
+print("Evaluating Model V4.2...")
+df['紀念品預估價值'] = df['上次紀念品'].apply(estimate_gift_value)
 df['五年紀念品總估值'] = df['五年發放紀念品'].apply(estimate_5year_total)
 
 def calc_v4_cp(row):
@@ -167,8 +200,20 @@ def calc_v4_score(row):
 df['新版推薦評分'] = df.apply(calc_v4_score, axis=1)
 
 # ============================================================
-# 4. 完成並儲存
+# 4. 排序並輸出 Excel
 # ============================================================
-print(f"Evaluated {len(df)} rows. Model V3.1 applied (Vouchers-15, Items-20).")
-df.to_excel(INPUT_FILE, index=False)
-print(f"Results saved to: {INPUT_FILE}")
+if '股號' in df.columns:
+    df['股號_numeric'] = pd.to_numeric(df['股號'], errors='coerce')
+    df = df.sort_values(by='股號_numeric', ascending=True).drop(columns=['股號_numeric'])
+
+print(f"Evaluated {len(df)} stocks. Sorted by Stock ID.")
+
+final_columns = [
+    '股號', '公司', '五年內發放次數', '最近一次發放', '上次紀念品',
+    '最近股價', '五年紀念品總估值', '新版性價比', '新版推薦評分',
+    '去年條件', '五年發放紀念品'
+]
+available_columns = [c for c in final_columns if c in df.columns]
+df[available_columns].to_excel(INPUT_FILE, index=False)
+
+print(f"Successfully saved results to: {INPUT_FILE}")
