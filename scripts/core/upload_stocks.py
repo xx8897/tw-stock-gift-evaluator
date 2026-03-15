@@ -9,7 +9,9 @@ load_dotenv()
 # 配置資訊
 SUPABASE_URL = 'https://jyoaoepcrqxzrtdkldfg.supabase.co'
 TABLE_NAME = 'stocks'
-INPUT_FILE = 'data/2021-2025_推薦v2.xlsx'
+# ── 使用腳本所在位置往上三層作為根目錄 ──
+_BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+INPUT_FILE = os.path.join(_BASE_DIR, 'data', '2021-2025_推薦v2.xlsx')
 
 # 嘗試從環境變數或 .secret 檔案讀取 Key
 def get_service_key():

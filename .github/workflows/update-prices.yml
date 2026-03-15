@@ -28,15 +28,15 @@ jobs:
         run: pip install pandas requests openpyxl
 
       - name: 1. 執行 OpenAPI 股價抓取 (精準更新)
-        run: python scripts/update_prices_v2.py
+        run: python scripts/core/update_prices_v2.py
 
       - name: 2. 執行評量模型計算 (計算 CP 與星級)
-        run: python scripts/evaluate_stocks_supa.py
+        run: python scripts/core/evaluate_stocks_supa.py
 
       - name: 3. 執行 Supabase 資料庫同步
         env:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-        run: python scripts/upload_stocks.py
+        run: python scripts/core/upload_stocks.py
 
       - name: 4. 提交並推送更新後的 Excel 檔案
         run: |

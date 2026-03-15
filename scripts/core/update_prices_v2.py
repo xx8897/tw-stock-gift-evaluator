@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 # --- 設定路徑 ---
-_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 EXCEL_PATH = os.path.join(_BASE_DIR, 'data', '2021-2025_推薦v2.xlsx')
 
 def update_stock_prices():
