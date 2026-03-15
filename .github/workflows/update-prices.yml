@@ -27,7 +27,21 @@ jobs:
       - name: 安裝必要套件
         run: pip install pandas requests openpyxl
 
-      - name: 執行 Supabase 專用股價更新腳本
+      - name: 1. 執行 OpenAPI 股價抓取 (精準更新)
+        run: python scripts/update_prices_v2.py
+
+      - name: 2. 執行評量模型計算 (計算 CP 與星級)
+        run: python scripts/evaluate_stocks_supa.py
+
+      - name: 3. 執行 Supabase 資料庫同步
         env:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-        run: python scripts/evaluate_stocks_supa.py
+        run: python scripts/upload_stocks.py
+
+      - name: 4. 提交並推送更新後的 Excel 檔案
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/2021-2025_推薦v2.xlsx
+          git commit -m "chore: 每日自動更新股價與評鑑資料" || echo "No changes to commit"
+          git push

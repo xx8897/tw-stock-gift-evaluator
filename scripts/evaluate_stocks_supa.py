@@ -15,36 +15,29 @@ _DATA_DIR = os.path.join(_BASE_DIR, 'data')
 
 INPUT_FILE  = os.path.join(_DATA_DIR, '2021-2025_推薦v2.xlsx')
 
-# ============================================================
-# 1. 讀取原始資料 (從 Supabase 或 Excel 備援)
-# ============================================================
-SUPABASE_URL = 'https://jyoaoepcrqxzrtdkldfg.supabase.co'
-SUPABASE_KEY = os.environ.get('SUPABASE_SERVICE_KEY')
-TABLE_NAME = 'stocks'
-
-if not SUPABASE_KEY:
-    print("WARNING: SUPABASE_SERVICE_KEY not set. Falling back to Excel.")
+# 優先讀取本地 Excel (因為之前的腳本會先更新它)
+print(f"Loading local data from: {INPUT_FILE}...")
+try:
     df = pd.read_excel(INPUT_FILE)
-else:
+    print(f"Successfully loaded {len(df)} rows from Excel.")
+except Exception as e:
+    print(f"Failed to load Excel: {e}. Falling back to Supabase.")
+    if not SUPABASE_KEY:
+        print("ERROR: No SUPABASE_SERVICE_KEY or Excel file found.")
+        exit(1)
+    
     url = f"{SUPABASE_URL}/rest/v1/{TABLE_NAME}?select=*"
     headers = {'apikey': SUPABASE_KEY, 'Authorization': f'Bearer {SUPABASE_KEY}'}
-    try:
-        resp = requests.get(url, headers=headers, timeout=30)
-        if resp.status_code == 200 and resp.json():
-            print(f"Loaded {len(resp.json())} rows from Supabase")
-            df = pd.DataFrame(resp.json())
-            rename_map = {
-                'stock_id': '股號', 'name': '公司', 'price': '最近股價',
-                'gift': '上次紀念品', 'freq': '五年內發放次數', 'cp': '舊版性價比',
-                'score': '舊版推薦評分', 'five_year_gifts': '五年發放紀念品',
-                'cond': '去年條件',
-                'five_year_total': '五年紀念品總估值', 'last_issued': '最近一次發放'
-            }
-            df = df.rename(columns=rename_map)
-        else:
-            df = pd.read_excel(INPUT_FILE)
-    except:
-        df = pd.read_excel(INPUT_FILE)
+    resp = requests.get(url, headers=headers, timeout=30)
+    df = pd.DataFrame(resp.json())
+    rename_map = {
+        'stock_id': '股號', 'name': '公司', 'price': '最近股價',
+        'gift': '上次紀念品', 'freq': '五年內發放次數', 'cp': '舊版性價比',
+        'score': '舊版推薦評分', 'five_year_gifts': '五年發放紀念品',
+        'cond': '去年條件',
+        'five_year_total': '五年紀念品總估值', 'last_issued': '最近一次發放'
+    }
+    df = df.rename(columns=rename_map)
 
 df.columns = df.columns.astype(str)
 if '股號' in df.columns: df['股號'] = df['股號'].astype(str).str.strip()
@@ -174,6 +167,8 @@ def calc_v4_score(row):
 df['新版推薦評分'] = df.apply(calc_v4_score, axis=1)
 
 # ============================================================
-# 4. 完成
+# 4. 完成並儲存
 # ============================================================
 print(f"Evaluated {len(df)} rows. Model V3.1 applied (Vouchers-15, Items-20).")
+df.to_excel(INPUT_FILE, index=False)
+print(f"Results saved to: {INPUT_FILE}")
