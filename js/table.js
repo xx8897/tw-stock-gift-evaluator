@@ -1,36 +1,23 @@
-function renderTable() {
-    const searchInput = document.getElementById('searchInput');
-    const annualFilter = document.getElementById('annualFilter');
-    const resultCount = document.getElementById('resultCount');
-    const noResults = document.getElementById('noResults');
-    const tableBody = document.getElementById('tableBody');
-    const pagination = document.getElementById('pagination');
-
-    const query = searchInput.value.toLowerCase().trim();
-    const isAnnualOnly = annualFilter ? annualFilter.checked : false;
-
+/**
+ * 執行過濾與排序，結果直接寫入 AppState.filteredData
+ * ⚠️ 重要：只能寫入 AppState.filteredData，不能 return！
+ */
+function applyFiltersAndSort(query, isAnnualOnly) {
     AppState.filteredData = AppState.globalData.filter(row => {
-        // 搜尋過濾 (股號、公司名、紀念品)
         const matchSearch = !query ||
             row.id.includes(query) ||
             row.name.toLowerCase().includes(query) ||
             row.gift.toLowerCase().includes(query);
 
-        // 星星過濾 (多選)
         const rowStar = parseInt(row.score.charAt(0)) || 1;
         const matchStar = AppState.filters.stars.length === 0 ||
             AppState.filters.stars.includes(rowStar);
 
-        // 連續 5 年過濾
         const matchAnnual = isAnnualOnly ? row.freq >= 5 : true;
 
-        // 排除身分證過濾
         const matchExcludeId = AppState.filters.excludeId ? !row.cond.includes('身分證') : true;
-
-        // 需要身分證過濾
         const matchIncludeId = AppState.filters.includeId ? row.cond.includes('身分證') : true;
 
-        // 買入/未買過濾 (互斥)
         const isPurchased = AppState.purchasedStocks.has(row.id);
         const isInterest = AppState.interestStocks.has(row.id);
         let matchPurchase = true;
@@ -40,27 +27,20 @@ function renderTable() {
             matchPurchase = !isPurchased;
         }
 
-        // 興趣過濾
         const matchInterest = AppState.filters.interestOnly ? isInterest : true;
 
-        // 票券/物品過濾 (互斥)
         let matchGiftType = true;
         const giftText = String(row.gift);
         const posKws = ['券', '劵', '卡', '門票', '點數', '抵用金', '購物金', '拿鐵', '美式'];
         const negKws = ['卡套', '卡包', '卡夾', '夾', '撲克牌', '賀卡', '馬卡龍', '打卡', '微波', '保卡', '金屬', '金盞', '黃金', '馬克杯', '合金', '吸掛卡', '打卡板', '記憶卡', '卡片', '指甲剪', '口罩', '提籃'];
-        
         let isTicket = posKws.some(kw => giftText.includes(kw));
         let isExcluded = negKws.some(kw => giftText.includes(kw));
-        if (giftText.includes('錦明股東專屬會員卡')) {
-            isTicket = true;
-            isExcluded = false;
-        }
+        if (giftText.includes('錦明股東專屬會員卡')) { isTicket = true; isExcluded = false; }
         const finalIsTicket = isTicket && !isExcluded;
 
         if (AppState.filters.ticketOnly) {
             matchGiftType = finalIsTicket;
         } else if (AppState.filters.objectOnly) {
-            // 物品定義：非票券 且 非空 且 非未發放
             const isNoGift = !giftText || giftText === '-' || giftText.includes('未發放') || giftText.includes('不發放');
             matchGiftType = !finalIsTicket && !isNoGift;
         }
@@ -79,6 +59,20 @@ function renderTable() {
         if (va > vb) return AppState.currentSort.direction === 'asc' ? 1 : -1;
         return 0;
     });
+}
+
+function renderTable() {
+    const searchInput = document.getElementById('searchInput');
+    const annualFilter = document.getElementById('annualFilter');
+    const resultCount = document.getElementById('resultCount');
+    const noResults = document.getElementById('noResults');
+    const tableBody = document.getElementById('tableBody');
+    const pagination = document.getElementById('pagination');
+
+    const query = searchInput.value.toLowerCase().trim();
+    const isAnnualOnly = annualFilter ? annualFilter.checked : false;
+
+    applyFiltersAndSort(query, isAnnualOnly);
 
     const total = AppState.filteredData.length;
     const totalPages = Math.max(1, Math.ceil(total / AppState.pageSize));

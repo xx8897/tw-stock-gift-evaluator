@@ -127,35 +127,34 @@ function switchTab(tab) {
     showAuthForm();
 }
 
-function showAuthForm() {
+/**
+ * 統一的 view 切換器。
+ * @param {string} targetFormId - 要顯示的 form 的 ID
+ * @param {boolean} showTabs - 是否顯示登入/註冊 tabs
+ * @param {boolean} showAlt - 是否顯示社交登入區域
+ */
+function switchAuthView(targetFormId, showTabs, showAlt) {
     hideAllForms();
-    const f = document.getElementById('authForm');
+    const f = document.getElementById(targetFormId);
     if (f) {
         f.classList.remove('hidden');
-        restartAnimation(f);
+        restartAnimation(f); // ⚠️ 不可刪除，這行負責重啟 stagger 入場動畫
     }
     const tabs = document.querySelector('.login-tabs');
-    if (tabs) tabs.style.visibility = 'visible';
+    if (tabs) tabs.style.visibility = showTabs ? 'visible' : 'hidden';
     const altMethods = document.getElementById('altLoginMethods');
-    if (altMethods) altMethods.style.display = 'flex';
+    if (altMethods) altMethods.style.display = showAlt ? 'flex' : 'none';
     const divider = document.getElementById('socialDivider');
-    if (divider) divider.style.display = 'flex';
+    if (divider) divider.style.display = showAlt ? 'flex' : 'none';
+}
+
+function showAuthForm() {
+    switchAuthView('authForm', true, true);
 }
 
 function showOtpForm() {
-    hideAllForms();
-    const f = document.getElementById('otpForm');
-    if (f) {
-        f.classList.remove('hidden');
-        restartAnimation(f);
-    }
-    const tabs = document.querySelector('.login-tabs');
-    if (tabs) tabs.style.visibility = 'hidden';
-    const altMethods = document.getElementById('altLoginMethods');
-    if (altMethods) altMethods.style.display = 'none';
-    const divider = document.getElementById('socialDivider');
-    if (divider) divider.style.display = 'none';
-
+    switchAuthView('otpForm', false, false);
+    // ⚠️ 以下三行必須保留，是 OTP 表單的專屬邏輯
     document.getElementById('otpInput').value = '';
     document.getElementById('otpInput').focus();
     document.getElementById('otpEmailMasked').textContent = `驗證碼已寄至 ${maskEmail(pendingEmail)}`;
@@ -163,33 +162,11 @@ function showOtpForm() {
 }
 
 function showForgotPasswordForm() {
-    hideAllForms();
-    const f = document.getElementById('forgotPasswordForm');
-    if (f) {
-        f.classList.remove('hidden');
-        restartAnimation(f);
-    }
-    const tabs = document.querySelector('.login-tabs');
-    if (tabs) tabs.style.visibility = 'hidden';
-    const altMethods = document.getElementById('altLoginMethods');
-    if (altMethods) altMethods.style.display = 'none';
-    const divider = document.getElementById('socialDivider');
-    if (divider) divider.style.display = 'none';
+    switchAuthView('forgotPasswordForm', false, false);
 }
 
 function showUpdatePasswordForm() {
-    hideAllForms();
-    const f = document.getElementById('updatePasswordForm');
-    if (f) {
-        f.classList.remove('hidden');
-        restartAnimation(f);
-    }
-    const tabs = document.querySelector('.login-tabs');
-    if (tabs) tabs.style.visibility = 'hidden';
-    const altMethods = document.getElementById('altLoginMethods');
-    if (altMethods) altMethods.style.display = 'none';
-    const divider = document.getElementById('socialDivider');
-    if (divider) divider.style.display = 'none';
+    switchAuthView('updatePasswordForm', false, false);
 }
 
 function hideAllForms() {
