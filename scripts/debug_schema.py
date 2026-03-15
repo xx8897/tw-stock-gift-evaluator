@@ -3,7 +3,7 @@ import os
 
 # 模擬環境變數 (實際會從 .secret 或環境中取得)
 SUPABASE_URL = 'https://jyoaoepcrqxzrtdkldfg.supabase.co'
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5b2FvZXBjcnF4enJ0ZGtsZGZnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Mjg2MjEwNiwiZXhwIjoyMDg4NDM4MTA2fQ.BFxnlPwH89UlJWbTj07lLm0rZgsMgnvCyxnfXTZ8Xhs"
+SUPABASE_KEY = os.environ.get('SUPABASE_SERVICE_KEY')
 
 headers = {
     'apikey': SUPABASE_KEY,
