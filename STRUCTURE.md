@@ -1,11 +1,11 @@
-# 📂 專案目錄結構說明 (v4.13)
+# 📂 專案目錄結構說明 (v4.15)
 
 > 本文件描述本專案的完整目錄結構與各檔案用途。
 
 ```
 台股文件/
+│
 ├── index.html                  # 網站主頁面（骨架頁面，透過 JS 動態載入組件）
-├── evaluate_stocks.py          # 核心 Python 評分腳本（股價抓取 + CP 值計算）
 ├── README.md                   # 專案說明文件
 ├── STRUCTURE.md                # 專案目錄結構說明（本文件）
 ├── LICENSE                     # 版權授權聲明
@@ -64,6 +64,7 @@
 │   ├── ranking-ui.js           # 排行層邏輯
 │   ├── analytics.js            # GA4 追蹤埋點
 │   ├── sync.js                 # 資料同步決策
+│   ├── export.js               # CSV 持有清單匯出邏輯
 │   ├── feedback-modal.js       # 回饋表單控制
 │   ├── auth/                   # 🔐 模組化驗證系統
 │   │   ├── auth-state.js       
@@ -74,10 +75,10 @@
 │
 ├── assets/                     # 🖼️ 靜態資源
 │
-├── scripts/                    # 🐍 工具腳本 (包含拆分工具、資料維護等)
-│   ├── split_css.py            # CSS 自動拆分腳本
-│   ├── split_ui.py             # UI JS 自動拆分腳本
-│   └── split_html.py           # HTML 片段提取腳本
+├── scripts/                    # 🐍 工具腳本與雲端整合模組
+│   ├── core/                   # 核心邏輯腳本（如 evaluate_stocks_supa.py 雲端評量）
+│   ├── utils/                  # 工具類腳本（檢測 DB Scheme、取得環境變數等）
+│   └── tests/                  # 測試與驗證專區
 │
 └── .github/
     └── workflows/              # GitHub Actions 自動化流程
@@ -100,4 +101,4 @@
 
 ---
 
-> 最後更新：2026-03-15 (v4.13)
+> 最後更新：2026-03-16 (v4.15)
