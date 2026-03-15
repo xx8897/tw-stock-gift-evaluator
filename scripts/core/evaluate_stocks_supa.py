@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 # 載入環境變數
 load_dotenv()
 
-#Supabase Config
+# Supabase Config
 SUPABASE_URL = os.getenv("SUPABASE_URL", "https://jyoaoepcrqxzrtdkldfg.supabase.co")
 SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
 TABLE_NAME = "stocks"
@@ -17,82 +17,65 @@ TABLE_NAME = "stocks"
 # ── 設定路徑 ──
 _BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 _DATA_DIR = os.path.join(_BASE_DIR, 'data')
+# INPUT_FILE 為備用 Excel 路徑
 INPUT_FILE  = os.path.join(_DATA_DIR, '2021-2025_推薦v2.xlsx')
 
 # ============================================================
-# 1. 讀取資料 (優先本地 Excel，備援 Supabase)
+# 1. 讀取資料 (強制 Supabase)
 # ============================================================
-print(f"Loading data from: {INPUT_FILE}...")
 df = None
 
-try:
-    if os.path.exists(INPUT_FILE):
-        df = pd.read_excel(INPUT_FILE)
-        print(f"Successfully loaded {len(df)} rows from Excel.")
-    else:
-        raise FileNotFoundError("Excel file not found.")
-except Exception as e:
-    print(f"Excel loading failed: {e}. Attempting Supabase fallback...")
-    if not SUPABASE_KEY:
-        print("ERROR: SUPABASE_SERVICE_KEY is missing. Cannot fetch data.")
-        exit(1)
-    
-    try:
-        url = f"{SUPABASE_URL}/rest/v1/{TABLE_NAME}?select=*"
-        headers = {
-            'apikey': SUPABASE_KEY,
-            'Authorization': f'Bearer {SUPABASE_KEY}',
-            'Range-Unit': 'items'
-        }
-        resp = requests.get(url, headers=headers, timeout=30)
-        resp.raise_for_status()
-        supa_json = resp.json()
-        
-        if supa_json:
-            df = pd.DataFrame(supa_json)
-            # 欄位映射還原為 Excel 格式以利計算
-            rename_map = {
-                'stock_id': '股號', 'name': '公司', 'price': '最近股價',
-                'gift': '上次紀念品', 'freq': '五年內發放次數',
-                'five_year_gifts': '五年發放紀念品', 'cond': '去年條件'
-            }
-            df = df.rename(columns={k: v for k, v in rename_map.items() if k in df.columns})
-            print(f"Successfully loaded {len(df)} rows from Supabase.")
-        else:
-            print("ERROR: Supabase returned empty data.")
-            exit(1)
-    except Exception as se:
-        print(f"CRITICAL ERROR: Failed to load data from any source: {se}")
-        exit(1)
+print(f"Fetching latest data from Supabase [{TABLE_NAME}]...")
+if not SUPABASE_KEY:
+    print("ERROR: SUPABASE_SERVICE_KEY is missing. Cannot fetch data.")
+    exit(1)
 
-# 清理資料
+try:
+    url = f"{SUPABASE_URL}/rest/v1/{TABLE_NAME}?select=*"
+    headers = {
+        'apikey': SUPABASE_KEY,
+        'Authorization': f'Bearer {SUPABASE_KEY}',
+        'Range-Unit': 'items'
+    }
+    resp = requests.get(url, headers=headers, timeout=30)
+    resp.raise_for_status()
+    supa_json = resp.json()
+    
+    if supa_json:
+        df = pd.DataFrame(supa_json)
+        # 欄位映射清單 (備份現有值以利計算)
+        rename_map = {
+            'stock_id': '股號', 'name': '公司', 'price': '最近股價',
+            'gift': '上次紀念品', 'freq': '五年內發放次數',
+            'five_year_gifts': '五年發放紀念品', 'cond': '去年條件',
+            'last_issued': '最近一次發放',
+            'cp': '舊版性價比', 'score': '舊版推薦評分',
+            'five_year_total': '舊版五總估'
+        }
+        # 僅映射存在的欄位
+        actual_rename = {k: v for k, v in rename_map.items() if k in df.columns}
+        df = df.rename(columns=actual_rename)
+        print(f"Successfully loaded {len(df)} rows from Supabase.")
+    else:
+        print("ERROR: Supabase returned empty data.")
+        exit(1)
+except Exception as se:
+    print(f"CRITICAL ERROR: Failed to load data from Supabase: {se}")
+    exit(1)
+
+# 清理資料型別
 df.columns = df.columns.astype(str)
-if '股號' in df.columns:
-    df['股號'] = df['股號'].astype(str).str.strip()
-if '上次紀念品' in df.columns:
-    df['上次紀念品'] = df['上次紀念品'].astype(str).replace('nan', '')
-if '去年條件' in df.columns:
-    df['去年條件'] = df['去年條件'].astype(str).replace('nan', '')
-if '最近股價' not in df.columns:
-    df['最近股價'] = 0.0
-df['最近股價'] = pd.to_numeric(df['最近股價'], errors='coerce').fillna(0.0)
+if '股號' in df.columns: df['股號'] = df['股號'].astype(str).str.strip()
+if '最近股價' in df.columns: df['最近股價'] = pd.to_numeric(df['最近股價'], errors='coerce').fillna(0.0)
 
 # ============================================================
 # 2. 紀念品估值模型 v3.1 — 核心邏輯
 # ============================================================
 def estimate_gift_value(gift_name):
-    """
-    紀念品估值模型 v3.1 — 高精細度保守版
-    支援複合品項加總、更細緻的材質與品項分類。
-    【保守策略】：禮券類扣除 15 元，物品類扣除 20 元 (預估代領花費)。
-    """
     if not gift_name or gift_name in ['無', '-', '未發放', '不發放', 'nan', '']:
         return 0
-    
-    # ─── 0. 內層遞迴處理 (不在此層執行代領費扣除) ───
     is_top_level = not str(gift_name).startswith("__internal__")
     name_clean = str(gift_name).replace("__internal__", "").strip()
-
     delimiters = r'\+|\&|與|和|及'
     if re.search(delimiters, name_clean):
         parts = re.split(delimiters, name_clean)
@@ -102,10 +85,7 @@ def estimate_gift_value(gift_name):
             cost = 15 if is_voucher_only else 20
             return max(raw_total - cost, 0)
         return raw_total
-
     gift = name_clean
-    
-    # ─── 第一層：直接抓取金額 ───
     m = re.search(r'(\d[\d,]*)元', gift)
     if m: return min(int(m.group(1).replace(',', '')), 5000)
     m = re.search(r'\$\s*(\d[\d,]*)', gift)
@@ -113,14 +93,10 @@ def estimate_gift_value(gift_name):
     m = re.search(r'抵用券.*?(\d[\d,]*)', gift)
     if m: return min(int(m.group(1).replace(',', '')), 5000)
     if any(k in gift for k in ['禮物卡', '商品卡', '提貨券', '購物金', '折扣券', '兌換券', '貴賓券']): return 100
-
-    # ─── 第二層：特殊高價神股 ───
     if '大魯閣' in gift: return 800
     if '王品' in gift: return 400
     if '六福' in gift: return 1199
     if '佐登妮絲' in gift: return 300
-
-    # ─── 第三層：精細分類估值 ───
     if any(k in gift for k in ['電風扇', '循環扇', '捕蚊燈', '電熱毯']): val = 400
     elif any(k in gift for k in ['行動電源', '耳機', '藍芽']): val = 300
     elif any(k in gift for k in ['USB風扇', '手持扇', '體重計', '吸塵器']): val = 200
@@ -150,10 +126,8 @@ def estimate_gift_value(gift_name):
     elif any(k in gift for k in ['洗衣', '洗碗', '清潔劑', '皂', '洗髮', '牙膏']): val = 50
     elif any(k in gift for k in ['濕紙巾', '衛生紙', '面紙', '抽取式']): val = 30
     else: val = 40
-
     premium_brands = ['Kitty', 'Snoopy', '史努比', '迪士尼', 'Disney', 'LINE', '角落小夥伴', '卡娜赫拉', '拉拉熊', '小小兵', '皮克斯']
     if any(k.lower() in gift.lower() for k in premium_brands): val = int(val * 1.25)
-    
     if is_top_level:
         is_voucher = any(k in gift for k in ['禮券', '商品卡', '提貨券', '購物金', '折扣券', '兌換券', '貴賓券'])
         is_digital = any(k in gift for k in ['電子', '簡訊', 'APP', '點數', '虛擬'])
@@ -173,14 +147,13 @@ def estimate_5year_total(text):
     return total
 
 # ============================================================
-# 3. 執行評量計算 (v4.2 Bug Fix & Digital Support)
+# 3. 執行評量計算
 # ============================================================
-print("Evaluating Model V4.2...")
-df['紀念品預估價值'] = df['上次紀念品'].apply(estimate_gift_value)
-df['五年紀念品總估值'] = df['五年發放紀念品'].apply(estimate_5year_total)
+print("Evaluating Model V4.2 calculations...")
+df['新版五總估'] = df['五年發放紀念品'].apply(estimate_5year_total)
 
 def calc_v4_cp(row):
-    price, total_val, freq = row['最近股價'], row['五年紀念品總估值'], row['五年內發放次數']
+    price, total_val, freq = row['最近股價'], row['新版五總估'], row['五年內發放次數']
     if price <= 0 or total_val <= 0: return 0.0
     w_freq = freq / 5.0
     cp = (total_val * w_freq) / price
@@ -200,20 +173,72 @@ def calc_v4_score(row):
 df['新版推薦評分'] = df.apply(calc_v4_score, axis=1)
 
 # ============================================================
-# 4. 排序並輸出 Excel
+# 4. 更新至 Supabase
 # ============================================================
-if '股號' in df.columns:
-    df['股號_numeric'] = pd.to_numeric(df['股號'], errors='coerce')
-    df = df.sort_values(by='股號_numeric', ascending=True).drop(columns=['股號_numeric'])
+print(f"Evaluation complete for {len(df)} stocks. Preparing sync...")
 
-print(f"Evaluated {len(df)} stocks. Sorted by Stock ID.")
+# 映射回 Supabase 欄位名稱 (完整欄位以避免 Not-Null 衝突)
+# 如果欄位在 df 中被 rename 過，此處要映射回去
+rev_rename = {
+    '股號': 'stock_id',
+    '公司': 'name',
+    '最近股價': 'price',
+    '上次紀念品': 'gift',
+    '五年內發放次數': 'freq',
+    '五年發放紀念品': 'five_year_gifts',
+    '去年條件': 'cond',
+    '最近一次發放': 'last_issued',
+    '新版性價比': 'cp',
+    '新版推薦評分': 'score',
+    '新版五總估': 'five_year_total'
+}
 
-final_columns = [
-    '股號', '公司', '五年內發放次數', '最近一次發放', '上次紀念品',
-    '最近股價', '五年紀念品總估值', '新版性價比', '新版推薦評分',
-    '去年條件', '五年發放紀念品'
-]
-available_columns = [c for c in final_columns if c in df.columns]
-df[available_columns].to_excel(INPUT_FILE, index=False)
+print("Syncing results back to Supabase (Full Batch Upsert)...")
+upsert_data = []
 
-print(f"Successfully saved results to: {INPUT_FILE}")
+current_ts = time.strftime('%Y-%m-%dT%H:%M:%S+08:00', time.localtime())
+
+for _, row in df.iterrows():
+    entry = {}
+    # 遍歷映射，取出 DataFrame 中的值
+    for df_col, db_col in rev_rename.items():
+        if df_col in row:
+            val = row[df_col]
+            if pd.isna(val): 
+                # 根據型別給預設值以防 Not-Null
+                if db_col in ['price', 'cp', 'five_year_total']: val = 0.0
+                elif db_col == 'freq': val = 0
+                else: val = ""
+            
+            # 型別轉換
+            if db_col in ['price', 'cp', 'five_year_total']: entry[db_col] = float(val)
+            elif db_col == 'freq': entry[db_col] = int(val)
+            else: entry[db_col] = str(val)
+    
+    # 強制加入更新時間
+    entry['updated_at'] = current_ts
+    upsert_data.append(entry)
+
+try:
+    url = f"{SUPABASE_URL}/rest/v1/{TABLE_NAME}"
+    headers = {
+        'apikey': SUPABASE_KEY,
+        'Authorization': f'Bearer {SUPABASE_KEY}',
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+    }
+    
+    batch_size = 100
+    for i in range(0, len(upsert_data), batch_size):
+        batch = upsert_data[i:i + batch_size]
+        resp = requests.post(url, headers=headers, json=batch, timeout=60)
+        if resp.status_code >= 400:
+            print(f"ERROR Batch {i//batch_size + 1}: {resp.status_code} {resp.text}")
+            resp.raise_for_status()
+        print(f"Batch {i//batch_size + 1} synced ({len(batch)} items).")
+        
+    print("Successfully updated all records in Supabase (Full Row Sync).")
+except Exception as e:
+    print(f"CRITICAL ERROR during Supabase sync: {e}")
+
+print("Process finished.")
