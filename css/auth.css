@@ -744,3 +744,70 @@ input:-webkit-autofill:active {
     font-size: 0.9rem;
     color: var(--text-secondary);
 }
+/* ── Sync Conflict Modal ──────────────────────────────── */
+.sync-conflict-card {
+    max-width: 420px;
+    text-align: center;
+    padding: 2.5rem 2rem;
+}
+.sync-conflict-header {
+    margin-bottom: 1.5rem;
+}
+.sync-conflict-header i {
+    font-size: 3rem;
+    color: #60a5fa;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+.sync-conflict-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+.sync-conflict-header p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+.sync-conflict-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.sync-conflict-btn {
+    padding: 1.2rem;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: none;
+}
+.sync-conflict-btn.merge {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    letter-spacing: 0.05em;
+}
+.sync-conflict-btn.overwrite {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+}
+.sync-conflict-btn-title {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem;
+}
+.sync-conflict-btn.overwrite .sync-conflict-btn-title {
+    font-weight: 600;
+}
+.sync-conflict-btn small {
+    font-weight: normal;
+    font-size: 0.75rem;
+    opacity: 0.9;
+    letter-spacing: 0;
+}
+.sync-conflict-btn.overwrite small {
+    color: #94a3b8;
+    opacity: 1;
+}

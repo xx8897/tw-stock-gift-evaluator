@@ -5,46 +5,33 @@
  */
 
 (function() {
-    // 取得熱門股票排行 (30日點擊)
-    async function fetchTopStocks(limit = 10) {
+    // ── 通用 Supabase 視圖查詢（共用邏輯） ──────────────────────
+    async function fetchFromView(viewName, limit = 10) {
         if (!window.supabaseClient) {
-            console.warn('[RankingUI]: supabaseClient 未就緒');
+            console.warn(`[RankingUI]: supabaseClient 未就緒`);
             return [];
         }
         try {
-            console.log(`[RankingUI]: 發送 top_stocks_30d 請求, limit=${limit}`);
             const { data, error } = await window.supabaseClient
-                .from('top_stocks_30d')
+                .from(viewName)
                 .select('*')
                 .limit(limit);
             if (error) throw error;
-            console.log('[RankingUI]: top_stocks_30d 獲取成功', data?.length);
             return data;
         } catch (e) {
-            console.error('[RankingUI]: Fetch Top Stocks Failed', e);
+            console.error(`[RankingUI]: Fetch ${viewName} Failed`, e);
             return [];
         }
     }
 
+    // 取得熱門股票排行 (30日點擊)
+    async function fetchTopStocks(limit = 10) {
+        return fetchFromView('top_stocks_30d', limit);
+    }
+
     // 取得熱門持有排行
     async function fetchTopOwned(limit = 10) {
-        if (!window.supabaseClient) {
-            console.warn('[RankingUI]: supabaseClient 未就緒');
-            return [];
-        }
-        try {
-            console.log(`[RankingUI]: 發送 top_owned_stocks 請求, limit=${limit}`);
-            const { data, error } = await window.supabaseClient
-                .from('top_owned_stocks')
-                .select('*')
-                .limit(limit);
-            if (error) throw error;
-            console.log('[RankingUI]: top_owned_stocks 獲取成功', data?.length);
-            return data;
-        } catch (e) {
-            console.error('[RankingUI]: Fetch Top Owned Failed', e);
-            return [];
-        }
+        return fetchFromView('top_owned_stocks', limit);
     }
 
     // 渲染首頁排行榜 UI

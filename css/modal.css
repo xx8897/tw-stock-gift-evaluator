@@ -693,3 +693,24 @@
         font-size: 0.7rem;
     }
 }
+
+
+/* ── Rating Table (推薦評級對照) ───────────────────────── */
+.v-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.85rem;
+}
+.v-row:last-child {
+    border-bottom: none;
+}
+.v-row.v-header {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    font-weight: bold;
+}
+.v-col-star { flex: 1; color: #FFD700; }
+.v-col-cp   { flex: 1; text-align: center; }
+.v-col-cond { flex: 2; text-align: right; }
+
