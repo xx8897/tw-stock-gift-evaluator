@@ -39,7 +39,7 @@ table {
 th.th-interest, td.interest-cell,
 th.th-purchased, td.purchase-cell {
     width: 60px;
-    text-align: center !important;
+    text-align: center;
     vertical-align: middle;
     /* padding / font-size / line-height 僅桌機需要，見下方 @media (min-width: 769px) */
 }
@@ -62,7 +62,7 @@ th.th-purchased i {
 }
 /* 文字類欄位對齊：微調左邊間隔，增加對齊感但保持置左 */
 td.price {
-    padding-left: 1.15rem !important;
+    padding-left: 1.15rem;
 }
 
 /* 標題基礎樣式 */
@@ -89,7 +89,7 @@ tbody tr:nth-child(even) {
 
 /* 推薦評分特別處理 (第10欄)：改為完全置中（僅桌機需要）—見下方 @media (min-width: 769px) */
 td:nth-child(10) {
-    text-align: center !important;
+    text-align: center;
 }
 
 /* 依照要求置中特定標題與欄位 */
@@ -106,7 +106,7 @@ td.price,         /* 最近價格內容 */
 td.cp-value,      /* 性價比內容 */
 td.cond-cell,     /* 去年條件內容 */
 .freq-cell {      /* 五年內發放下方的欄位 */
-    text-align: center !important;
+    text-align: center;
 }
 
 /* 欄位寬度由 index.html 的 <colgroup> 控制（table-layout: fixed 優先） */
@@ -460,12 +460,12 @@ td:has(.gift-cell) {
 
 .table-container.show-gridlines table th,
 .table-container.show-gridlines table td {
-    border-bottom: 1px solid var(--border-subtle) !important;
-    border-right: 1px solid var(--border-subtle) !important;
+    border-bottom: 1px solid var(--border-subtle);
+    border-right: 1px solid var(--border-subtle);
 }
 
 .table-container.show-gridlines table th {
-    border-bottom: 2px solid var(--border-subtle) !important;
+    border-bottom: 2px solid var(--border-subtle);
 }
 
 .table-container.show-gridlines table {
