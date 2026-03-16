@@ -1,150 +1,487 @@
-# CSS `!important` 淨化計畫
+# CSS `!important` 五階段淨化計畫
 
-本文件包含兩個部分：**現況分析報告** 與 **分階段淨化執行計畫**。
-每一階段修改後都必須進行截圖比對驗證，確認美觀與功能零影響才進入下一階段。
+## 前置知識（執行前必讀）
 
----
+### CSS 載入順序（決定哪條規則勝出）
+```
+index.html 載入順序：
+  L33: layout.css
+  L34: components.css  →  @import 順序：
+                             1. toolbar.css
+                             2. ranking.css
+                             3. components/table.css
+                             4. components/badges.css
+                             5. components/buttons.css      ← glass-btn 在這
+                             6. components/sections.css     ← footer-github-btn 在這
+                             7. components/user-menu.css
+                             8. components/history-popup.css
+                             9. components/controls.css
+  L35: modal.css
+  L36: auth.css        ← 最後載入，優先度最高
+```
 
-## 📊 Part 1：現況分析（共 78 處）
-
-| CSS 檔案 | 數量 | 分類 | 說明 |
-|---|---|---|---|
-| `utilities.css` | 12 | 🟢 保留 | `.hidden`, `.visually-hidden`, `.bounce-icon` 等工具類，使用 `!important` 完全正確 |
-| `auth.css` (autofill) | 2 | 🟢 保留 | `input:-webkit-autofill` 覆蓋瀏覽器預設的深色表單填充，這是業界標準寫法 |
-| `auth.css` (sync 狀態) | 3 | 🟡 戰術 | `.sync-status--syncing/ok/error` 的顏色覆蓋，由 JS 動態掛載 |
-| `auth.css` (error/hidden) | 2 | 🟡 戰術 | `.auth-error-msg` 的 `display: flex/none`，用來覆蓋 JS hidden 切換 |
-| `auth.css` (modal card) | 7 | 🔴 清除 | `.login-modal-card` 為了蓋過 `.modal-content` 基礎定義而強押 |
-| `toolbar.css` | 13 | 🟡 戰術 | 按鈕的 `.active` 狀態覆蓋，由 JS 切換，風險不大 |
-| `modal.css` (sponsor) | 6 | 🔴 清除 | `.sponsor-modal-card`, `.sponsor-intro`, `.option-info p` 的強押 |
-| `modal.css` (feedback) | 10 | 🔴 清除 | `.feedback-modal-card` 為了蓋過 `.modal-content` 而無差別強押 |
-| `table.css` | 14 | 🔴 清除 | 表格的 `text-align: center`、`padding-left`、格線 border 等 |
-| `sections.css` | 4 | 🔴 清除 | `.footer-github-btn` 為了覆蓋通用按鈕樣式而強押 |
-| `layout.css` | 2 | 🟡 戰術 | `grid-template-columns` 在 RWD 中的極端覆蓋 |
-
-### 統計
-- 🟢 **保留不動**：14 處（utilities 12 + autofill 2）
-- 🟡 **暫時保留**（風險低，未來可優化）：20 處
-- 🔴 **應清除**：44 處
-
----
-
-## 🛠️ Part 2：分階段淨化執行計畫
-
-### 階段 1：`table.css` — 表格對齊（14 處）
-
-**風險等級**：⚠️ 中高（直接影響桌機 + 手機的表格顯示）
-
-#### 要清除的 `!important`
-
-| 行號 | 目前寫法 | 原因 |
-|---|---|---|
-| L42 | `text-align: center !important` | icon 欄位置中 — 沒人跟它搶，不需要 `!important` |
-| L65 | `padding-left: 1.15rem !important` | 價格欄微調 — 同上 |
-| L92 | `text-align: center !important` | 推薦評分欄 — 同上 |
-| L109 | `text-align: center !important` | 股號/公司/價格等欄位 — 同上 |
-| L463-464 | `border-bottom/right: ... !important` | 格線模式 — 需保留高權重，改用更高特指度取代 |
-| L468 | `border-bottom: ... !important` | 格線標題欄 — 同上 |
-
-#### 修正方式
-1. **L42, L65, L92, L109**：直接移除 `!important`，因為這些選擇器本身特指度已經足夠高，沒有其他規則在爭搶。
-2. **L463-468（格線）**：將選擇器從 `.table-container.show-gridlines table td` 改為 `section .table-container.show-gridlines table td`，提升特指度後移除 `!important`。
-
-#### 驗證清單
-- [ ] 桌機：表格各欄位的置中對齊是否與修改前完全一致
-- [ ] 桌機：價格欄的左側間距是否正常
-- [ ] 桌機：點擊「格線」按鈕後，格線是否正確顯示
-- [ ] 手機：卡片模式的所有欄位是否正常排列（不受影響）
+### CSS 特指度計算規則（用於判斷誰會贏）
+- `#id` = 100 分
+- `.class` / `[attr]` / `:pseudo-class` = 10 分
+- `tag` = 1 分
+- 特指度相同時：**後出現的規則贏**（不論是同檔案還是後載入的檔案）
 
 ---
 
-### 階段 2：`modal.css` — 彈出視窗（16 處）
+## 🔴 階段一：`table.css`（移除 6 處 `!important`）
 
-**風險等級**：⚠️ 中（影響贊助 Modal 和回饋 Modal 的外觀）
+**檔案路徑**：`css/components/table.css`
+**移除原因**：這些選擇器的特指度已高過所有競爭規則，`!important` 完全多餘。
 
-#### 要清除的 `!important`
-
-| 行號 | 目前寫法 | 原因 |
-|---|---|---|
-| L3 | `.sponsor-modal-card { max-width: 500px !important }` | 蓋過 `.modal-content { max-width: 600px }`，應改用更高特指度 |
-| L22-23 | `.sponsor-intro { margin-bottom / font-size }` | 蓋過 `.modal-body p` 的基本間距，應提升選擇器精確度 |
-| L94-97 | `.option-info p.option-desc { ... }` | 蓋過 `.modal-body p` 定義。選擇器本身已含 tag+class，特指度應足夠 |
-| L326-335 | `.feedback-modal-card { 10 條全部 !important }` | 蓋過 `.modal-content` 基礎定義 |
-
-#### 修正方式
-1. **`.sponsor-modal-card`**：改為 `.modal-overlay .sponsor-modal-card`，特指度提升後移除 `!important`。
-2. **`.sponsor-intro`**：改為 `.sponsor-modal-card .sponsor-intro`。
-3. **`.option-info p.option-desc`**：已含 tag+class，嘗試直接移除 `!important`；若不行，改為 `.sponsor-option-card .option-info p.option-desc`。
-4. **`.feedback-modal-card`**：改為 `.feedback-modal-overlay .feedback-modal-card`，一次清掉 10 處。
-
-#### 驗證清單
-- [ ] 桌機：點擊「贊助開發者」按鈕 → Modal 開啟，外觀正常（圓角、陰影、間距）
-- [ ] 桌機：贊助選項卡片的描述文字大小與間距正確
-- [ ] 桌機：點擊「意見回饋」按鈕 → 回饋 Modal 的毛玻璃背景、圓角、padding 正常
-- [ ] 手機：上述兩個 Modal 在手機上的顯示是否正確
-
----
-
-### 階段 3：`auth.css` — 登入視窗卡片（7 處）
-
-**風險等級**：⚠️ 中（影響登入/註冊功能的容器外觀）
-
-#### 要清除的 `!important`
-
-| 行號 | 目前寫法 | 原因 |
-|---|---|---|
-| L13-20 | `.login-modal-wrapper .login-modal-card { 7 條 !important }` | 為了覆蓋 `.modal-content` 的基礎定義 |
-
-#### 修正方式
-選擇器已經是兩層 class (`.login-modal-wrapper .login-modal-card`)，特指度 = 0-2-0，而 `.modal-content` 只有 0-1-0。**理論上不需要 `!important`。** 可以直接移除。
-
-如果移除後發現被蓋過，代表是 CSS 載入順序問題（`auth.css` 在 `modal.css` 之後載入，但 `modal-content` 定義在後面的某個區塊）。此時的正解是將 `.login-modal-card` 的定義移到 `auth.css` 更靠近末尾的位置。
-
-#### 驗證清單
-- [ ] 點擊「登入」按鈕 → Modal 的背景色、半透明、邊框、陰影正確
-- [ ] 表單內容不超出 Modal 高度時，不出現多餘滾軸
-- [ ] 手機版登入 Modal 的顯示是否正確
+### 修改 1/6（第 42 行）
+找到這段：
+```css
+th.th-interest, td.interest-cell,
+th.th-purchased, td.purchase-cell {
+    width: 60px;
+    text-align: center !important;
+    vertical-align: middle;
+```
+改為：
+```css
+th.th-interest, td.interest-cell,
+th.th-purchased, td.purchase-cell {
+    width: 60px;
+    text-align: center;
+    vertical-align: middle;
+```
+**原因**：`th.th-interest`（0-1-1）遠高於任何競爭的 `th`（0-0-1），不需要 `!important`。
 
 ---
 
-### 階段 4：`sections.css` — 頁尾 GitHub 按鈕（4 處）
-
-**風險等級**：🟢 低
-
-#### 要清除的 `!important`
-
-| 行號 | 目前寫法 | 原因 |
-|---|---|---|
-| L17-20 | `.footer-github-btn { padding / font-size / border-radius / display }` | 蓋過通用 `.glass-btn` 按鈕樣式 |
-
-#### 修正方式
-改用 `.footer-section .footer-github-btn` 提升特指度，然後移除 `!important`。
-
-#### 驗證清單
-- [ ] 頁尾的 GitHub ⭐ 按鈕外觀正常（大小、圓角、間距）
-
----
-
-### 階段 5（選修）：`toolbar.css` — 戰術性清除（13 處）
-
-**風險等級**：🟢 低，但改動量大
-
-目前 `toolbar.css` 中有 13 處 `!important`，全用於 `.tag-btn.active` 等 JS 動態狀態的顏色覆蓋。在 Vanilla CSS 的架構下，這種寫法是可接受的防禦性策略。
-
-若未來想清除，可以統一改用計算好的更高特指度（如 `.table-toolbar .purchase-tags-group .tag-btn.active`）取代。
+### 修改 2/6（第 65 行）
+找到這段：
+```css
+td.price {
+    padding-left: 1.15rem !important;
+}
+```
+改為：
+```css
+td.price {
+    padding-left: 1.15rem;
+}
+```
+**原因**：`td.price`（0-1-1）特指度足夠，無競爭者。
 
 ---
 
-## 📋 執行安全守則
+### 修改 3/6（第 92 行）
+找到這段：
+```css
+td:nth-child(10) {
+    text-align: center !important;
+}
+```
+改為：
+```css
+td:nth-child(10) {
+    text-align: center;
+}
+```
+**原因**：`td:nth-child(10)`（0-1-1）特指度足夠，無競爭者。
+
+---
+
+### 修改 4/6（第 109 行）
+找到這段（在 `th:nth-child(3), td.stock-id ...` 多選擇器區塊末尾）：
+```css
+    text-align: center !important;
+}
+```
+改為：
+```css
+    text-align: center;
+}
+```
+**原因**：這個區塊的選擇器包含 `th:nth-child(3)` 等，特指度均高於基礎 `th` / `td` 規則，`!important` 多餘。
+
+---
+
+### 修改 5/6（第 463–464 行）
+找到這段：
+```css
+.table-container.show-gridlines table th,
+.table-container.show-gridlines table td {
+    border-bottom: 1px solid var(--border-subtle) !important;
+    border-right: 1px solid var(--border-subtle) !important;
+}
+```
+改為：
+```css
+.table-container.show-gridlines table th,
+.table-container.show-gridlines table td {
+    border-bottom: 1px solid var(--border-subtle);
+    border-right: 1px solid var(--border-subtle);
+}
+```
+**原因**：`.table-container.show-gridlines table td`（0-2-2）遠高於基礎 `td`（0-0-1），已無敵無需 `!important`。
+
+---
+
+### 修改 6/6（第 468 行）
+找到這段：
+```css
+.table-container.show-gridlines table th {
+    border-bottom: 2px solid var(--border-subtle) !important;
+}
+```
+改為：
+```css
+.table-container.show-gridlines table th {
+    border-bottom: 2px solid var(--border-subtle);
+}
+```
+**原因**：同上。
+
+---
+
+### 階段一驗證清單
+完成後，用瀏覽器執行以下目視確認：
+- [ ] 桌機：「興趣」「已買」欄位的 icon 正常置中
+- [ ] 桌機：「最近價格」欄的左側間距正常
+- [ ] 桌機：「推薦評分」欄正常置中
+- [ ] 桌機：點擊工具列「格線」按鈕，格線正常出現；再次點擊，格線消失
+- [ ] 手機：卡片式行佈局正常，各欄對齊不受影響
+
+---
+
+## 🔴 階段二：`modal.css`（修改 4 處，移除共 16 個 `!important`）
+
+**檔案路徑**：`css/modal.css`
+
+### 修改 1/4（第 2–4 行）—— 需改選擇器
+**問題根因**：`.sponsor-modal-card`（L3，0-1-0）出現在 `.modal-content`（L131，0-1-0）之前。同特指度時，後出現的 `.modal-content` 會贏，所以原本加了 `!important` 強制覆蓋。
+
+找到這段：
+```css
+.sponsor-modal-card {
+    max-width: 500px !important;
+}
+```
+改為：
+```css
+.modal-content.sponsor-modal-card {
+    max-width: 500px;
+}
+```
+**原因**：`.modal-content.sponsor-modal-card`（0-2-0）高於 `.modal-content`（0-1-0），直接贏過，不需要 `!important`。HTML 元素確認帶有這兩個 class（`class="modal-content sponsor-modal-card"`）。
+
+---
+
+### 修改 2/4（第 21–24 行）—— 需改選擇器
+**問題根因**：`.sponsor-intro` 是 `<p>` 標籤，而 `.modal-body p`（0-1-1）的特指度高於 `.sponsor-intro`（0-1-0），所以原本加了 `!important`。
+
+找到這段：
+```css
+.sponsor-intro {
+    text-align: left;
+    margin-bottom: 2rem !important;
+    font-size: 1rem !important;
+}
+```
+改為：
+```css
+.sponsor-modal-card .sponsor-intro {
+    text-align: left;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+}
+```
+**原因**：`.sponsor-modal-card .sponsor-intro`（0-2-0）高於 `.modal-body p`（0-1-1），直接贏過。
+
+---
+
+### 修改 3/4（第 93–98 行）—— 只移除 `!important`
+找到這段：
+```css
+.option-info p.option-desc {
+    font-size: 0.85rem !important;
+    color: var(--text-secondary);
+    margin: 0 !important;
+    line-height: 1.4 !important;
+}
+```
+改為：
+```css
+.option-info p.option-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.4;
+}
+```
+**原因**：`.option-info p.option-desc`（0-2-1）已高於 `.modal-body p`（0-1-1），直接贏過，`!important` 多餘。
+
+---
+
+### 修改 4/4（第 324–336 行）—— 只移除 `!important`
+**問題根因**：`.feedback-modal-card` 雖然出現在 `.modal-content`（L128）之後（L324），本應直接贏過，但當時開發者不確定，加了 `!important` 作為防禦。實際上全部多餘。
+
+找到這段：
+```css
+.feedback-modal-card {
+    width: 100%;
+    max-width: none !important;
+    max-height: 88vh !important;
+    padding: 2.5rem 2.5rem !important;
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.95)) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    border-radius: 24px !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    overflow-y: auto !important;
+}
+```
+改為：
+```css
+.feedback-modal-card {
+    width: 100%;
+    max-width: none;
+    max-height: 88vh;
+    padding: 2.5rem 2.5rem;
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.95));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    overflow-y: auto;
+}
+```
+**原因**：`.feedback-modal-card`（L324，0-1-0）在同檔案中出現於 `.modal-content`（L128，0-1-0）之後，同特指度時較晚出現的規則勝出，`!important` 全部多餘。
+
+---
+
+### 階段二驗證清單
+- [ ] 桌機：點擊「贊助開發者」→ 彈出 Modal，寬度至多 500px，背景/圓角/間距正常
+- [ ] 桌機：贊助選項卡片的描述文字（小字）大小與間距正確
+- [ ] 桌機：點擊「意見回饋」→ 回饋 Modal 的毛玻璃背景、24px 圓角、padding 正確
+- [ ] 手機：上述兩個 Modal 正常顯示
+
+---
+
+## 🔴 階段三：`auth.css`（移除 7 處 `!important`）
+
+**檔案路徑**：`css/auth.css`
+**問題根因**：HTML 元素帶有 `class="modal-content login-modal-card"`（雙 class），`.modal-content` 定義在 `modal.css`（index.html L35），而 `.login-modal-wrapper .login-modal-card` 定義在 `auth.css`（index.html L36，**後載入**）。後載入且特指度（0-2-0）高於 `.modal-content`（0-1-0），`!important` 完全多餘。
+
+### 修改（第 11–22 行）
+找到這段：
+```css
+.login-modal-wrapper .login-modal-card {
+    width: 100%;
+    max-width: none !important;
+    max-height: 88vh !important;
+    padding: 2.5rem !important;
+    background: rgba(15, 23, 42, 0.7) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+    position: relative;
+    overflow-y: auto !important;
+    /* Allow scroll if form is too tall */
+}
+```
+改為：
+```css
+.login-modal-wrapper .login-modal-card {
+    width: 100%;
+    max-width: none;
+    max-height: 88vh;
+    padding: 2.5rem;
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow-y: auto;
+    /* Allow scroll if form is too tall */
+}
+```
+
+### 階段三驗證清單
+- [ ] 點擊「登入」按鈕 → 登入/註冊 Modal 的深色半透明背景、邊框、陰影正常
+- [ ] 表單正常捲動（內容超出高度時）
+- [ ] 手機：登入 Modal 顯示正常
+
+---
+
+## 🔴 階段四：`sections.css`（移除 4 處 `!important`）
+
+**檔案路徑**：`css/components/sections.css`
+**問題根因**：`.footer-github-btn` 可能與 `.glass-btn` 同時加在元素上。`.glass-btn` 定義在 `buttons.css`（components.css import 第 5 位），`.footer-github-btn` 定義在 `sections.css`（第 6 位），兩者同特指度（0-1-0）但 `sections.css` 後載入，故 `.footer-github-btn` 規則本就會贏，`!important` 多餘。
+
+### 修改（第 16–21 行）
+找到這段：
+```css
+.footer-github-btn {
+    padding: 0.35rem 0.75rem !important;
+    font-size: 0.8rem !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+}
+```
+改為：
+```css
+.footer-github-btn {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 8px;
+    display: inline-flex;
+}
+```
+
+### 階段四驗證清單
+- [ ] 頁尾的 GitHub ⭐ 按鈕外觀正常（圓角 8px、大小如舊）
+
+---
+
+## 🟡 階段五（選修）：`toolbar.css`（移除 13 處 `!important`）
+
+**檔案路徑**：`css/toolbar.css`
+**問題根因**：全部是 JS 動態加掛 `.active` 後的狀態覆蓋。選擇器已加了 `.purchase-tags-group` 父層包裹，特指度已遠高於基礎 `.tag-btn` 規則，`!important` 為防禦性過度寫法。
+
+### 修改 1/6（第 183–184 行）
+找到：
+```css
+.table-toolbar .square-tag.show-gridlines-btn:has(#showGridlinesToggle:checked) {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    color: #fff;
+    opacity: 1;
+}
+```
+改為（移除 2 個 `!important`）：
+```css
+.table-toolbar .square-tag.show-gridlines-btn:has(#showGridlinesToggle:checked) {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    opacity: 1;
+}
+```
+
+### 修改 2/6（第 271–273 行）
+找到：
+```css
+.purchase-tags-group .tag-btn:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+```
+改為：
+```css
+.purchase-tags-group .tag-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+```
+
+### 修改 3/6（第 275–280 行）
+找到：
+```css
+.purchase-tags-group .tag-btn.active {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+```
+改為（移除 3 個 `!important`）：
+```css
+.purchase-tags-group .tag-btn.active {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+    font-weight: 600;
+}
+```
+
+### 修改 4/6（第 282–286 行）
+找到：
+```css
+.purchase-tags-group #filterPurchased.active {
+    background: rgba(16, 185, 129, 0.2) !important; /* 翠綠 Emerald */
+    border-color: rgba(16, 185, 129, 0.5) !important;
+    color: #34d399 !important;
+}
+```
+改為（移除 3 個 `!important`）：
+```css
+.purchase-tags-group #filterPurchased.active {
+    background: rgba(16, 185, 129, 0.2); /* 翠綠 Emerald */
+    border-color: rgba(16, 185, 129, 0.5);
+    color: #34d399;
+}
+```
+
+### 修改 5/6（第 288–292 行）
+找到：
+```css
+.purchase-tags-group #filterUnpurchased.active {
+    background: rgba(99, 102, 241, 0.2) !important; /* 靛青 Indigo */
+    border-color: rgba(99, 102, 241, 0.5) !important;
+    color: #a5b4fc !important;
+}
+```
+改為（移除 3 個 `!important`）：
+```css
+.purchase-tags-group #filterUnpurchased.active {
+    background: rgba(99, 102, 241, 0.2); /* 靛青 Indigo */
+    border-color: rgba(99, 102, 241, 0.5);
+    color: #a5b4fc;
+}
+```
+
+### 修改 6/6（第 294–296 行）
+找到：
+```css
+.purchase-tags-group .tag-btn.active i {
+    opacity: 1 !important;
+}
+```
+改為：
+```css
+.purchase-tags-group .tag-btn.active i {
+    opacity: 1;
+}
+```
+
+### 階段五驗證清單
+- [ ] 點擊「顯示已持有」→ 按鈕變綠色、帶邊框高亮
+- [ ] 點擊「顯示未持有」→ 按鈕變藍紫色、帶邊框高亮
+- [ ] 點擊「全部」→ 兩個按鈕恢復預設灰色
+- [ ] 點擊工具列格線按鈕 → 亮白色高亮正常
+- [ ] 各按鈕 hover 樣式正常（輕微背景）
+
+---
+
+## 📋 每階段 Git 提交格式
+
+```
+# 階段一
+git add css/components/table.css
+git commit -m "refactor(css): remove redundant !important from table.css column alignment"
+
+# 階段二
+git add css/modal.css
+git commit -m "refactor(css): remove !important from modal.css, improve sponsor-modal specificity"
+
+# 階段三
+git add css/auth.css
+git commit -m "refactor(css): remove redundant !important from login-modal-card styles"
+
+# 階段四
+git add css/components/sections.css
+git commit -m "refactor(css): remove redundant !important from footer-github-btn"
+
+# 階段五（選修）
+git add css/toolbar.css
+git commit -m "refactor(css): remove redundant !important from toolbar active state styles"
+```
 
 > [!CAUTION]
-> 每個階段完成後，必須執行以下檢查才能進入下一階段：
-
-1. **桌機截圖比對**：修改前後的同一頁面截圖放在一起比對，確認完全一致
-2. **手機截圖比對**：同上，確認行動版面不受影響
-3. **功能測試**：
-   - 登入/登出流程正常
-   - 贊助 Modal 可正常開啟/關閉
-   - 回饋 Modal 可正常提交
-   - 表格排序、搜尋、篩選正常
-   - 格線切換正常
-4. **Git 隔離提交**：每階段單獨一次 commit，方便出問題時個別 revert
+> 每個階段只修改一個檔案，commit 後部署確認視覺無誤，才進行下一階段。不要把多個階段合並為一次 commit。
