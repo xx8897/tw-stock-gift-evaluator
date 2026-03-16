@@ -30,8 +30,8 @@
 }
 
 .search-box {
-    flex: 1;
-    min-width: 300px;
+    width: 350px;       /* 固定適中寬度 */
+    max-width: 100%;    /* 手機版自適應縮小 */
     position: relative;
 }
 
