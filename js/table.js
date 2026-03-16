@@ -1,64 +1,100 @@
+// ==========================================
+// 1. 過濾器輔助函數群 (Filter Helpers)
+// ==========================================
+
+function checkSearchMatch(row, query) {
+    if (!query) return true;
+    return row.id.includes(query) ||
+           row.name.toLowerCase().includes(query) ||
+           row.gift.toLowerCase().includes(query);
+}
+
+function checkStarMatch(row, activeStars) {
+    if (activeStars.length === 0) return true;
+    const rowStar = parseInt(row.score.charAt(0)) || 1;
+    return activeStars.includes(rowStar);
+}
+
+function checkAnnualMatch(row, isAnnualOnly) {
+    return isAnnualOnly ? row.freq >= 5 : true;
+}
+
+function checkIdRequirementMatch(row, excludeId, includeId) {
+    const needId = row.cond.includes('身分證');
+    if (excludeId && needId) return false;
+    if (includeId && !needId) return false;
+    return true;
+}
+
+function checkPurchaseMatch(isPurchased, purchaseFilter) {
+    if (purchaseFilter === 'purchased') return isPurchased;
+    if (purchaseFilter === 'unpurchased') return !isPurchased;
+    return true;
+}
+
+function checkGiftTypeMatch(row, ticketOnly, objectOnly) {
+    if (!ticketOnly && !objectOnly) return true;
+
+    const giftText = String(row.gift);
+    const posKws = ['券', '劵', '卡', '門票', '點數', '抵用金', '購物金', '拿鐵', '美式'];
+    const negKws = ['卡套', '卡包', '卡夾', '夾', '撲克牌', '賀卡', '馬卡龍', '打卡', '微波', '保卡', '金屬', '金盞', '黃金', '馬克杯', '合金', '吸掛卡', '打卡板', '記憶卡', '卡片', '指甲剪', '口罩', '提籃'];
+    
+    let isTicket = posKws.some(kw => giftText.includes(kw));
+    let isExcluded = negKws.some(kw => giftText.includes(kw));
+    if (giftText.includes('錦明股東專屬會員卡')) { isTicket = true; isExcluded = false; }
+    
+    const finalIsTicket = isTicket && !isExcluded;
+
+    if (ticketOnly) return finalIsTicket;
+    if (objectOnly) {
+        const isNoGift = !giftText || giftText === '-' || giftText.includes('未發放') || giftText.includes('不發放');
+        return !finalIsTicket && !isNoGift;
+    }
+    return true;
+}
+
+// ==========================================
+// 2. 排序輔助函數 (Sort Helper)
+// ==========================================
+
+function sortTableData(data, sortColumn, sortDirection) {
+    data.sort((a, b) => {
+        let va = a[sortColumn];
+        let vb = b[sortColumn];
+        if (sortColumn === 'score') {
+            va = parseInt(va) || 0;
+            vb = parseInt(vb) || 0;
+        }
+        if (va < vb) return sortDirection === 'asc' ? -1 : 1;
+        if (va > vb) return sortDirection === 'asc' ? 1 : -1;
+        return 0;
+    });
+}
+
+// ==========================================
+// 3. 核心協調者 (Orchestrator)
+// ==========================================
 /**
  * 執行過濾與排序，結果直接寫入 AppState.filteredData
  * ⚠️ 重要：只能寫入 AppState.filteredData，不能 return！
  */
 function applyFiltersAndSort(query, isAnnualOnly) {
-    AppState.filteredData = AppState.globalData.filter(row => {
-        const matchSearch = !query ||
-            row.id.includes(query) ||
-            row.name.toLowerCase().includes(query) ||
-            row.gift.toLowerCase().includes(query);
+    const { filters, purchasedStocks, interestStocks, currentSort, globalData } = AppState;
 
-        const rowStar = parseInt(row.score.charAt(0)) || 1;
-        const matchStar = AppState.filters.stars.length === 0 ||
-            AppState.filters.stars.includes(rowStar);
+    AppState.filteredData = globalData.filter(row => {
+        const isPurchased = purchasedStocks.has(row.id);
+        const isInterest = interestStocks.has(row.id);
 
-        const matchAnnual = isAnnualOnly ? row.freq >= 5 : true;
-
-        const matchExcludeId = AppState.filters.excludeId ? !row.cond.includes('身分證') : true;
-        const matchIncludeId = AppState.filters.includeId ? row.cond.includes('身分證') : true;
-
-        const isPurchased = AppState.purchasedStocks.has(row.id);
-        const isInterest = AppState.interestStocks.has(row.id);
-        let matchPurchase = true;
-        if (AppState.filters.purchaseFilter === 'purchased') {
-            matchPurchase = isPurchased;
-        } else if (AppState.filters.purchaseFilter === 'unpurchased') {
-            matchPurchase = !isPurchased;
-        }
-
-        const matchInterest = AppState.filters.interestOnly ? isInterest : true;
-
-        let matchGiftType = true;
-        const giftText = String(row.gift);
-        const posKws = ['券', '劵', '卡', '門票', '點數', '抵用金', '購物金', '拿鐵', '美式'];
-        const negKws = ['卡套', '卡包', '卡夾', '夾', '撲克牌', '賀卡', '馬卡龍', '打卡', '微波', '保卡', '金屬', '金盞', '黃金', '馬克杯', '合金', '吸掛卡', '打卡板', '記憶卡', '卡片', '指甲剪', '口罩', '提籃'];
-        let isTicket = posKws.some(kw => giftText.includes(kw));
-        let isExcluded = negKws.some(kw => giftText.includes(kw));
-        if (giftText.includes('錦明股東專屬會員卡')) { isTicket = true; isExcluded = false; }
-        const finalIsTicket = isTicket && !isExcluded;
-
-        if (AppState.filters.ticketOnly) {
-            matchGiftType = finalIsTicket;
-        } else if (AppState.filters.objectOnly) {
-            const isNoGift = !giftText || giftText === '-' || giftText.includes('未發放') || giftText.includes('不發放');
-            matchGiftType = !finalIsTicket && !isNoGift;
-        }
-
-        return matchSearch && matchStar && matchAnnual && matchExcludeId && matchIncludeId && matchPurchase && matchGiftType && matchInterest;
+        return checkSearchMatch(row, query) &&
+               checkStarMatch(row, filters.stars) &&
+               checkAnnualMatch(row, isAnnualOnly) &&
+               checkIdRequirementMatch(row, filters.excludeId, filters.includeId) &&
+               checkPurchaseMatch(isPurchased, filters.purchaseFilter) &&
+               (filters.interestOnly ? isInterest : true) &&
+               checkGiftTypeMatch(row, filters.ticketOnly, filters.objectOnly);
     });
 
-    AppState.filteredData.sort((a, b) => {
-        let va = a[AppState.currentSort.column];
-        let vb = b[AppState.currentSort.column];
-        if (AppState.currentSort.column === 'score') {
-            va = parseInt(va) || 0;
-            vb = parseInt(vb) || 0;
-        }
-        if (va < vb) return AppState.currentSort.direction === 'asc' ? -1 : 1;
-        if (va > vb) return AppState.currentSort.direction === 'asc' ? 1 : -1;
-        return 0;
-    });
+    sortTableData(AppState.filteredData, currentSort.column, currentSort.direction);
 }
 
 function renderTable() {
