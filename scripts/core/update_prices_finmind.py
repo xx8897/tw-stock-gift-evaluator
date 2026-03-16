@@ -88,14 +88,16 @@ for stock in stocks:
     row['新版性價比'] = calc_v4_cp(row)
     row['新版推薦評分'] = calc_v4_score(row)
 
-    upsert_batch.append({
-        'stock_id': stock_id,
+    # 組裝 UPSERT 資料：保留所有原始欄位，僅更新變動部分
+    payload = {**stock}  # 複製原始資料
+    payload.update({
         'price': float(new_price),
         'five_year_total': float(row['新版五總估']),
         'cp': float(row['新版性價比']),
         'score': str(row['新版推薦評分']),
         'updated_at': current_ts,
     })
+    upsert_batch.append(payload)
     print(f"  {stock_id} → {new_price} | cp={row['新版性價比']} | {row['新版推薦評分']}")
 
 # ── Step 4: Upsert 回 Supabase（stock_id 為 Key，merge duplicates）──
