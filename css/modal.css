@@ -1,6 +1,6 @@
 /* --- Sponsor Modal Specific Styles --- */
-.sponsor-modal-card {
-    max-width: 500px !important;
+.modal-content.sponsor-modal-card {
+    max-width: 500px;
 }
 
 .mini-modal-card {
@@ -17,10 +17,10 @@
     font-size: 0.85rem;
 }
 
-.sponsor-intro {
+.sponsor-modal-card .sponsor-intro {
     text-align: left;
-    margin-bottom: 2rem !important;
-    font-size: 1rem !important;
+    margin-bottom: 2rem;
+    font-size: 1rem;
 }
 
 .sponsor-options {
@@ -323,16 +323,16 @@
 
 .feedback-modal-card {
     width: 100%;
-    max-width: none !important;
-    max-height: 88vh !important;
-    padding: 2.5rem 2.5rem !important;
-    background: linear-gradient(145deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.95)) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-    border-radius: 24px !important;
-    backdrop-filter: blur(24px) !important;
-    -webkit-backdrop-filter: blur(24px) !important;
-    overflow-y: auto !important;
+    max-width: none;
+    max-height: 88vh;
+    padding: 2.5rem 2.5rem;
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.95));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    overflow-y: auto;
 }
 
 /* Header */
@@ -498,12 +498,12 @@
 /* Textarea */
 .feedback-textarea-wrapper {
     position: relative;
-    margin-top: 0; /* 移除上方間距 */
+    margin-top: 0; /* 移除上方?��? */
 }
 
 .feedback-textarea {
     width: 100%;
-    min-height: 120px; /* 稍微縮減文字框高度 */
+    min-height: 120px; /* 稍微縮�??��?框�?�?*/
     resize: vertical;
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -516,7 +516,7 @@
     line-height: 1.6;
     transition: all 0.3s ease;
     box-sizing: border-box;
-    margin-bottom: -1rem; /* 大幅抵消預設間距 */
+    margin-bottom: -1rem; /* 大�??��??�設?��? */
 }
 
 .feedback-textarea:focus {
@@ -557,7 +557,7 @@
 }
 
 .feedback-turnstile-container {
-    visibility: hidden;  /* 隱身但 Widget 仍於背景渲染取 token */
+    visibility: hidden;  /* ?�身�?Widget 仍於?�景渲�???token */
     height: 0;
     overflow: hidden;
     margin: 0;
@@ -568,11 +568,11 @@
 .feedback-actions {
     display: flex;
     gap: 0.75rem;
-    margin-top: 0; /* 完全移除上方間距 */
+    margin-top: 0; /* 完全移除上方?��? */
 }
 
 .feedback-cancel-btn {
-    flex: 1; /* 佔比 1 */
+    flex: 1; /* 佔�? 1 */
     padding: 0.8rem;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.03);
@@ -593,7 +593,7 @@
 }
 
 .feedback-submit-btn {
-    flex: 1; /* 佔比 1，與取消按鈕等寬 */
+    flex: 1; /* 佔�? 1，�??��??��?等寬 */
     padding: 0.8rem;
     border-radius: 12px;
     background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
@@ -695,7 +695,7 @@
 }
 
 
-/* ── Rating Table (推薦評級對照) ───────────────────────── */
+/* ?�?� Rating Table (?�薦評�?對照) ?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?� */
 .v-row {
     display: flex;
     justify-content: space-between;
