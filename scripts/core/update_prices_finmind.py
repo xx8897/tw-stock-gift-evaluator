@@ -62,7 +62,10 @@ stocks = resp.json()
 print(f"共取得 {len(stocks)} 支股票待更新。")
 
 # ── Step 3: 逐支查詢 FinMind，重算估值，組 upsert payload ──
-current_ts = datetime.now().strftime('%Y-%m-%dT%H:%M:%S+08:00')
+# 處理時區問題：GitHub Actions 是 UTC，需轉換為台灣時間 (+08:00)
+from datetime import timedelta
+tw_time = datetime.utcnow() + timedelta(hours=8)
+current_ts = tw_time.strftime('%Y-%m-%dT%H:%M:%S+08:00')
 upsert_batch = []
 
 for stock in stocks:
