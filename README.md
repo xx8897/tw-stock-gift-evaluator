@@ -2,7 +2,8 @@
 
 這是一個專為台灣股民（特別是**零股股東**）打造的股東會紀念品攻略庫。內含一套能自動抓取最新股價並計算「零股性價比 (CP值)」的 Python 評估腳本，以及一個精心設計的互動式網頁前端。
 
-🌐 **線上體驗**：[https://xx8897.github.io/tw-stock-gift-evaluator/](https://xx8897.github.io/tw-stock-gift-evaluator/)
+🌐 **主力站點 (Vercel)**：[https://tw-stock-gift-evaluator.vercel.app](https://tw-stock-gift-evaluator.vercel.app)
+🔗 **備用網址 (GitHub Pages)**：[https://xx8897.github.io/tw-stock-gift-evaluator/](https://xx8897.github.io/tw-stock-gift-evaluator/)
 
 ---
 
