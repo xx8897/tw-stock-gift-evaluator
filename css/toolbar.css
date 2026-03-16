@@ -180,8 +180,8 @@
 
 /* 開啟(顯示格線)狀態：高亮 */
 .table-toolbar .square-tag.show-gridlines-btn:has(#showGridlinesToggle:checked) {
-    background: rgba(255, 255, 255, 0.15) !important;
-    border-color: rgba(255, 255, 255, 0.3) !important;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
     color: #fff;
     opacity: 1;
 }
@@ -269,30 +269,30 @@
    ToolBar Tag Buttons (Filter, Sync)
    ========================================== */
 .purchase-tags-group .tag-btn:hover {
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .purchase-tags-group .tag-btn.active {
-    background: rgba(255, 255, 255, 0.15) !important;
-    border-color: rgba(255, 255, 255, 0.4) !important;
-    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #ffffff;
     font-weight: 600;
 }
 
 .purchase-tags-group #filterPurchased.active {
-    background: rgba(16, 185, 129, 0.2) !important; /* 翠綠 Emerald */
-    border-color: rgba(16, 185, 129, 0.5) !important;
-    color: #34d399 !important;
+    background: rgba(16, 185, 129, 0.2); /* 翠綠 Emerald */
+    border-color: rgba(16, 185, 129, 0.5);
+    color: #34d399;
 }
 
 .purchase-tags-group #filterUnpurchased.active {
-    background: rgba(99, 102, 241, 0.2) !important; /* 靛青 Indigo */
-    border-color: rgba(99, 102, 241, 0.5) !important;
-    color: #a5b4fc !important;
+    background: rgba(99, 102, 241, 0.2); /* 靛青 Indigo */
+    border-color: rgba(99, 102, 241, 0.5);
+    color: #a5b4fc;
 }
 
 .purchase-tags-group .tag-btn.active i {
-    opacity: 1 !important;
+    opacity: 1;
 }
 
 @media (max-width: 900px) {
