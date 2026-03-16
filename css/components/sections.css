@@ -14,10 +14,10 @@
 }
 
 .footer-github-btn {
-    padding: 0.35rem 0.75rem !important;
-    font-size: 0.8rem !important;
-    border-radius: 8px !important;
-    display: inline-flex !important;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 8px;
+    display: inline-flex;
 }
 
 .footer-github-btn i {
