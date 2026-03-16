@@ -32,7 +32,6 @@
 .search-box {
     flex: 1;
     min-width: 300px;
-    max-width: 500px; /* 桌機限制最大拉伸寬度 */
     position: relative;
 }
 
@@ -128,10 +127,13 @@
 }
 
 /* ==========================================
-   手機版：搜尋欄確保全寬（覆蓋上方 max-width: 500px）
+   手機版：修正 controls 對齊，讓搜尋欄出現全寬
+   (覆蓋全域的 align-items: center，手機版經由 stretch 擓滿)
    ========================================== */
 @media (max-width: 768px) {
-    .search-box {
-        max-width: 100%;
+    .controls {
+        align-items: stretch; /* 覆蓋全域 align-items: center，讓子元素橪向擓滿至容器寬度 */
+        padding: 1rem;
+        gap: 1rem;
     }
 }
