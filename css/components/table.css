@@ -87,10 +87,9 @@ tbody tr:nth-child(even) {
     background: rgba(255, 255, 255, 0.012);
 }
 
-/* 推薦評分特別處理 (第10欄)：改為完全置中 */
+/* 推薦評分特別處理 (第10欄)：改為完全置中（僅桌機需要）—見下方 @media (min-width: 769px) */
 td:nth-child(10) {
     text-align: center !important;
-    padding-left: 0.85rem !important;
 }
 
 /* 依照要求置中特定標題與欄位 */
@@ -488,5 +487,9 @@ td:has(.gift-cell) {
 
     .purchase-cell {
         padding: 1rem 0;
+    }
+
+    td:nth-child(10) {
+        padding-left: 0.85rem; /* 格分視覺居中用的偏移，僅桌機需要 */
     }
 }
