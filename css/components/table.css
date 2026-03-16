@@ -38,12 +38,10 @@ table {
 /* 基礎對齊定義：固定 Icon 欄位寬度並強制置中 */
 th.th-interest, td.interest-cell,
 th.th-purchased, td.purchase-cell {
-    width: 60px; /* 稍微增加寬度以便對齊標題 */
+    width: 60px;
     text-align: center !important;
-    padding: 1rem 0 !important;
     vertical-align: middle;
-    font-size: 0 !important; /* 消除空白字元寬度 */
-    line-height: 0 !important;
+    /* padding / font-size / line-height 僅桌機需要，見下方 @media (min-width: 769px) */
 }
 
 .interest-btn,
@@ -393,10 +391,7 @@ td:has(.gift-cell) {
 
 /* --- Purchase Button & Cell --- */
 
-.purchase-cell {
-    text-align: center !important;
-    padding: 1rem 0 !important;
-}
+/* purchase-cell 的桌機佈局屬性已移至下方 @media (min-width: 769px) */
 
 .purchase-btn {
     width: 24px;  /* 依照要求縮小按鈕 */
@@ -479,3 +474,19 @@ td:has(.gift-cell) {
     border-top: 1px solid var(--border-subtle);
 }
 
+/* ==========================================
+   桌機專屬區塊：手機不需要的角色設定
+   (防止汚染手機版 td 的外観)
+   ========================================== */
+@media (min-width: 769px) {
+    th.th-interest, td.interest-cell,
+    th.th-purchased, td.purchase-cell {
+        padding: 1rem 0;
+        font-size: 0;     /* 桌機消除空白字元寬度技巧 */
+        line-height: 0;
+    }
+
+    .purchase-cell {
+        padding: 1rem 0;
+    }
+}

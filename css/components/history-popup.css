@@ -7,7 +7,7 @@
     gap: 6px;
     min-width: 0;
     overflow: hidden;
-    padding-right: 0.4em; /* 歷史按鈕與右側格線的間距 */
+    /* padding-right 僅桌機需要，避免在手機版卡片中錯位，見下方 @media (min-width: 769px) */
 }
 
 .gift-text {
@@ -101,3 +101,12 @@
     text-align: left;    /* 強制靠左 */
 }
 
+/* ==========================================
+   桌機專屬：gift-cell 與表格格線的間距
+   手機版卡片不需要，避免 icon 右側錯位
+   ========================================== */
+@media (min-width: 769px) {
+    .gift-cell {
+        padding-right: 0.4em;
+    }
+}
