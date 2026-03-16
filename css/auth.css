@@ -10,14 +10,14 @@
 
 .login-modal-wrapper .login-modal-card {
     width: 100%;
-    max-width: none !important;
-    max-height: 88vh !important;
-    padding: 2.5rem !important;
-    background: rgba(15, 23, 42, 0.7) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+    max-width: none;
+    max-height: 88vh;
+    padding: 2.5rem;
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
     position: relative;
-    overflow-y: auto !important;
+    overflow-y: auto;
     /* Allow scroll if form is too tall */
 }
 
@@ -278,8 +278,8 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px #1e293b inset !important;
-    -webkit-text-fill-color: var(--text-primary) !important;
+    -webkit-box-shadow: 0 0 0 30px #1e293b inset;
+    -webkit-text-fill-color: var(--text-primary);
     transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -494,7 +494,7 @@ input:-webkit-autofill:active {
     padding: 0.75rem 1rem;
     border-radius: 8px;
     font-size: 0.85rem;
-    display: flex !important;
+    display: flex;
     align-items: center;
     gap: 0.5rem;
     animation: fadeIn 0.3s ease;
@@ -504,7 +504,7 @@ input:-webkit-autofill:active {
 }
 
 .auth-error-msg.hidden {
-    display: none !important;
+    display: none;
 }
 
 .auth-success-msg {
@@ -633,15 +633,15 @@ input:-webkit-autofill:active {
 }
 
 .sync-status--syncing {
-    color: #93c5fd !important;
+    color: #93c5fd;
 }
 
 .sync-status--ok {
-    color: #6ee7b7 !important;
+    color: #6ee7b7;
 }
 
 .sync-status--error {
-    color: #fca5a5 !important;
+    color: #fca5a5;
 }
 
 /* Skeleton Loading Table */
@@ -744,7 +744,7 @@ input:-webkit-autofill:active {
     font-size: 0.9rem;
     color: var(--text-secondary);
 }
-/* â”€â”€ Sync Conflict Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ?€?€ Sync Conflict Modal ?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€?€ */
 .sync-conflict-card {
     max-width: 420px;
     text-align: center;
