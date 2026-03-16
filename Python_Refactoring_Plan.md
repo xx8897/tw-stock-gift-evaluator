@@ -3,27 +3,31 @@
 ## 執行規則
 - 每個「找到這段」必須**完整比對後才刪除**，不可只刪局部。
 - 若找不到完全一致的代碼，**停下來，不要修改**，向用戶回報。
-- 每個步驟只動一個檔案，完成後立刻執行驗證腳本，再進行下一步。
+- 步驟一和步驟二分開各自 commit，不要合併。
 
 ---
 
 ## 背景說明
 
-`valuation.py` 是已存在的共用估值模組（路徑：`scripts/core/valuation.py`），內含已完整實作的：
+`scripts/core/valuation.py` 是已存在的共用估值模組，提供以下四個函式：
 - `estimate_gift_value(gift_name)` — 計算單項紀念品估值
-- `estimate_5year_total(text)` — 計算五年總估值
-- `calc_v4_cp(row)` — 計算性價比
+- `estimate_5year_total(text)` — 計算五年總估值。**注意：此函式使用欄位名稱 `row['新版五總估']`**
+- `calc_v4_cp(row)` — 計算性價比。**注意：此函式讀取 `row['新版五總估']`，不是 `row['五年紀念品總估值']`**
 - `calc_v4_score(row)` — 計算星級推薦
 
-目前問題：`evaluate_stocks.py` 和 `evaluate_stocks_supa.py` 各自複製貼上了一份相同的實作，造成三份重複。
+目前 `evaluate_stocks.py` 和 `evaluate_stocks_supa.py` 各自複製貼上了一份完整的實作，造成三份重複。
 
-**目標**：刪除這兩支檔案內部的重複定義，改為引用 `valuation.py`。
+**目標**：刪除兩支檔案內部的重複定義，改為引用 `valuation.py`。
 
 ---
 
 ## 步驟一：修改 `scripts/core/evaluate_stocks.py`
 
-### 修改 A（第 1–5 行）—— 新增 sys.path 與 import
+> ⚠️ **此步驟共有 5 個修改，必須全部完成才能進行驗證。**
+
+---
+
+### 修改 1（第 1–5 行）—— 新增 sys.path 與 import
 
 **找到這段（檔案最開頭的 import 區）：**
 ```python
@@ -34,7 +38,7 @@ import time
 import os
 ```
 
-**改為（在 `import os` 之後加入兩行）：**
+**改為：**
 ```python
 import pandas as pd
 import requests
@@ -48,9 +52,9 @@ from valuation import estimate_gift_value, estimate_5year_total, calc_v4_cp, cal
 
 ---
 
-### 修改 B（第 40–155 行）—— 刪除 estimate_gift_value 重複定義
+### 修改 2（第 40–155 行）—— 刪除 `estimate_gift_value` 函式定義
 
-**找到這段（從注解行到函式最後的 `return val`）：**
+**找到這段（從注解標題到函式最後一行 `    return val`）：**
 ```python
 # ============================================================
 # 3. 紀念品估值邏輯
@@ -170,21 +174,31 @@ def estimate_gift_value(gift_name):
     return val
 ```
 
-**改為（用空白行取代整段，只保留原本的注解標題和一行說明）：**
+**改為（用一段注解取代整段）：**
 ```python
 # ============================================================
 # 3. 紀念品估值邏輯（由 valuation.py 模組提供）
 # ============================================================
-# estimate_gift_value、estimate_5year_total、calc_v4_cp、calc_v4_score
-# 已由頂部 `from valuation import ...` 匯入，此處不再重複定義。
+# estimate_gift_value 已由頂部 `from valuation import ...` 匯入，此處不再定義。
 ```
 
 ---
 
-### 修改 C（第 166–174 行）—— 刪除 estimate_5year_total 重複定義
+### 修改 3（第 160–174 行）—— 刪除 `estimate_5year_total` 定義，並同時改欄位名稱
 
-**找到這段：**
+> ⚠️ 此修改同時做兩件事：1. 刪除 `estimate_5year_total` 的定義；2. 將欄位名稱 `'五年紀念品總估值'` 改為 `'新版五總估'`（與 `valuation.py` 一致，否則 `calc_v4_cp` 會崩潰）。
+
+**找到這段（含評估說明注解、函式定義、以及緊接的 df 操作行）：**
 ```python
+# ============================================================
+# 4. 計算評分 (含有保守估算說明)
+# ============================================================
+# 【評估說明】：五年紀念品總估值採用保守估算。
+# 每次(每年)發放之價值皆已預先扣除「代領花費」(禮券類-15元，物品類-20元)。
+# 電子類券(電子/點數/APP) 則不扣除代領費，因不須委託代領。
+print("Calculating CP scores based on V4.2 Model (Bug Fix & Digital Support)...")
+df['紀念品預估價值'] = df['上次紀念品'].apply(estimate_gift_value)
+
 def estimate_5year_total(text):
     if pd.isna(text) or str(text).strip() in ['', 'nan']: return 0
     items = str(text).split('\n')
@@ -194,15 +208,30 @@ def estimate_5year_total(text):
         if not item or item in ['無', '-', '未發放', '不發放']: continue
         total += estimate_gift_value(item)
     return total
+
+df['五年紀念品總估值'] = df['五年發放紀念品'].apply(estimate_5year_total)
 ```
 
-**完整刪除這段（不要保留任何殘留），讓 `df['五年紀念品總估值'] = ...` 那行直接接在上面的 `df['紀念品預估價值'] = ...` 之後。**
+**改為（刪除函式定義，並將欄位名稱由 `'五年紀念品總估值'` 改為 `'新版五總估'`）：**
+```python
+# ============================================================
+# 4. 計算評分 (含有保守估算說明)
+# ============================================================
+# 【評估說明】：五年紀念品總估值採用保守估算。
+# 每次(每年)發放之價值皆已預先扣除「代領花費」(禮券類-15元，物品類-20元)。
+# 電子類券(電子/點數/APP) 則不扣除代領費，因不須委託代領。
+print("Calculating CP scores based on V4.2 Model (Bug Fix & Digital Support)...")
+df['紀念品預估價值'] = df['上次紀念品'].apply(estimate_gift_value)
+
+# estimate_5year_total 已由頂部 `from valuation import ...` 匯入，此處不再定義。
+df['新版五總估'] = df['五年發放紀念品'].apply(estimate_5year_total)
+```
 
 ---
 
-### 修改 D（第 178–220 行）—— 刪除 calc_v4_cp 和 calc_v4_score 重複定義
+### 修改 4（第 178–222 行）—— 刪除 `calc_v4_cp` 與 `calc_v4_score` 定義
 
-**找到這段：**
+**找到這段（兩個函式定義與其 df.apply 呼叫）：**
 ```python
 def calc_v4_cp(row):
     """
@@ -251,38 +280,73 @@ def calc_v4_score(row):
 df['新版推薦評分'] = df.apply(calc_v4_score, axis=1)
 ```
 
-**改為（只保留 df.apply 呼叫，刪除函式定義）：**
+**改為（只保留 df.apply 呼叫，刪除兩個函式定義）：**
 ```python
+# calc_v4_cp、calc_v4_score 已由頂部 `from valuation import ...` 匯入，此處不再定義。
 df['新版性價比'] = df.apply(calc_v4_cp, axis=1)
 
 df['新版推薦評分'] = df.apply(calc_v4_score, axis=1)
 ```
 
-> ⚠️ **注意**：`calc_v4_cp` 在 `evaluate_stocks.py` 中使用的是 `row['五年紀念品總估值']`，但 `valuation.py` 中的 `calc_v4_cp` 讀取的是 `row['新版五總估']`。這兩個欄位名稱不同！
->
-> **請在修改後確認 df 中使用的欄位名稱，決定是否需要將 `df['五年紀念品總估值']` 重新命名為 `df['新版五總估']`，或是修改呼叫方式。若不確定，請先停下並回報給用戶。**
+---
+
+### 修改 5（第 231–235 行）—— 更新輸出欄位清單
+
+**找到這段（final_columns 列表）：**
+```python
+final_columns = [
+    '股號', '公司', '五年內發放次數', '最近一次發放', '上次紀念品',
+    '最近股價', '五年紀念品總估值', '新版性價比', '新版推薦評分',
+    '去年條件', '五年發放紀念品'
+]
+```
+
+**改為（將 `'五年紀念品總估值'` 改為 `'新版五總估'`）：**
+```python
+final_columns = [
+    '股號', '公司', '五年內發放次數', '最近一次發放', '上次紀念品',
+    '最近股價', '新版五總估', '新版性價比', '新版推薦評分',
+    '去年條件', '五年發放紀念品'
+]
+```
 
 ---
 
 ### 步驟一驗證
 
-完成這三個修改後，執行以下指令：
+完成以上 5 個修改後，執行：
 ```
 python scripts/core/evaluate_stocks.py
 ```
-預期輸出（要包含以下字樣）：
+
+**成功的輸出應該包含（沒有任何 Error 或 KeyError）：**
 ```
 Loaded XX rows from ...
-Calculating CP scores...
-Success! Evaluated XX stocks.
+Calculating CP scores based on V4.2 Model...
+Success! Evaluated XX stocks. Sorted by Stock ID. Saved to ...
 ```
-如果看到 `ModuleNotFoundError` 或任何錯誤，不要繼續進行步驟二。
+
+**如果看到以下錯誤，停下來回報給用戶，不要繼續步驟二：**
+- `ModuleNotFoundError: No module named 'valuation'` → sys.path 設定有問題
+- `KeyError: '新版五總估'` → 修改 3 的欄位名稱沒有改到
+- `KeyError: '五年紀念品總估值'` → 修改 5 的 final_columns 沒有更新
+
+Git 指令（驗證成功後執行）：
+```
+git add scripts/core/evaluate_stocks.py
+git commit -m "refactor(core): remove duplicate valuation logic, use valuation.py module"
+git push origin master
+```
 
 ---
 
 ## 步驟二：修改 `scripts/core/evaluate_stocks_supa.py`
 
-### 修改 A（第 1–7 行）—— 新增 sys.path 與 import
+> ⚠️ **此步驟共有 3 個修改。**
+
+---
+
+### 修改 1（第 1–7 行）—— 新增 sys.path 與 import
 
 **找到這段（檔案最開頭的 import 區）：**
 ```python
@@ -312,9 +376,9 @@ from valuation import estimate_gift_value, estimate_5year_total, calc_v4_cp, cal
 
 ---
 
-### 修改 B（第 71–147 行）—— 刪除三個重複函式定義
+### 修改 2（第 71–147 行）—— 刪除 `estimate_gift_value` 和 `estimate_5year_total` 定義
 
-**找到這段（從注解行到 `return val` 最後一個 `return val`）：**
+**找到這段（從注解標題到 `return val` 的最後一行，含兩個函式）：**
 ```python
 # ============================================================
 # 2. 紀念品估值模型 v3.1 — 核心邏輯
@@ -395,18 +459,17 @@ def estimate_5year_total(text):
     return total
 ```
 
-**改為（用注解說明取代整段）：**
+**改為（用注解取代整段）：**
 ```python
 # ============================================================
 # 2. 紀念品估值模型（由 valuation.py 模組提供）
 # ============================================================
-# estimate_gift_value、estimate_5year_total、calc_v4_cp、calc_v4_score
-# 已由頂部 `from valuation import ...` 匯入，此處不再重複定義。
+# estimate_gift_value、estimate_5year_total 已由頂部 `from valuation import ...` 匯入，此處不再定義。
 ```
 
 ---
 
-### 修改 C（第 155–171 行）—— 刪除 calc_v4_cp 和 calc_v4_score 重複定義
+### 修改 3（第 155–171 行）—— 刪除 `calc_v4_cp` 與 `calc_v4_score` 定義
 
 **找到這段：**
 ```python
@@ -433,6 +496,7 @@ df['新版推薦評分'] = df.apply(calc_v4_score, axis=1)
 
 **改為（只保留 df.apply 呼叫，刪除函式定義）：**
 ```python
+# calc_v4_cp、calc_v4_score 已由頂部 `from valuation import ...` 匯入，此處不再定義。
 df['新版性價比'] = df.apply(calc_v4_cp, axis=1)
 
 df['新版推薦評分'] = df.apply(calc_v4_score, axis=1)
@@ -442,11 +506,12 @@ df['新版推薦評分'] = df.apply(calc_v4_score, axis=1)
 
 ### 步驟二驗證
 
-完成修改後執行：
+完成以上 3 個修改後，執行：
 ```
 python scripts/core/evaluate_stocks_supa.py
 ```
-預期輸出（要包含以下字樣，沒有任何 Error）：
+
+**成功的輸出應該包含（沒有任何 Error）：**
 ```
 Fetching latest data from Supabase...
 Successfully loaded XX rows from Supabase.
@@ -456,21 +521,13 @@ Successfully updated all records in Supabase.
 Process finished.
 ```
 
----
+**如果看到以下錯誤，停下來回報給用戶，不要繼續：**
+- `ModuleNotFoundError: No module named 'valuation'` → sys.path 設定有問題
+- `KeyError: '新版五總估'` → 修改 2 的刪除範圍找錯，或 valuation.py 本身有問題
 
-## 每個步驟的 Git 提交格式
-
-```bash
-# 步驟一完成後
-git add scripts/core/evaluate_stocks.py
-git commit -m "refactor(core): remove duplicate valuation logic, use valuation.py module"
-git push origin master
-
-# 步驟二完成後
+Git 指令（驗證成功後執行）：
+```
 git add scripts/core/evaluate_stocks_supa.py
 git commit -m "refactor(core): remove duplicate valuation logic from evaluate_stocks_supa.py"
 git push origin master
 ```
-
-> [!CAUTION]
-> 步驟一和步驟二不要合併成一次 commit，方便出問題時各自還原。
