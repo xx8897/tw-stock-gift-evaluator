@@ -184,21 +184,12 @@ def estimate_gift_value(gift_name):
 
 ---
 
-### 修改 3（第 160–174 行）—— 刪除 `estimate_5year_total` 定義，並同時改欄位名稱
+### 修改 3（第 166–176 行）—— 刪除 `estimate_5year_total` 定義，並同時改欄位名稱
 
-> ⚠️ 此修改同時做兩件事：1. 刪除 `estimate_5year_total` 的定義；2. 將欄位名稱 `'五年紀念品總估值'` 改為 `'新版五總估'`（與 `valuation.py` 一致，否則 `calc_v4_cp` 會崩潰）。
+> ⚠️ 此修改同時做兩件事：1. 刪除 `estimate_5year_total` 的定義；2. 將欄位名稱 `'五年紀念品總估值'` 改為 `'新版五總估'`（與 `valuation.py` 一致，否則下一步的 `calc_v4_cp` 會崩潰）。
 
-**找到這段（含評估說明注解、函式定義、以及緊接的 df 操作行）：**
+**找到這段（`estimate_5year_total` 函式定義加上下方緊接的 df 操作行）：**
 ```python
-# ============================================================
-# 4. 計算評分 (含有保守估算說明)
-# ============================================================
-# 【評估說明】：五年紀念品總估值採用保守估算。
-# 每次(每年)發放之價值皆已預先扣除「代領花費」(禮券類-15元，物品類-20元)。
-# 電子類券(電子/點數/APP) 則不扣除代領費，因不須委託代領。
-print("Calculating CP scores based on V4.2 Model (Bug Fix & Digital Support)...")
-df['紀念品預估價值'] = df['上次紀念品'].apply(estimate_gift_value)
-
 def estimate_5year_total(text):
     if pd.isna(text) or str(text).strip() in ['', 'nan']: return 0
     items = str(text).split('\n')
@@ -214,15 +205,6 @@ df['五年紀念品總估值'] = df['五年發放紀念品'].apply(estimate_5yea
 
 **改為（刪除函式定義，並將欄位名稱由 `'五年紀念品總估值'` 改為 `'新版五總估'`）：**
 ```python
-# ============================================================
-# 4. 計算評分 (含有保守估算說明)
-# ============================================================
-# 【評估說明】：五年紀念品總估值採用保守估算。
-# 每次(每年)發放之價值皆已預先扣除「代領花費」(禮券類-15元，物品類-20元)。
-# 電子類券(電子/點數/APP) 則不扣除代領費，因不須委託代領。
-print("Calculating CP scores based on V4.2 Model (Bug Fix & Digital Support)...")
-df['紀念品預估價值'] = df['上次紀念品'].apply(estimate_gift_value)
-
 # estimate_5year_total 已由頂部 `from valuation import ...` 匯入，此處不再定義。
 df['新版五總估'] = df['五年發放紀念品'].apply(estimate_5year_total)
 ```
