@@ -2,30 +2,131 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>隱私權政策 - 台股紀念品攻略</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>隱私權政策 - 台股股東會紀念品攻略</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 20px; color: #333; }
-        h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #60a5fa;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
+        * { box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 90%;
+            margin: 40px auto;
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+        }
+
+        h1 {
+            color: var(--accent);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        h2 {
+            color: var(--accent);
+            font-size: 1.4rem;
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        p {
+            color: var(--text-main);
+            margin-bottom: 1rem;
+        }
+
+        .muted {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 1.5rem; margin: 20px auto; }
+            h1 { font-size: 1.8rem; }
+        }
     </style>
 </head>
 <body>
-    <h1>隱私權政策</h1>
-    <p>歡迎使用「台股紀念品攻略」。我們非常重視您的隱私，本政策說明我們如何處理您的個人資訊：</p>
-    
-    <h2>1. 資料收集</h2>
-    <p>當您使用 Google 帳號登入時，我們僅會取得您的 Email 與公開個人資料連結（頭像），用於識別您的登入狀態並同步您的股票收藏清單。</p>
-    
-    <h2>2. 資料使用</h2>
-    <p>您的資訊僅用於提供個人化的股票追蹤功能，我們絕對不會將您的 Email 售予第三方，或用於廣告行銷。</p>
-    
-    <h2>3. 資料儲存</h2>
-    <p>您的資料安全地儲存於 Supabase 雲端資料庫，並受到業界標準的加密保護。</p>
-    
-    <h2>4. 您的權限</h2>
-    <p>您可以隨時聯絡我們要求刪除您的所有同步資料。</p>
-    
-    <hr>
-    <p>最後更新日期：2026年3月16日</p>
-    <p>聯絡信箱：zhixiang8897@gmail.com</p>
+    <div class="container">
+        <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> 回到首頁</a>
+        
+        <h1><i class="fa-solid fa-user-shield"></i> 隱私權政策</h1>
+        <p>歡迎使用「台股股東會紀念品攻略」。我們致力於提供透明且安全的服務，本政策說明我們如何處理您的個人資料：</p>
+        
+        <h2><i class="fa-solid fa-database"></i> 1. 資料收集項目</h2>
+        <p>當您授權 Google 帳號登入時，我們僅會讀取以下基本資訊：</p>
+        <ul>
+            <li>電子郵件地址 (E-mail)</li>
+            <li>公開個人檔案資訊 (例如頭像連結)</li>
+        </ul>
+        <p>我們**不會**請求您的聯絡人、檔案、密碼或其他敏感權限。</p>
+        
+        <h2><i class="fa-solid fa-magnifying-glass-chart"></i> 2. 資料使用目的</h2>
+        <p>收集上述資訊的唯一目的是為了建立您的個人同步 ID，以便在不同裝置間同步您的股票追蹤清單與持有狀態。我們不會將您的資料用於任何廣告行銷或第三方轉售。</p>
+        
+        <h2><i class="fa-solid fa-lock"></i> 3. 資料儲存與傳輸安全</h2>
+        <p>您的所有資料均儲存於企業級雲端資料庫系統 (Supabase)，並全程透過 SSL/TLS 加密技術進行傳輸，確保您的資訊在傳送過程中不被截取。</p>
+        
+        <h2><i class="fa-solid fa-trash-can"></i> 4. 資料刪除權利</h2>
+        <p>您可以隨時聯絡開發者要求永久刪除您的所有同步資料與個人連結，我們將在接到請求後的 7 個工作日內處理完畢。</p>
+        
+        <hr>
+        <p class="muted">最後更新日期：2026年3月16日</p>
+        <p class="muted">聯絡者：xx8897<br>聯絡信箱：zhixiang8897@gmail.com</p>
+    </div>
 </body>
 </html>
