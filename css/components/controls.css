@@ -32,6 +32,7 @@
 .search-box {
     flex: 1;
     min-width: 300px;
+    max-width: 500px; /* 桌機限制最大拉伸寬度 */
     position: relative;
 }
 
@@ -124,4 +125,13 @@
     background: rgba(239, 68, 68, 0.25);
     border-color: rgba(239, 68, 68, 0.6);
     color: #fca5a5;
+}
+
+/* ==========================================
+   手機版：搜尋欄確保全寬（覆蓋上方 max-width: 500px）
+   ========================================== */
+@media (max-width: 768px) {
+    .search-box {
+        max-width: 100%;
+    }
 }
