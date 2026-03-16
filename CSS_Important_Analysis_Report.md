@@ -409,11 +409,41 @@ git push origin master
 
 ---
 
-## 階段五（選修）：`css/toolbar.css`（共 13 處 `!important`，一次替換整段）
+## 階段五（選修）：`css/toolbar.css`（共 13 處 `!important`）
 
-> 原因：這些全是 `.purchase-tags-group` 下的子元素，已加了父層包裹使特指度（0-3-0 以上）遠高於基礎 `.tag-btn`（0-1-0），`!important` 為防禦性過度寫法。
+> 原因：這些選擇器已有 `.table-toolbar` 或 `.purchase-tags-group` 父層包裹，特指度（0-3-0 以上）遠高於基礎 `.tag-btn`（0-1-0），`!important` 為多餘的防禦性寫法。
 
-### 修改（第 268–296 行）—— 一次替換整個區塊
+**⚠️ 此階段需在 `css/toolbar.css` 中進行兩個獨立修改，請依照以下順序由上到下執行。**
+
+---
+
+### 修改 A（第 181–187 行）—— 格線按鈕
+
+**找到這段：**
+```css
+/* 開啟(顯示格線)狀態：高亮 */
+.table-toolbar .square-tag.show-gridlines-btn:has(#showGridlinesToggle:checked) {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    color: #fff;
+    opacity: 1;
+}
+```
+
+**改為（只移除兩個 `!important`，其他不動）：**
+```css
+/* 開啟(顯示格線)狀態：高亮 */
+.table-toolbar .square-tag.show-gridlines-btn:has(#showGridlinesToggle:checked) {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    opacity: 1;
+}
+```
+
+---
+
+### 修改 B（第 268–296 行）—— 篩選按鈕群組
 
 **找到這段（從注解行到最後一個 `}` 共 29 行）：**
 ```css
@@ -481,29 +511,7 @@ git push origin master
 }
 ```
 
-> **注意**：`toolbar.css` 第 182–187 行還有 2 處 `!important`（格線按鈕），也一併處理：
-
-**找到這段（第 181–187 行）：**
-```css
-/* 開啟(顯示格線)狀態：高亮 */
-.table-toolbar .square-tag.show-gridlines-btn:has(#showGridlinesToggle:checked) {
-    background: rgba(255, 255, 255, 0.15) !important;
-    border-color: rgba(255, 255, 255, 0.3) !important;
-    color: #fff;
-    opacity: 1;
-}
-```
-
-**改為：**
-```css
-/* 開啟(顯示格線)狀態：高亮 */
-.table-toolbar .square-tag.show-gridlines-btn:has(#showGridlinesToggle:checked) {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.3);
-    color: #fff;
-    opacity: 1;
-}
-```
+---
 
 ### 階段五驗證清單
 - [ ] 點擊「顯示已持有」→ 按鈕轉為綠色高亮；再點「全部顯示」→ 恢復灰色
