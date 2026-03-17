@@ -8,6 +8,8 @@ const LOADING_MESSAGES = [
     '即將完成，正在準備渲染資料表格...',
 ];
 
+const ROTATION_T = 600; // 基礎時間單位 t (ms)，最後一句停留 1.5t = 900ms
+
 let _loadingRotatorInterval = null;
 
 function startLoadingTextRotation() {
@@ -17,30 +19,34 @@ function startLoadingTextRotation() {
     let idx = 0;
 
     function nextMessage() {
-        if (!_loadingRotatorInterval) return; // 如果已經呼叫 stop 則停止
+        if (!_loadingRotatorInterval) return;
 
+        // 執行淡出動畫，準備切換
         span.classList.add('fade-out');
         setTimeout(() => {
-            idx = idx + 1;
-            // 若已是最後一句，顯示後不再繼續輪播
-            if (idx >= LOADING_MESSAGES.length) {
-                _loadingRotatorInterval = null;
-                span.classList.remove('fade-out');
-                return;
-            }
+            idx += 1;
             span.textContent = LOADING_MESSAGES[idx];
             span.classList.remove('fade-out');
             span.classList.add('fade-in');
 
             setTimeout(() => {
                 span.classList.remove('fade-in');
-                // 繼續排程下一句
-                _loadingRotatorInterval = setTimeout(nextMessage, 400); // 0.4 秒停留
+
+                const isLast = idx === LOADING_MESSAGES.length - 1;
+                if (isLast) {
+                    // 最後一句：停留 1.5t 後靜止（不再輪播）
+                    _loadingRotatorInterval = setTimeout(() => {
+                        _loadingRotatorInterval = null;
+                    }, ROTATION_T * 1.5);
+                } else {
+                    // 其餘句子：停留 t 後切換下一句
+                    _loadingRotatorInterval = setTimeout(nextMessage, ROTATION_T);
+                }
             }, 400); // fade-in 動畫時間
         }, 260); // fade-out 動畫時間
     }
 
-    // 第一句話預設只秀 0.3 秒就要準備切第二句，讓畫面馬上動起來
+    // 第一句：初始只停留 300ms（馬上開始輪播，讓畫面有動感）
     _loadingRotatorInterval = setTimeout(nextMessage, 300);
 }
 

@@ -111,7 +111,7 @@ function toggleInterest(stockId) {
 
 async function loadData() {
     const startTime = Date.now();
-    const MIN_LOADING_TIME = 6300; // 最少等待 6.3 秒，確保完整播完全部 6 句話
+    const MIN_LOADING_TIME = 7200; // 300 + 5×(260+400+600) + 900 ≈ 7200ms
 
     // 優先載入用戶狀態
     loadUserData();
@@ -187,7 +187,7 @@ async function loadData() {
 
 async function loadExcelDataFallback(loadingState, tableWrapper, lastUpdated) {
     const startTime = Date.now();
-    const MIN_LOADING_TIME = 6300;
+    const MIN_LOADING_TIME = 7200;
 
     try {
         const response = await fetch(EXCEL_URL);
