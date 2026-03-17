@@ -161,6 +161,9 @@ async function loadData() {
 
             loadingState.classList.add('hidden');
             tableWrapper.classList.remove('hidden');
+            if (typeof window.stopLoadingTextRotation === 'function') {
+                window.stopLoadingTextRotation();
+            }
             processDataAndRender();
             return; // 成功從 Supabase 取得資料，結束函式
         } else {
@@ -222,6 +225,9 @@ async function loadExcelDataFallback(loadingState, tableWrapper, lastUpdated) {
 
         loadingState.classList.add('hidden');
         tableWrapper.classList.remove('hidden');
+        if (typeof window.stopLoadingTextRotation === 'function') {
+            window.stopLoadingTextRotation();
+        }
 
         // 資料載入完成後渲染表格
         processDataAndRender();

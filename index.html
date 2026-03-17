@@ -213,9 +213,9 @@
                         </tr>
                     </tbody>
                 </table>
-                <p style="text-align: center; margin: 2rem 0; color: var(--text-secondary); font-size: 0.95rem;">
+                <p id="loadingText" class="loading-message-rotator" style="text-align: center; margin: 2rem 0; color: var(--text-secondary); font-size: 0.95rem;">
                     <i class="fa-solid fa-spinner fa-spin" style="margin-right: 0.5rem; color: #60a5fa;"></i>
-                    正在讀取官方 OpenAPI 數據與 V3.1 估值模型...
+                    <span id="loadingMessageSpan">正在連線至 Supabase 高速資料庫...</span>
                 </p>
             </div>
 
