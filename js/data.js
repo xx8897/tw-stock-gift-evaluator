@@ -110,6 +110,9 @@ function toggleInterest(stockId) {
 }
 
 async function loadData() {
+    const startTime = Date.now();
+    const MIN_LOADING_TIME = 1500; // 最少等待 1.5 秒，製造專業運算動態感
+
     // 優先載入用戶狀態
     loadUserData();
 
@@ -159,6 +162,12 @@ async function loadData() {
 
             lastUpdated.innerHTML = `<i class="fa-regular fa-calendar-check"></i> 最後更新: ${latestDate.toLocaleDateString('zh-TW')} ${latestDate.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })}`;
 
+            // 確保動畫至少播放 MIN_LOADING_TIME 以達到 UX 錯覺效果
+            const elapsedTime = Date.now() - startTime;
+            if (elapsedTime < MIN_LOADING_TIME) {
+                await new Promise(res => setTimeout(res, MIN_LOADING_TIME - elapsedTime));
+            }
+
             loadingState.classList.add('hidden');
             tableWrapper.classList.remove('hidden');
             if (typeof window.stopLoadingTextRotation === 'function') {
@@ -177,6 +186,9 @@ async function loadData() {
 }
 
 async function loadExcelDataFallback(loadingState, tableWrapper, lastUpdated) {
+    const startTime = Date.now();
+    const MIN_LOADING_TIME = 1500;
+
     try {
         const response = await fetch(EXCEL_URL);
         if (!response.ok) throw new Error('無法載入 Excel 檔案，請確認檔案是否存在於儲存庫中。');
@@ -222,6 +234,11 @@ async function loadExcelDataFallback(loadingState, tableWrapper, lastUpdated) {
             fiveYearGifts: String(row['五年發放紀念品'] || ''),
             cond: String(row['去年條件'] || '')
         }));
+
+        const elapsedTime = Date.now() - startTime;
+        if (elapsedTime < MIN_LOADING_TIME) {
+            await new Promise(res => setTimeout(res, MIN_LOADING_TIME - elapsedTime));
+        }
 
         loadingState.classList.add('hidden');
         tableWrapper.classList.remove('hidden');
