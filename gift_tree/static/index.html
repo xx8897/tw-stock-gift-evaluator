@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gift Taxonomy Tree Editor</title>
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- SortableJS -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <!-- vuedraggable -->
+    <script src="https://cdn.jsdelivr.net/npm/vuedraggable@4.1.0/dist/vuedraggable.umd.min.js"></script>
+    
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div id="app" v-cloak>
+        <header>
+            <h1>🌳 股東會紀念品 分類樹編輯器 (Gift Taxonomy Tree)</h1>
+            <div class="actions">
+                <button @click="undo" class="btn" :disabled="historyIndex <= 0" title="復原 (Ctrl+Z)">↩️ 復原</button>
+                <button @click="redo" class="btn" :disabled="historyIndex >= history.length - 1" title="重做 (Ctrl+Shift+Z)">↪️ 重做</button>
+                <span class="divider"></span>
+                <button @click="saveTree" class="btn primary">💾 儲存樹狀結構</button>
+                <button @click="runSimulation" class="btn success" :disabled="simLoading">
+                    {{ simLoading ? '⏳ 模擬中...' : '▶️ 批次模擬執行' }}
+                </button>
+                <button @click="clearItems" class="btn warning">🗑️ 清空葉子物品</button>
+                <span v-if="simStats" class="sim-stats">
+                    ✅ {{ simStats.classified_count }} 件分類 ·
+                    ❓ <a href="#" @click.prevent="showUnclassified = !showUnclassified">{{ simStats.unclassified_count }} 件未分類</a>
+                </span>
+            </div>
+        </header>
+
+        <main class="layout">
+            <!-- 左側：原始資料區 (Raw Items) -->
+            <section class="panel raw-panel">
+                <div class="panel-header">
+                    <h2>📦 未分類物品清單 ({{ filteredRawItems.length }})</h2>
+                    <input type="text" v-model="rawSearch" placeholder="搜尋物品名稱..." class="search-box">
+                </div>
+                
+                <draggable 
+                    class="item-list"
+                    :list="filteredRawItems"
+                    handle=".drag-handle"
+                    :group="{ name: 'g1', pull: 'clone', put: false }"
+                    item-key="id"
+                    :clone="cloneRawItem">
+                    <template #item="{ element }">
+                        <div class="raw-item">
+                            <span class="drag-handle">≡</span>
+                            {{ element.name }}
+                        </div>
+                    </template>
+                </draggable>
+            </section>
+
+            <!-- 右側：分類樹編輯區 (Taxonomy Tree) -->
+            <section class="panel tree-panel">
+                <div class="panel-header">
+                    <h2>🌲 結構樹</h2>
+                </div>
+                <div class="tree-container" v-if="treeData">
+                    <tree-node 
+                        :node="treeData" 
+                        :sim-results="simResults"
+                        @select-node="selectNode">
+                    </tree-node>
+                </div>
+                <!-- 未分類清單 -->
+                <div class="unclassified-panel" v-if="showUnclassified && simUnclassified.length > 0">
+                    <div class="unclassified-header">
+                        <strong>❓ 未分類物品 ({{ simUnclassified.length }})</strong>
+                        <button @click="showUnclassified = false" class="btn small">✕</button>
+                    </div>
+                    <div class="item-list" style="max-height:300px;overflow-y:auto;">
+                        <div class="raw-item" v-for="item in simUnclassified" :key="item.id">
+                            {{ item.name }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 浮動編輯面板 -->
+            <aside class="edit-panel" v-if="selectedNode">
+                <h3>✏️ 編輯節點</h3>
+                <div class="form-group">
+                    <label>ID:</label>
+                    <input type="text" :value="selectedNode.id" disabled>
+                </div>
+                <div class="form-group">
+                    <label>名稱:</label>
+                    <input type="text" v-model="selectedNode.name">
+                </div>
+                
+                <template v-if="selectedNode.type === 'category' || selectedNode.type === 'root'">
+                    <div class="form-group">
+                        <label>🔸 OR 規則 - 任一關鍵字符合即命中 (逗號分隔):</label>
+                        <input type="text" v-model="keywordsString" placeholder="例如: 禮券, 提貨券, 抵用">
+                    </div>
+                    <div class="form-group">
+                        <label>🔷 AND 規則 - 所有關鍵字同時存在才命中 (逗號分隔):</label>
+                        <input type="text" v-model="keywordsAndString" placeholder="例如: 電子, 簡訊 (兩者都有才算)">
+                    </div>
+                    <div class="form-group">
+                        <label>🚫 排除規則 (NOT) - 包含任一字詞即剔除 (逗號分隔):</label>
+                        <input type="text" v-model="keywordsNotString" placeholder="例如: 禮盒, 全家福 (排除不要的項目)">
+                    </div>
+                    <div class="form-group">
+                        <label>🧮 正則表示式 (Regex) - 進階字串擷取與匹配規則:</label>
+                        <input type="text" v-model="regexString" placeholder="例如: (\\d+)元|\\$(\\d+)">
+                    </div>
+                    <div class="form-group">
+                        <label>節點標籤 Tags (以逗號分隔，如：特賞, 高價, 易碎):</label>
+                        <input type="text" v-model="tagsString" placeholder="例如: 票券, 須冷藏, 電子發放">
+                    </div>
+                    <div class="form-group">
+                        <label>預設基礎價值 (Base Value):</label>
+                        <input type="number" v-model.number="selectedNode.attributes.base_value">
+                    </div>
+                    <div class="form-group">
+                        <label>面額/底價倍數 (Multiplier，例 x3 填 3):</label>
+                        <input type="number" step="0.1" v-model.number="selectedNode.attributes.value_multiplier" placeholder="預設 1.0">
+                    </div>
+                    <div class="form-group">
+                        <label>預設領取成本 (Receiving Cost):</label>
+                        <input type="number" v-model.number="selectedNode.attributes.receiving_cost">
+                    </div>
+                    <button @click="addChildCategory" class="btn small info">➕ 新增子分類</button>
+                    <button @click="clearNodeItems"
+                        class="btn small"
+                        style="background:#e67e22;margin-left:4px;"
+                        v-if="selectedNode.children && selectedNode.children.some(c => c.type === 'item')">
+                        🧹 清空此節點物品
+                    </button>
+                    <button @click="deleteSelected" class="btn small danger" v-if="selectedNode.type !== 'root'">🗑️ 刪除節點</button>
+                </template>
+                
+                <template v-if="selectedNode.type === 'item'">
+                    <div class="form-group">
+                        <label>強制覆蓋 Base Value (留空則繼承):</label>
+                        <input type="number" v-model.number="selectedNode.attributes.base_value">
+                    </div>
+                    <button @click="deleteSelected" class="btn small danger">🗑️ 移除此葉子</button>
+                </template>
+            </aside>
+        </main>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>

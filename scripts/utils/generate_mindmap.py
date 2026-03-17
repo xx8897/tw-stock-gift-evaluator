@@ -113,16 +113,30 @@ def get_gift_details(gift_name):
     }
 
 def generate():
-    df_main = pd.read_excel('data/2021-2025_推薦v2.xlsx')
-    df_em = pd.read_excel('data/興櫃的資料_updated.xlsx')
+    from supabase import create_client, Client
+    
+    url: str = 'https://jyoaoepcrqxzrtdkldfg.supabase.co'
+    key: str = 'sb_publishable_IFSxZWya1imWZQzNwg90ZA_msTvVbsg'
+    
+    if not url or not key:
+        print("未設定 Supabase URL 或 Key。請確認您的 .env 檔案。")
+        return
+        
+    supabase: Client = create_client(url, key)
+    
+    # 從 Supabase 抓取所有股票的五年紀念品清單
+    response = supabase.table('stocks').select('five_year_gifts').execute()
+    data = response.data
 
     all_gifts_raw = []
     def extract(text):
-        if pd.isna(text): return []
+        if not text: return []
         return [re.sub(r'^\(\d{4}\)', '', i.strip()).strip() for i in str(text).split('\n') if i.strip()]
 
-    for t in df_main['五年發放紀念品'].tolist() + df_em['五年發放紀念品'].tolist():
-        all_gifts_raw.extend(extract(t))
+    for row in data:
+        gift_text = row.get('five_year_gifts')
+        if gift_text:
+            all_gifts_raw.extend(extract(gift_text))
 
     unique_gifts = sorted(set(all_gifts_raw))
     
@@ -207,7 +221,16 @@ def generate():
         for cat, subcats in distribution.items():
             f.write(f"<details>\n<summary><b>{cat}</b></summary>\n<br>\n\n")
             for subcat, items in subcats.items():
-                f.write(f"<details style='margin-left: 20px;'>\n<summary><i>{subcat} - 共 {len(items)} 件</i></summary>\n<br>\n\n")
+                condition_text = ""
+                if cat in categories and subcat in categories[cat]:
+                    kws = categories[cat][subcat]
+                    condition_text = f"  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[{', '.join(kws)}]</b></div><br>\n"
+                elif cat == "1️⃣ 面額直接捕捉區":
+                    condition_text = "  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 透過正規表示式直接擷取數字 (例如: 100元, $100, 抵用100, 100點)</div><br>\n"
+                elif cat == "♻️ 其他低階或衍生品項":
+                    condition_text = "  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 不滿足明確分類關鍵字，但根據程式碼邏輯被賦予非 40 元底價的衍生品項</div><br>\n"
+                
+                f.write(f"<details style='margin-left: 20px;'>\n<summary><i>{subcat} - 共 {len(items)} 件</i></summary>\n<br>\n{condition_text}\n")
                 if not items:
                     f.write("無品項\n")
                 else:

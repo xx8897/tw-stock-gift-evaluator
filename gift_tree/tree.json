@@ -1,0 +1,1108 @@
+{
+  "attributes": {
+    "base_value": 40,
+    "receiving_cost": 20
+  },
+  "children": [
+    {
+      "attributes": {
+        "base_value": null,
+        "receiving_cost": null
+      },
+      "children": [
+        {
+          "id": "cat_1773773554316",
+          "name": "超商",
+          "type": "category",
+          "rules": {
+            "keywords": [
+              "全家",
+              "7-11"
+            ],
+            "regex": "(\\\\d[\\\\d,]*)元|\\\\$|抵用.*?\\\\d|(\\\\d[\\\\d,]*)點"
+          },
+          "attributes": {
+            "base_value": null,
+            "receiving_cost": null
+          },
+          "tags": [],
+          "children": []
+        },
+        {
+          "id": "cat_1773773596024",
+          "name": "新子分類",
+          "type": "category",
+          "rules": {
+            "keywords": []
+          },
+          "attributes": {
+            "base_value": null,
+            "receiving_cost": null
+          },
+          "tags": [],
+          "children": []
+        }
+      ],
+      "id": "cat_regex_currency",
+      "name": "💰 禮物卡",
+      "rules": {
+        "keywords": [],
+        "regex": "(\\\\d[\\\\d,]*)元|\\\\$|抵用.*?\\\\d|(\\\\d[\\\\d,]*)點"
+      },
+      "tags": [
+        "高風險票券"
+      ],
+      "type": "category"
+    },
+    {
+      "attributes": {
+        "base_value": null,
+        "receiving_cost": null
+      },
+      "children": [
+        {
+          "attributes": {
+            "base_value": null,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "cat_1773770059228",
+          "name": "門票",
+          "rules": {
+            "keywords": [
+              "門票"
+            ],
+            "keywords_not": [
+              "六福村"
+            ]
+          },
+          "tags": [],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 799,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_001_001",
+          "name": "六福村",
+          "rules": {
+            "keywords": [],
+            "keywords_and": [
+              "六福村",
+              "門票"
+            ]
+          },
+          "tags": [
+            "高風險票券",
+            "須領取成本"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 800,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_001_002",
+          "name": "大魯閣",
+          "rules": {
+            "keywords": [
+              "大魯閣"
+            ]
+          },
+          "tags": [
+            "高風險票券"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 2800,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_001_003",
+          "name": "王品",
+          "rules": {
+            "keywords": [
+              "王品"
+            ]
+          },
+          "tags": [
+            "安全品牌",
+            "高風險票券"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 300,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_001_004",
+          "name": "劍湖山",
+          "rules": {
+            "keywords": [
+              "劍湖山"
+            ]
+          },
+          "tags": [
+            "高風險票券"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 100,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_001_005",
+          "name": "常見電子或零星禮物卡",
+          "rules": {
+            "keywords": [
+              "禮物卡",
+              "商品卡",
+              "提貨券",
+              "提貨卡",
+              "提用券",
+              "購物金",
+              "折扣券",
+              "兌換卷",
+              "兌換券",
+              "貴賓券",
+              "抵用",
+              "折價",
+              "優惠",
+              "體驗",
+              "沖印卷",
+              "fun玩卡",
+              "會員卡",
+              "餐券",
+              "兌換卡"
+            ],
+            "keywords_not": [
+              "全家",
+              "7-11"
+            ]
+          },
+          "tags": [
+            "可能電子化",
+            "高風險票券"
+          ],
+          "type": "category"
+        }
+      ],
+      "id": "cat_001",
+      "name": "🎫 票券與高價特賞",
+      "rules": {
+        "keywords": []
+      },
+      "tags": [],
+      "type": "category"
+    },
+    {
+      "attributes": {
+        "base_value": null,
+        "receiving_cost": null
+      },
+      "children": [
+        {
+          "attributes": {
+            "base_value": 400,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_002_001",
+          "name": "小型家電",
+          "rules": {
+            "keywords": [
+              "電風扇",
+              "循環扇",
+              "捕蚊燈",
+              "舒緩儀",
+              "按摩儀",
+              "檯燈",
+              "按摩",
+              "吸塵器",
+              "電子鍋",
+              "研磨器",
+              "果汁機"
+            ]
+          },
+          "tags": [
+            "需插電"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 300,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_002_002",
+          "name": "個人電子/特定高單品",
+          "rules": {
+            "keywords": [
+              "行動電源",
+              "耳機",
+              "藍芽",
+              "體重計",
+              "冰壩杯",
+              "計算機"
+            ]
+          },
+          "tags": [
+            "隨身攜帶"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 150,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_002_003",
+          "name": "記憶體/線材/電池",
+          "rules": {
+            "keywords": [
+              "隨身碟",
+              "記憶卡",
+              "SIM卡",
+              "SIM",
+              "線",
+              "充電",
+              "充電線",
+              "USB",
+              "Type-C",
+              "傳輸線",
+              "快充",
+              "電池"
+            ]
+          },
+          "tags": [
+            "耗材"
+          ],
+          "type": "category"
+        }
+      ],
+      "id": "cat_002",
+      "name": "⚡ 3C 與家用電器",
+      "rules": {
+        "keywords": []
+      },
+      "tags": [],
+      "type": "category"
+    },
+    {
+      "attributes": {
+        "base_value": null,
+        "receiving_cost": null
+      },
+      "children": [
+        {
+          "attributes": {
+            "base_value": 400,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_003_001",
+          "name": "大型煎炒鍋",
+          "rules": {
+            "keywords": [
+              "炒鍋",
+              "平底鍋",
+              "鑄鐵鍋",
+              "烤盤",
+              "煎鍋",
+              "砂鍋"
+            ]
+          },
+          "tags": [
+            "廚房用品"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 300,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_003_002",
+          "name": "大型燉煮鍋",
+          "rules": {
+            "keywords": [
+              "湯鍋",
+              "燉鍋",
+              "壓力鍋"
+            ]
+          },
+          "tags": [
+            "廚房用品"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 250,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_003_003",
+          "name": "保暖布飾",
+          "rules": {
+            "keywords": [
+              "法蘭絨",
+              "珊瑚絨",
+              "毯",
+              "被",
+              "圍巾",
+              "披肩",
+              "頸枕",
+              "圍脖",
+              "脖圍"
+            ]
+          },
+          "tags": [
+            "布織品"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 150,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_003_004",
+          "name": "小型烹飪鍋",
+          "rules": {
+            "keywords": [
+              "雪平鍋",
+              "奶鍋",
+              "單把鍋"
+            ]
+          },
+          "tags": [
+            "廚房用品"
+          ],
+          "type": "category"
+        }
+      ],
+      "id": "cat_003",
+      "name": "🍳 寢具與大型烹飪器具",
+      "rules": {
+        "keywords": []
+      },
+      "tags": [],
+      "type": "category"
+    },
+    {
+      "attributes": {
+        "base_value": null,
+        "receiving_cost": null
+      },
+      "children": [
+        {
+          "attributes": {
+            "base_value": 200,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_004_001",
+          "name": "戶外配件與機能傘物",
+          "rules": {
+            "keywords": [
+              "露營燈",
+              "帳篷",
+              "野餐墊",
+              "休閒椅",
+              "折疊椅",
+              "摺疊椅",
+              "摺疊座",
+              "小板凳",
+              "護膝",
+              "雨衣",
+              "保溫瓶",
+              "冰壩杯",
+              "扣環",
+              "隨身杯",
+              "自動傘",
+              "抗UV傘",
+              "折傘"
+            ]
+          },
+          "tags": [
+            "戶外"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 180,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_004_002",
+          "name": "五金工具/捲尺燈具",
+          "rules": {
+            "keywords": [
+              "工具組",
+              "工具套裝",
+              "螺絲起子",
+              "五金",
+              "開瓶器",
+              "開罐器",
+              "刨刀",
+              "剪刀",
+              "削皮",
+              "磨刀",
+              "手套",
+              "膠帶",
+              "手電筒",
+              "照明",
+              "夜燈",
+              "警示燈",
+              "電子秤",
+              "行李秤",
+              "捲尺",
+              "板手",
+              "工具箱",
+              "磨刀器"
+            ]
+          },
+          "tags": [
+            "工具"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 150,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_004_003",
+          "name": "普通傘",
+          "rules": {
+            "keywords": [
+              "傘"
+            ]
+          },
+          "tags": [
+            "日用品"
+          ],
+          "type": "category"
+        }
+      ],
+      "id": "cat_004",
+      "name": "🛠️ 五金工具與戶外用品",
+      "rules": {
+        "keywords": []
+      },
+      "tags": [],
+      "type": "category"
+    },
+    {
+      "attributes": {
+        "base_value": null,
+        "receiving_cost": null
+      },
+      "children": [
+        {
+          "attributes": {
+            "base_value": 200,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_005_001",
+          "name": "不鏽鋼保溫/瓶杯",
+          "rules": {
+            "keywords": [
+              "保溫杯",
+              "保溫瓶",
+              "燜燒罐",
+              "隨行杯"
+            ]
+          },
+          "tags": [
+            "餐杯類"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 150,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_005_002",
+          "name": "不鏽鋼餐便當盒",
+          "rules": {
+            "keywords": [
+              "便當盒",
+              "餐盒",
+              "飯盒"
+            ]
+          },
+          "tags": [
+            "餐具類"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 100,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_005_003",
+          "name": "包包與提袋",
+          "rules": {
+            "keywords": [
+              "包",
+              "袋",
+              "提袋",
+              "背包",
+              "提籃",
+              "保冷",
+              "收納",
+              "束口",
+              "零錢包",
+              "化妝包",
+              "置衣籃",
+              "束帶",
+              "綁帶"
+            ]
+          },
+          "tags": [
+            "收納類",
+            "容易變廢物"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 100,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_005_004",
+          "name": "有牌玻璃陶瓷/控油壺",
+          "rules": {
+            "keywords": [
+              "盤",
+              "碟",
+              "杯",
+              "頂",
+              "馬克杯",
+              "冷水壺",
+              "水壺",
+              "水瓶",
+              "胖胖瓶",
+              "沖茶",
+              "儲物罐",
+              "保鮮盒",
+              "保鮮密封",
+              "保鮮罐",
+              "密封扣",
+              "控油壺",
+              "分裝瓶",
+              "瓶",
+              "壺",
+              "罐",
+              "餐墊",
+              "杯墊",
+              "砧板",
+              "洗漱墊",
+              "珪藻土",
+              "對杯",
+              "杯組",
+              "碗盤組",
+              "碗組",
+              "瓷碗",
+              "餐寶",
+              "導磁盤",
+              "豐收盤",
+              "斗笠碗",
+              "陶瓷",
+              "瓷",
+              "骨瓷",
+              "耐熱玻璃",
+              "強化玻璃",
+              "康寧",
+              "樂美雅",
+              "Luminarc",
+              "真瓷",
+              "白玉玻璃",
+              "玻璃"
+            ]
+          },
+          "tags": [
+            "餐具類",
+            "易碎"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 80,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_005_005",
+          "name": "陶瓷玻璃碗盅",
+          "rules": {
+            "keywords": [
+              "碗",
+              "盅"
+            ]
+          },
+          "tags": [
+            "餐具類",
+            "易碎"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 60,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_005_006",
+          "name": "隨身小餐具組",
+          "rules": {
+            "keywords": [
+              "餐具",
+              "筷",
+              "匙",
+              "叉"
+            ]
+          },
+          "tags": [
+            "餐具類"
+          ],
+          "type": "category"
+        }
+      ],
+      "id": "cat_005",
+      "name": "🍽️ 不鏽鋼/收納/餐餐具",
+      "rules": {
+        "keywords": []
+      },
+      "tags": [],
+      "type": "category"
+    },
+    {
+      "attributes": {
+        "base_value": null,
+        "receiving_cost": null
+      },
+      "children": [
+        {
+          "attributes": {
+            "base_value": 120,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_006_001",
+          "name": "食用油與調味品",
+          "rules": {
+            "keywords": [
+              "橄欖油",
+              "葵花油",
+              "苦茶油",
+              "食用油",
+              "麻油",
+              "醬油",
+              "油膏",
+              "料理海鹽",
+              "鹽",
+              "調味",
+              "調味瓶",
+              "密封罐",
+              "海鹽"
+            ]
+          },
+          "tags": [
+            "食品"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 80,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_006_002",
+          "name": "布織品與沖泡飲品",
+          "rules": {
+            "keywords": [
+              "毛巾",
+              "擦手巾",
+              "運動巾",
+              "浴巾",
+              "方巾",
+              "涼感巾",
+              "拭鏡布",
+              "抹布",
+              "擦拭布",
+              "清潔棉",
+              "清潔布",
+              "3C布",
+              "茶葉",
+              "茶包",
+              "咖啡",
+              "沖泡",
+              "飲品",
+              "梅",
+              "莓",
+              "桔梗飲",
+              "美式",
+              "中熱美"
+            ]
+          },
+          "tags": [
+            "日用品"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 80,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_006_003",
+          "name": "個人修容",
+          "rules": {
+            "keywords": [
+              "修容",
+              "指甲剪",
+              "指甲鉗",
+              "梳",
+              "刷",
+              "修甲",
+              "美容"
+            ]
+          },
+          "tags": [
+            "容易變廢物"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 70,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_006_004",
+          "name": "主食類米麵",
+          "rules": {
+            "keywords": [
+              "米",
+              "白米",
+              "香米",
+              "糙米",
+              "麵條",
+              "長麵",
+              "粉絲",
+              "乾拌麵",
+              "泡麵",
+              "碗麵",
+              "義大利麵",
+              "高湯麵",
+              "桶麵",
+              "湯麵"
+            ]
+          },
+          "tags": [
+            "食品"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 60,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_006_005",
+          "name": "零食與加工食品",
+          "rules": {
+            "keywords": [
+              "肉鬆",
+              "蛋捲",
+              "餅乾",
+              "堅果",
+              "零食",
+              "休閒食品",
+              "罐頭",
+              "滴魚精",
+              "燕窩",
+              "仙草",
+              "花生仁湯",
+              "咖哩",
+              "粥",
+              "鮪魚",
+              "調理包",
+              "泡菜",
+              "豆腐",
+              "果汁",
+              "甘栗",
+              "伴手禮",
+              "火鍋",
+              "湯",
+              "禮盒",
+              "組",
+              "體驗",
+              "海苔",
+              "海燕",
+              "禮品",
+              "膳食",
+              "系列"
+            ]
+          },
+          "tags": [
+            "食品",
+            "吃不飽"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 60,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_006_006",
+          "name": "防護清理保養",
+          "rules": {
+            "keywords": [
+              "防疫",
+              "口罩",
+              "面罩",
+              "酒精",
+              "洗手",
+              "手工皂",
+              "香皂",
+              "茶摳",
+              "石鹼",
+              "沐浴",
+              "洗髮",
+              "潔手",
+              "牙膏",
+              "潔牙",
+              "牙線",
+              "護手霜",
+              "保養",
+              "精華",
+              "面膜",
+              "化妝",
+              "彩妝",
+              "洗面",
+              "潔面",
+              "洗臉",
+              "噴霧",
+              "精油",
+              "軟膏",
+              "抗菌液",
+              "除菌液",
+              "防護粉",
+              "防護噴霧",
+              "潤澤粉",
+              "清廢茶",
+              "皂",
+              "洗淨",
+              "染髮"
+            ]
+          },
+          "tags": [
+            "日用品",
+            "容易變廢物"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 50,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_006_007",
+          "name": "家政清潔劑組",
+          "rules": {
+            "keywords": [
+              "洗衣",
+              "洗碗",
+              "清潔劑",
+              "皂",
+              "洗潔",
+              "小蘇打粉",
+              "除霉",
+              "防霉",
+              "除黴",
+              "去污",
+              "抹布",
+              "海綿",
+              "菜瓜布",
+              "洗滌",
+              "清潔棉",
+              "保鮮膜",
+              "抗菌液",
+              "清淨",
+              "日用品"
+            ]
+          },
+          "tags": [
+            "日用品"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 50,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_006_008",
+          "name": "文具小物配件",
+          "rules": {
+            "keywords": [
+              "筆",
+              "原子筆",
+              "鋼珠筆",
+              "螢光筆",
+              "便利貼",
+              "筆記本",
+              "捲尺",
+              "扑克牌",
+              "襪",
+              "袖套",
+              "帽",
+              "飾品",
+              "工作圍裙",
+              "掛勾",
+              "號碼牌",
+              "相片",
+              "警示燈",
+              "鑰匙圈",
+              "額溫",
+              "防蚊",
+              "牙籤",
+              "掛勾",
+              "N次貼",
+              "課程",
+              "手機架",
+              "支架",
+              "手機座",
+              "手機環",
+              "掛繩"
+            ]
+          },
+          "tags": [
+            "容易變廢物"
+          ],
+          "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 30,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_006_009",
+          "name": "衛生紙類",
+          "rules": {
+            "keywords": [
+              "濕紙巾",
+              "衛生紙",
+              "面紙",
+              "抽取式",
+              "柔濕巾",
+              "水濕巾"
+            ]
+          },
+          "tags": [
+            "日用品"
+          ],
+          "type": "category"
+        }
+      ],
+      "id": "cat_006",
+      "name": "🍔 食品生鮮與日用雜貨",
+      "rules": {
+        "keywords": []
+      },
+      "tags": [],
+      "type": "category"
+    },
+    {
+      "attributes": {
+        "base_value": null,
+        "receiving_cost": null
+      },
+      "children": [
+        {
+          "attributes": {
+            "base_value": 100,
+            "receiving_cost": null
+          },
+          "children": [],
+          "id": "subcat_007_001",
+          "name": "各類保健食品",
+          "rules": {
+            "keywords": [
+              "錠",
+              "維他命",
+              "膠囊",
+              "益生菌",
+              "葉黃素",
+              "魚油",
+              "牛樟芝",
+              "保健",
+              "酵素",
+              "發泡錠",
+              "精萃",
+              "精粹",
+              "舒衛粉",
+              "蓉憶記",
+              "精華",
+              "膠原",
+              "倍力莓"
+            ]
+          },
+          "tags": [
+            "食品",
+            "容易變廢物"
+          ],
+          "type": "category"
+        }
+      ],
+      "id": "cat_007",
+      "name": "💊 保健品專區",
+      "rules": {
+        "keywords": []
+      },
+      "tags": [],
+      "type": "category"
+    }
+  ],
+  "id": "root",
+  "name": "🎁 股東會紀念品大分類樹 (自動產生版)",
+  "rules": {
+    "keywords": []
+  },
+  "tags": [],
+  "type": "root"
+}

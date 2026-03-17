@@ -11,6 +11,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>門票 (1199元) - 共 5 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[六福, 劍湖山, 動物園, 門票, 主題樂園]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>主題樂園門票 ➜ 最終價: 1179 元</summary>
@@ -58,6 +59,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>大魯閣 (800元) - 共 1 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[大魯閣]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>大魯閣Plus APP 消費抵用券 ⚠️(扣分) ➜ 最終價: 30 元</summary>
@@ -74,6 +76,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>王品 (400元) - 共 2 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[王品]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>王品股東大禮包 ⚠️(扣分) ➜ 最終價: 100 元</summary>
@@ -99,6 +102,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>體驗券 (300元) - 共 0 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[佐登妮絲, 柏文]</b></div><br>
 
 無品項
 
@@ -107,6 +111,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>禮券/卡券 (100元) - 共 38 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[禮物卡, 商品卡, 提貨券, 提貨卡, 提用券, 購物金, 折扣券, 兌換卷, 兌換券, 貴賓券, 抵用, 折價, 優惠, 體驗, 沖印卷, fun玩卡, 會員卡, 餐券, 兌換卡]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>2600 元滿額消費抵用點數 ⚠️(扣分) ➜ 最終價: 30 元</summary>
@@ -449,6 +454,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>小型家電 (400元) - 共 13 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[電風扇, 循環扇, 捕蚊燈, 舒緩儀, 按摩儀, 檯燈, 按摩, 吸塵器, 電子鍋, 研磨器, 果汁機]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>USB智能觸控檯燈 ➜ 最終價: 380 元</summary>
@@ -561,6 +567,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>個人電子/冰壩杯 (300元) - 共 8 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[行動電源, 耳機, 藍芽, 體重計, 冰壩杯, 計算機]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>KINYO入耳式耳機麥克風 ➜ 最終價: 280 元</summary>
@@ -632,6 +639,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>記憶體/線材/電池 (150元) - 共 34 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[隨身碟, 記憶卡, SIM卡, SIM, 線, 充電, 充電線, USB, Type-C, 傳輸線, 快充, 電池]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>16G隨身碟 ➜ 最終價: 130 元</summary>
@@ -921,6 +929,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>大型煎炒鍋 (400元) - 共 3 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[炒鍋, 平底鍋, 鑄鐵鍋, 烤盤, 煎鍋, 砂鍋]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>7.5吋日式砂鍋 ➜ 最終價: 380 元</summary>
@@ -953,6 +962,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>大型燉煮鍋 (300元) - 共 0 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[湯鍋, 燉鍋, 壓力鍋]</b></div><br>
 
 無品項
 
@@ -961,6 +971,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>保暖布飾 (250元) - 共 8 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[法蘭絨, 珊瑚絨, 毯, 被, 圍巾, 披肩, 頸枕, 圍脖, 脖圍]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>Jack wolfskin輕柔薄毯 ➜ 最終價: 230 元</summary>
@@ -1032,6 +1043,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>小型烹飪鍋 (150元) - 共 0 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[雪平鍋, 奶鍋, 單把鍋]</b></div><br>
 
 無品項
 
@@ -1046,6 +1058,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>戶外配件與機能傘物 (200元) - 共 18 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[露營燈, 帳篷, 野餐墊, 休閒椅, 折疊椅, 摺疊椅, 摺疊座, 小板凳, 護膝, 雨衣, 保溫瓶, 冰壩杯, 扣環, 隨身杯, 自動傘, 抗UV傘, 折傘]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>EVA雨衣 ➜ 最終價: 180 元</summary>
@@ -1198,6 +1211,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>五金工具/捲尺燈具 (180元) - 共 37 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[工具組, 工具套裝, 螺絲起子, 五金, 開瓶器, 開罐器, 刨刀, 剪刀, 削皮, 磨刀, 手套, 膠帶, 手電筒, 照明, 夜燈, 警示燈, 電子秤, 行李秤, 捲尺, 板手, 工具箱, 磨刀器]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>24合1磁吸螺絲刀工具組 ➜ 最終價: 160 元</summary>
@@ -1504,6 +1518,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>普通傘 (150元) - 共 6 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[傘]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>傘Q ➜ 最終價: 130 元</summary>
@@ -1566,6 +1581,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>不鏽鋼保溫/瓶杯 (200元) - 共 18 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[保溫杯, 保溫瓶, 燜燒罐, 隨行杯]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>HTC隨身保溫杯袋組乙組 ⚠️(扣分) ➜ 最終價: 16 元</summary>
@@ -1721,6 +1737,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>不鏽鋼餐便當盒 (150元) - 共 7 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[便當盒, 餐盒, 飯盒]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>保溫袋與摺疊便當盒 ⚠️(扣分) ➜ 最終價: 16 元</summary>
@@ -1785,6 +1802,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>包包與提袋 (100元) - 共 153 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[包, 袋, 提袋, 背包, 提籃, 保冷, 收納, 束口, 零錢包, 化妝包, 置衣籃, 束帶, 綁帶]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>#304不鏽鋼包邊吸管組 ⚠️(扣分) ➜ 最終價: 16 元</summary>
@@ -3171,6 +3189,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>有牌玻璃陶瓷/控油壺 (100元) - 共 179 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[盤, 碟, 杯, 頂, 馬克杯, 冷水壺, 水壺, 水瓶, 胖胖瓶, 沖茶, 儲物罐, 保鮮盒, 保鮮密封, 保鮮罐, 密封扣, 控油壺, 分裝瓶, 瓶, 壺, 罐, 餐墊, 杯墊, 砧板, 洗漱墊, 珪藻土, 對杯, 杯組, 碗盤組, 碗組, 瓷碗, 餐寶, 導磁盤, 豐收盤, 斗笠碗, 陶瓷, 瓷, 骨瓷, 耐熱玻璃, 強化玻璃, 康寧, 樂美雅, Luminarc, 真瓷, 白玉玻璃, 玻璃]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>(已兌換,隨機出貨)FMC保健錠劑系列*1瓶 ⚠️(扣分) ➜ 最終價: 10 元</summary>
@@ -4637,6 +4656,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>陶瓷玻璃碗盅 (80元) - 共 28 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[碗, 盅]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>450g毛寶洗碗精 ⚠️(扣分) ➜ 最終價: 4 元</summary>
@@ -4880,6 +4900,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>餐具組 (60元) - 共 31 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[餐具, 筷, 匙, 叉]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>#304環保餐具二件組(台通) ➜ 最終價: 100 元</summary>
@@ -5144,6 +5165,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>食用油與調味品 (120元) - 共 19 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[橄欖油, 葵花油, 苦茶油, 食用油, 麻油, 醬油, 油膏, 料理海鹽, 鹽, 調味, 調味瓶, 密封罐, 海鹽]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>GREEN&SAFE Extra Virgin橄欖油禮盒 ➜ 最終價: 100 元</summary>
@@ -5308,6 +5330,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>布織品與沖泡飲品 (80元) - 共 40 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[毛巾, 擦手巾, 運動巾, 浴巾, 方巾, 涼感巾, 拭鏡布, 抹布, 擦拭布, 清潔棉, 清潔布, 3C布, 茶葉, 茶包, 咖啡, 沖泡, 飲品, 梅, 莓, 桔梗飲, 美式, 中熱美]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>Apogen無糖藍莓薄荷錠 ⚠️(扣分) ➜ 最終價: 4 元</summary>
@@ -5647,6 +5670,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>個人修容 (80元) - 共 24 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[修容, 指甲剪, 指甲鉗, 梳, 刷, 修甲, 美容]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>GiveU指甲剪刨光套組 ⚠️(扣分) ➜ 最終價: 4 元</summary>
@@ -5870,6 +5894,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>主食類米麵 (70元) - 共 51 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[米, 白米, 香米, 糙米, 麵條, 長麵, 粉絲, 乾拌麵, 泡麵, 碗麵, 義大利麵, 高湯麵, 桶麵, 湯麵]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>BtNPN植物奈米貼片(三入) ➜ 最終價: 50 元</summary>
@@ -6286,6 +6311,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>零食與加工食品 (60元) - 共 81 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[肉鬆, 蛋捲, 餅乾, 堅果, 零食, 休閒食品, 罐頭, 滴魚精, 燕窩, 仙草, 花生仁湯, 咖哩, 粥, 鮪魚, 調理包, 泡菜, 豆腐, 果汁, 甘栗, 伴手禮, 火鍋, 湯, 禮盒, 組, 體驗, 海苔, 海燕, 禮品, 膳食, 系列]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>Cepis有機甘栗 ➜ 最終價: 40 元</summary>
@@ -6971,6 +6997,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>防護清理保健 (60元) - 共 273 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[防疫, 口罩, 面罩, 酒精, 洗手, 手工皂, 香皂, 茶摳, 石鹼, 沐浴, 洗髮, 潔手, 牙膏, 潔牙, 牙線, 護手霜, 保養, 精華, 面膜, 化妝, 彩妝, 洗面, 潔面, 洗臉, 噴霧, 精油, 軟膏, 抗菌液, 除菌液, 防護粉, 防護噴霧, 潤澤粉, 清廢茶, 皂, 洗淨, 染髮]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>3D美顏防疫口罩一入 ➜ 最終價: 40 元</summary>
@@ -9297,6 +9324,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>家政清潔劑組 (50元) - 共 39 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[洗衣, 洗碗, 清潔劑, 皂, 洗潔, 小蘇打粉, 除霉, 防霉, 除黴, 去污, 抹布, 海綿, 菜瓜布, 洗滌, 清潔棉, 保鮮膜, 抗菌液, 清淨, 日用品]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>3M菜瓜布 15*22公分 ⚠️(扣分) ➜ 最終價: 0 元</summary>
@@ -9636,6 +9664,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>文具小物配件 (50元) - 共 57 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[筆, 原子筆, 鋼珠筆, 螢光筆, 便利貼, 筆記本, 捲尺, 扑克牌, 襪, 袖套, 帽, 飾品, 工作圍裙, 掛勾, 號碼牌, 相片, 警示燈, 鑰匙圈, 額溫, 防蚊, 牙籤, 掛勾, N次貼, 課程, 手機架, 支架, 手機座, 手機環, 掛繩]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>KOLLOS洸動能護芯襪 ⚠️(扣分) ➜ 最終價: 0 元</summary>
@@ -10154,6 +10183,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>衛生紙類 (30元) - 共 5 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[濕紙巾, 衛生紙, 面紙, 抽取式, 柔濕巾, 水濕巾]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>GERMAGIC菌魔力抗菌濕紙巾80抽 ➜ 最終價: 10 元</summary>
@@ -10207,6 +10237,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>保健食品 (100元) - 共 30 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 品名包含以下任一關鍵字 <b>[錠, 維他命, 膠囊, 益生菌, 葉黃素, 魚油, 牛樟芝, 保健, 酵素, 發泡錠, 精萃, 精粹, 舒衛粉, 蓉憶記, 精華, 膠原, 倍力莓]</b></div><br>
 
 <details style='margin-left: 40px;'>
 <summary>HAC常樂舒衛粉 ⚠️(扣分) ➜ 最終價: 10 元</summary>
@@ -10490,6 +10521,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>精準提取項 - 共 124 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 透過正規表示式直接擷取數字 (例如: 100元, $100, 抵用100, 100點)</div><br>
 
 <details style='margin-left: 40px;'>
 <summary>150元生活市集提貨券 ➜ 最終價: 135 元</summary>
@@ -11507,6 +11539,7 @@
 <details style='margin-left: 20px;'>
 <summary><i>衍生歸類項 - 共 1 件</i></summary>
 <br>
+  <div style='margin-left: 40px; color: gray; font-size: 0.9em;'>ℹ️ 分類條件: 不滿足明確分類關鍵字，但根據程式碼邏輯被賦予非 40 元底價的衍生品項</div><br>
 
 <details style='margin-left: 40px;'>
 <summary>不鏽鋼單柄鍋 ➜ 最終價: 100 元</summary>

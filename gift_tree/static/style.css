@@ -1,0 +1,346 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background-color: #f5f7fa;
+}
+
+[v-cloak] {
+    display: none;
+}
+
+header {
+    background-color: #fff;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #2c3e50;
+}
+
+header .actions .divider {
+    display: inline-block;
+    width: 2px;
+    height: 24px;
+    background: #ccc;
+    margin: 0 10px;
+    vertical-align: middle;
+}
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #fff;
+    transition: background-color 0.2s;
+}
+
+.btn.primary { background-color: #3498db; }
+.btn.primary:hover { background-color: #2980b9; }
+.btn.success { background-color: #2ecc71; margin-left: 0.5rem;}
+.btn.success:hover { background-color: #27ae60; }
+.btn.success:disabled { background-color: #95d5b2; cursor: not-allowed; }
+.btn.warning { background-color: #e67e22; margin-left: 0.5rem;}
+.btn.warning:hover { background-color: #d35400; }
+.btn.danger { background-color: #e74c3c; margin-top: 1rem; width: 100%;}
+.btn.danger:hover { background-color: #c0392b; }
+.btn.info { background-color: #00adb5; color: white; }
+.btn.info:hover { background-color: #00939a; }
+.btn.small { padding: 0.3rem 0.6rem; font-size: 0.8rem; margin-top: 0.5rem;}
+
+/* 模擬統計顯示 */
+.sim-stats {
+    margin-left: 1rem;
+    font-size: 0.9rem;
+    color: #555;
+}
+.sim-stats a {
+    color: #e67e22;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* 節點上的模擬命中標籤 */
+.sim-badge {
+    margin-left: 8px;
+    background: #f39c12;
+    color: #fff;
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+.sim-badge:hover { background: #e67e22; }
+
+/* 模擬結果展開子清單 */
+.sim-results {
+    margin-left: 32px;
+    margin-top: 4px;
+    border-left: 3px solid #f39c12;
+    background: #fef9e7;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.sim-result-header {
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    color: #7d6608;
+    cursor: pointer;
+    background: #fdebd0;
+    font-weight: bold;
+}
+.sim-result-header:hover { background: #fad7a0; }
+.sim-item {
+    padding: 3px 8px;
+    font-size: 0.82rem;
+    color: #5d4a07;
+    border-bottom: 1px solid #fde08d;
+}
+.sim-item:last-child { border-bottom: none; }
+
+/* 行內底價標籤 */
+.sim-price-tag {
+    margin-left: 8px;
+    font-size: 0.8rem;
+    color: #7d5a00;
+    background: #fff8e1;
+    border: 1px solid #f9a825;
+    border-radius: 8px;
+    padding: 0 6px;
+    font-weight: bold;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+}
+.sim-price-tag:hover { background: #fff3cd; }
+
+/* 覆蓋底價（手動設定）：橘色強調 */
+.sim-price-overridden {
+    background: #ffecb3;
+    border-color: #e65100;
+    color: #bf360c;
+}
+.sim-override-badge {
+    margin-left: 4px;
+    font-size: 0.7rem;
+    background: #e65100;
+    color: #fff;
+    border-radius: 4px;
+    padding: 0 4px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+/* 取消覆蓋 / 編輯圖示按鈕 */
+.sim-clear-btn, .sim-edit-btn {
+    margin-left: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.15s;
+}
+.sim-item:hover .sim-clear-btn,
+.sim-item:hover .sim-edit-btn { opacity: 1; }
+
+/* 行內 input 編輯模式 */
+.sim-price-edit {
+    margin-left: 8px;
+    font-size: 0.82rem;
+    color: #333;
+}
+.sim-price-input {
+    width: 70px;
+    padding: 1px 4px;
+    border: 1px solid #f9a825;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    text-align: right;
+}
+
+/* 未分類面板 */
+.unclassified-panel {
+    border: 2px solid #e67e22;
+    border-radius: 6px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+.unclassified-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    background: #fdebd0;
+}
+
+.layout {
+    display: flex;
+    height: calc(100vh - 70px);
+    overflow: hidden;
+}
+
+.panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.raw-panel {
+    max-width: 350px;
+    background-color: #ecf0f1;
+    border-right: 1px solid #bdc3c7;
+}
+
+.tree-panel {
+    flex: 2;
+    background-color: #fff;
+}
+
+.panel-header h2 {
+    font-size: 1.1rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.search-box {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.item-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.raw-item {
+    background: #fff;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.drag-handle {
+    color: #999;
+    margin-right: 8px;
+    cursor: grab;
+    user-select: none;
+}
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+/* Tree Node */
+.tree-container {
+    padding: 10px;
+}
+
+.tree-node {
+    margin-left: 20px;
+}
+
+.node-content {
+    display: flex;
+    align-items: center;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: default;
+    user-select: text;
+    transition: background-color 0.2s;
+}
+
+.node-content:hover {
+    background-color: #f1f2f6;
+}
+
+.node-content .toggle {
+    width: 24px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.node-content .name {
+    margin: 0 8px;
+    font-weight: bold;
+}
+
+.is-item > .node-content .name {
+    font-weight: normal;
+    color: #2c3e50;
+}
+
+.node-content .badge {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    background: #eee;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+.node-children {
+    border-left: 2px dashed #ecf0f1;
+    margin-left: 12px;
+    padding-left: 8px;
+}
+
+.drag-area {
+    min-height: 20px;
+}
+
+/* Edit Panel */
+.edit-panel {
+    width: 300px;
+    background: #fafafa;
+    border-left: 1px solid #ddd;
+    padding: 1rem;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.05);
+    overflow-y: auto;
+}
+
+.edit-panel h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.3rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
