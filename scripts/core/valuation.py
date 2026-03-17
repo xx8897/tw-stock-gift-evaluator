@@ -3,66 +3,95 @@ import re
 def estimate_gift_value(gift_name):
     if not gift_name or gift_name in ['無', '-', '未發放', '不發放', 'nan', '']:
         return 0
+    
     is_top_level = not str(gift_name).startswith("__internal__")
     name_clean = str(gift_name).replace("__internal__", "").strip()
+    
     delimiters = r'\+|\&|與|和|及'
     if re.search(delimiters, name_clean):
         parts = re.split(delimiters, name_clean)
         raw_total = sum(estimate_gift_value(f"__internal__{p.strip()}") for p in parts if p.strip())
         if is_top_level:
-            is_voucher_only = all(any(k in p for k in ['禮券', '商品卡', '提貨券', '購物金', '兌換卷']) for p in parts)
-            cost = 15 if is_voucher_only else 20
+            is_voucher_only = all(any(k in p for k in ['禮券', '商品卡', '提貨券', '購物金', '兌換卷', '兌換券', '點數']) for p in parts)
+            is_digital = all(any(k in p for k in ['電子', '簡訊', 'APP', '點數', '虛擬']) for p in parts)
+            if is_digital: cost = 0
+            else: cost = 15 if is_voucher_only else 20
             return max(raw_total - cost, 0)
         return raw_total
+
     gift = name_clean
+    val = 0
+    
+    # === 1. 數值捕捉 (金額/點數優先捕捉) ===
     m = re.search(r'(\d[\d,]*)元', gift)
-    if m: return min(int(m.group(1).replace(',', '')), 5000)
-    m = re.search(r'\$\s*(\d[\d,]*)', gift)
-    if m: return min(int(m.group(1).replace(',', '')), 5000)
-    m = re.search(r'抵用券.*?(\d[\d,]*)', gift)
-    if m: return min(int(m.group(1).replace(',', '')), 5000)
-    if any(k in gift for k in ['禮物卡', '商品卡', '提貨券', '購物金', '折扣券', '兌換券', '貴賓券']): return 100
-    if '大魯閣' in gift: return 800
-    if '王品' in gift: return 400
-    if '六福' in gift: return 1199
-    if '佐登妮絲' in gift: return 300
-    if any(k in gift for k in ['電風扇', '循環扇', '捕蚊燈', '電熱毯']): val = 400
-    elif any(k in gift for k in ['行動電源', '耳機', '藍芽']): val = 300
-    elif any(k in gift for k in ['USB風扇', '手持扇', '體重計', '吸塵器']): val = 200
-    elif any(k in gift for k in ['炒鍋', '平底鍋', '鑄鐵鍋']): val = 400
-    elif any(k in gift for k in ['湯鍋', '燉鍋', '壓力鍋']): val = 300
-    elif any(k in gift for k in ['雪平鍋', '奶鍋', '單把鍋']): val = 150
-    elif any(k in gift for k in ['陶瓷', '骨瓷', '強化玻璃', '耐熱玻璃']):
-        if any(k in gift for k in ['盤', '碟']): val = 100
-        elif any(k in gift for k in ['碗', '盅']): val = 80
-        else: val = 120
-    elif any(k in gift for k in ['不鏽鋼', '不銹鋼', '304', '316']):
-        if any(k in gift for k in ['保溫杯', '保溫瓶']): val = 200
-        elif any(k in gift for k in ['便當盒', '隔熱碗']): val = 150
-        else: val = 120
-    elif any(k in gift for k in ['工具組', '工具套裝', '螺絲起子組']): val = 180
-    elif any(k in gift for k in ['露營燈', '帳篷', '野餐墊']): val = 200
-    elif any(k in gift for k in ['修容', '指甲剪']): val = 80
-    elif any(k in gift for k in ['法蘭絨', '珊瑚絨', '毯']): val = 250
-    elif any(k in gift for k in ['浴巾', '大毛巾']): val = 120
-    elif any(k in gift for k in ['毛巾', '擦手巾', '運動巾']): val = 60
-    elif '傘' in gift:
-        if any(k in gift for k in ['自動', '抗UV', '折傘']): val = 200
-        else: val = 150
-    elif any(k in gift for k in ['橄欖油', '葵花油', '苦茶油', '食用油', '麻油']): val = 120
-    elif any(k in gift for k in ['米', '白米', '香米', '糙米']) and '洗米' not in gift: val = 70
-    elif any(k in gift for k in ['火鍋', '鍋燒', '拌麵', '泡麵', '醬油', '罐頭', '咖啡', '零食']): val = 50
-    elif any(k in gift for k in ['洗衣', '洗碗', '清潔劑', '皂', '洗髮', '牙膏']): val = 50
-    elif any(k in gift for k in ['濕紙巾', '衛生紙', '面紙', '抽取式']): val = 30
-    else: val = 40
+    if m: val = min(int(m.group(1).replace(',', '')), 5000)
+    else:
+        m = re.search(r'\$\s*(\d[\d,]*)', gift)
+        if m: val = min(int(m.group(1).replace(',', '')), 5000)
+        else:
+            m = re.search(r'抵用.*?(\d[\d,]*)', gift)
+            if m: val = min(int(m.group(1).replace(',', '')), 5000)
+            else:
+                m = re.search(r'(\d[\d,]*)點', gift)
+                if m: val = min(int(m.group(1).replace(',', '')), 5000)
+    
+    # === 2. 無明確金額時的品項分類保底估值 ===
+    if val == 0:
+        if any(k in gift for k in ['禮物卡', '商品卡', '提貨券', '購物金', '折扣券', '兌換卷', '兌換券', '貴賓券']): val = 100
+        elif '大魯閣' in gift: val = 800
+        elif '王品' in gift: val = 400
+        elif '六福' in gift: val = 1199
+        elif '佐登妮絲' in gift: val = 300
+        # === 新增與優化分類 (包含興櫃補強) ===
+        elif any(k in gift for k in ['帆布', '保冷', '環保', '購物袋', '提袋', '背袋', '束口袋']): val = 100
+        elif any(k in gift for k in ['防疫', '口罩', '洗手', '手工皂', '香皂', '酒精', '噴霧']): val = 60
+        elif any(k in gift for k in ['線', '充電', 'USB', 'Type-C', '傳輸線']): val = 150
+        elif any(k in gift for k in ['玻璃杯', '馬克杯', '冷水壺', '水壺']) and not any(k in gift for k in ['強化玻璃', '耐熱玻璃']): val = 100
+        elif any(k in gift for k in ['乾拌麵', '粉絲', '調理包', '肉鬆', '麵條', '蛋捲', '餅乾', '堅果']): val = 60
+        # === 既有分類 ===
+        elif any(k in gift for k in ['電風扇', '循環扇', '捕蚊燈', '電熱毯']): val = 400
+        elif any(k in gift for k in ['行動電源', '耳機', '藍芽']): val = 300
+        elif any(k in gift for k in ['USB風扇', '手持扇', '體重計', '吸塵器']): val = 200
+        elif any(k in gift for k in ['炒鍋', '平底鍋', '鑄鐵鍋']): val = 400
+        elif any(k in gift for k in ['湯鍋', '燉鍋', '壓力鍋']): val = 300
+        elif any(k in gift for k in ['雪平鍋', '奶鍋', '單把鍋']): val = 150
+        elif any(k in gift for k in ['陶瓷', '骨瓷', '強化玻璃', '耐熱玻璃']):
+            if any(k in gift for k in ['盤', '碟']): val = 100
+            elif any(k in gift for k in ['碗', '盅']): val = 80
+            else: val = 120
+        elif any(k in gift for k in ['不鏽鋼', '不銹鋼', '304', '316']):
+            if any(k in gift for k in ['保溫杯', '保溫瓶']): val = 200
+            elif any(k in gift for k in ['便當盒', '隔熱碗']): val = 150
+            else: val = 120
+        elif any(k in gift for k in ['工具組', '工具套裝', '螺絲起子組']): val = 180
+        elif any(k in gift for k in ['露營燈', '帳篷', '野餐墊']): val = 200
+        elif any(k in gift for k in ['修容', '指甲剪']): val = 80
+        elif any(k in gift for k in ['法蘭絨', '珊瑚絨', '毯']): val = 250
+        elif any(k in gift for k in ['浴巾', '大毛巾']): val = 120
+        elif any(k in gift for k in ['毛巾', '擦手巾', '運動巾']): val = 60
+        elif '傘' in gift:
+            if any(k in gift for k in ['自動', '抗UV', '折傘']): val = 200
+            else: val = 150
+        elif any(k in gift for k in ['橄欖油', '葵花油', '苦茶油', '食用油', '麻油', '醬油']): val = 120
+        elif any(k in gift for k in ['米', '白米', '香米', '糙米']) and '洗米' not in gift: val = 70
+        elif any(k in gift for k in ['火鍋', '鍋燒', '拌麵', '泡麵', '罐頭', '咖啡', '零食']): val = 50
+        elif any(k in gift for k in ['洗衣', '洗碗', '清潔劑', '皂', '洗髮', '牙膏']): val = 50
+        elif any(k in gift for k in ['濕紙巾', '衛生紙', '面紙', '抽取式', '洗潔']): val = 30
+        else: val = 40
+
+    # === 3. 品牌聯名加成 (所有品項一體適用) ===
     premium_brands = ['Kitty', 'Snoopy', '史努比', '迪士尼', 'Disney', 'LINE', '角落小夥伴', '卡娜赫拉', '拉拉熊', '小小兵', '皮克斯']
-    if any(k.lower() in gift.lower() for k in premium_brands): val = int(val * 1.25)
+    if any(k.lower() in gift.lower() for k in premium_brands): 
+        val = int(val * 1.25)
+        
+    # === 4. 取領成本扣除 (僅於頂層呼叫時執行一次) ===
     if is_top_level:
-        is_voucher = any(k in gift for k in ['禮券', '商品卡', '提貨券', '購物金', '折扣券', '兌換券', '貴賓券'])
+        is_voucher = any(k in gift for k in ['禮券', '商品卡', '提貨券', '購物金', '折扣券', '兌換卷', '兌換券', '貴賓券', '票券', '商品券'])
         is_digital = any(k in gift for k in ['電子', '簡訊', 'APP', '點數', '虛擬'])
         if is_digital: cost = 0
         else: cost = 15 if is_voucher else 20
         val = max(val - cost, 0)
+        
     return val
 
 def estimate_5year_total(text):
