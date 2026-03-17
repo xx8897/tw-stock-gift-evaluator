@@ -15,21 +15,32 @@ function startLoadingTextRotation() {
     if (!span) return;
 
     let idx = 0;
-    _loadingRotatorInterval = setInterval(() => {
+
+    function nextMessage() {
+        if (!_loadingRotatorInterval) return; // 如果已經呼叫 stop 則停止
+
         span.classList.add('fade-out');
         setTimeout(() => {
             idx = (idx + 1) % LOADING_MESSAGES.length;
             span.textContent = LOADING_MESSAGES[idx];
             span.classList.remove('fade-out');
             span.classList.add('fade-in');
-            setTimeout(() => span.classList.remove('fade-in'), 400);
-        }, 260); // 對齊 CSS 動畫時間
-    }, 800); // 縮短為 0.8 秒換一次字
+            
+            setTimeout(() => {
+                span.classList.remove('fade-in');
+                // 每句話展示完全後，等待一小段時間再呼叫 nextMessage
+                _loadingRotatorInterval = setTimeout(nextMessage, 600); // 縮短至 0.6 秒
+            }, 400); // fade-in 動畫時間
+        }, 260); // fade-out 動畫時間
+    }
+
+    // 第一句話預設只秀 0.3 秒就要準備切第二句，讓畫面馬上動起來
+    _loadingRotatorInterval = setTimeout(nextMessage, 300);
 }
 
 function stopLoadingTextRotation() {
     if (_loadingRotatorInterval) {
-        clearInterval(_loadingRotatorInterval);
+        clearTimeout(_loadingRotatorInterval);
         _loadingRotatorInterval = null;
     }
 }
