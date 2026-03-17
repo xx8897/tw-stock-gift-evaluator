@@ -29,7 +29,7 @@ function startLoadingTextRotation() {
             setTimeout(() => {
                 span.classList.remove('fade-in');
                 // 每句話展示完全後，等待一小段時間再呼叫 nextMessage
-                _loadingRotatorInterval = setTimeout(nextMessage, 600); // 縮短至 0.6 秒
+                _loadingRotatorInterval = setTimeout(nextMessage, 400); // 0.4 秒停留
             }, 400); // fade-in 動畫時間
         }, 260); // fade-out 動畫時間
     }
