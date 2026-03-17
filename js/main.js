@@ -21,14 +21,20 @@ function startLoadingTextRotation() {
 
         span.classList.add('fade-out');
         setTimeout(() => {
-            idx = (idx + 1) % LOADING_MESSAGES.length;
+            idx = idx + 1;
+            // 若已是最後一句，顯示後不再繼續輪播
+            if (idx >= LOADING_MESSAGES.length) {
+                _loadingRotatorInterval = null;
+                span.classList.remove('fade-out');
+                return;
+            }
             span.textContent = LOADING_MESSAGES[idx];
             span.classList.remove('fade-out');
             span.classList.add('fade-in');
-            
+
             setTimeout(() => {
                 span.classList.remove('fade-in');
-                // 每句話展示完全後，等待一小段時間再呼叫 nextMessage
+                // 繼續排程下一句
                 _loadingRotatorInterval = setTimeout(nextMessage, 400); // 0.4 秒停留
             }, 400); // fade-in 動畫時間
         }, 260); // fade-out 動畫時間
