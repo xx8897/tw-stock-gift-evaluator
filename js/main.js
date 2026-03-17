@@ -24,7 +24,7 @@ function startLoadingTextRotation() {
             span.classList.add('fade-in');
             setTimeout(() => span.classList.remove('fade-in'), 400);
         }, 260); // 對齊 CSS 動畫時間
-    }, 2000); // 2 秒換一次
+    }, 800); // 縮短為 0.8 秒換一次字
 }
 
 function stopLoadingTextRotation() {
