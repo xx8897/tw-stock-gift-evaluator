@@ -76,18 +76,20 @@ const TreeNodeComponent = defineComponent({
         }
     },
     methods: {
-        toggleAndSelect() {
+        toggle() {
             if (this.node.type !== 'item') this.isOpen = !this.isOpen;
+        },
+        select() {
             this.$emit('select-node', this.node);
         },
         forwardSelect(node) { this.$emit('select-node', node); }
     },
     template: `
         <div class="tree-node" :class="{ 'is-item': node.type === 'item' }">
-            <div class="node-content" @click.stop="toggleAndSelect">
+            <div class="node-content" @click.stop="select">
                 <!-- 拖曳控制把手 -->
                 <span class="drag-handle" title="拖曳項目">≡</span>
-                <span class="toggle" v-if="node.type !== 'item'">
+                <span class="toggle" v-if="node.type !== 'item'" @click.stop="toggle">
                     {{ isOpen ? '🔽' : '▶️' }}
                 </span>
                 <span class="icon">{{ node.type === 'item' ? '🍃' : '📁' }}</span>

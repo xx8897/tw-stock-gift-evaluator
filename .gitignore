@@ -26,8 +26,7 @@ wheels/
 *.egg
 
 # Data
-data/*.xlsx
-data/*.csv
+
 !data/README.md
 
 # OS
