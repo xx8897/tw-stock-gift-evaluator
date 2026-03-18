@@ -95,6 +95,13 @@ def item_matches_node(item_name, node):
     if keywords_not and any(k in item_name for k in keywords_not if k):
         return False, None
 
+    # 查看是否有定義任何用來「捕捉物品」的正向規則
+    has_positive_rules = bool(
+        (keywords_or and any(k for k in keywords_or if k)) or 
+        (keywords_and and any(k for k in keywords_and if k)) or 
+        regex_pattern
+    )
+
     # OR 邏輯：任一關鍵字命中
     if keywords_or and any(k in item_name for k in keywords_or if k):
         return True, None
@@ -106,7 +113,7 @@ def item_matches_node(item_name, node):
     # 正規表示式匹配 (若有 capturing group 且捕獲到數字，會回傳 captured_value)
     if regex_pattern:
         try:
-            match = re.search(regex_pattern, item_name)
+            match = re.search(regex_pattern, item_name, re.IGNORECASE)
             if match:
                 captured_val = None
                 # 嘗試找出第一個有值的捕捉群組，通常是留給面額的
@@ -122,6 +129,10 @@ def item_matches_node(item_name, node):
         except re.error:
             pass
 
+    if not has_positive_rules:
+        # 單純的結構資料夾 (沒有設定任何匹配規則)
+        return 'pass_through', None
+
     return False, None
 
 def classify_item_dfs(item_name, node):
@@ -134,15 +145,14 @@ def classify_item_dfs(item_name, node):
             continue
             
         is_match, captured_val = item_matches_node(item_name, child)
-        if is_match:
+        if is_match: # True or 'pass_through'
             deeper_id, deeper_val = classify_item_dfs(item_name, child)
             if deeper_id:
                 return deeper_id, deeper_val
-            return child['id'], captured_val
-        else:
-            deeper_id, deeper_val = classify_item_dfs(item_name, child)
-            if deeper_id:
-                return deeper_id, deeper_val
+            
+            # 如果沒有更深層的子節點符合，則看自己是否是真的匹配 (不能是單純的過渡資料夾)
+            if is_match is True:
+                return child['id'], captured_val
 
     return None, None
 
@@ -151,8 +161,11 @@ def resolve_base_value(node_id, node_map):
     node = node_map.get(node_id)
     while node:
         val = node.get('attributes', {}).get('base_value')
-        if val is not None:
-            return float(val)
+        if val is not None and val != "":
+            try:
+                return float(val)
+            except ValueError:
+                pass
         parent = node_map.get(node.get('_parent_id'))
         node = parent
     return 40.0  # 保底值
@@ -162,8 +175,11 @@ def resolve_value_multiplier(node_id, node_map):
     node = node_map.get(node_id)
     while node:
         val = node.get('attributes', {}).get('value_multiplier')
-        if val is not None:
-            return float(val)
+        if val is not None and val != "":
+            try:
+                return float(val)
+            except ValueError:
+                pass
         parent = node_map.get(node.get('_parent_id'))
         node = parent
     return 1.0

@@ -147,10 +147,33 @@ const app = Vue.createApp({
         }
     },
     computed: {
+        classifiedItemIds() {
+            // 找出所有已經手動加入樹中的葉子節點
+            const ids = new Set();
+            const traverse = (node) => {
+                if (!node) return;
+                if (node.type === 'item') ids.add(String(node.id));
+                if (node.children) node.children.forEach(traverse);
+            };
+            traverse(this.treeData);
+            return ids;
+        },
+        leftPanelUnclassifiedItems() {
+            if (!this.rawItems || !this.treeData) return [];
+            const manualIds = this.classifiedItemIds;
+            return this.rawItems.filter(item => {
+                // 如果已經存在於樹葉中，隱藏
+                if (manualIds.has(String(item.id))) return false;
+                // 如果即時匹配到分類規則，隱藏
+                const matchedId = this.classifyItemJS(item.name, this.treeData);
+                return !matchedId;
+            });
+        },
         filteredRawItems() {
-            if (!this.rawSearch) return this.rawItems;
+            let items = this.leftPanelUnclassifiedItems;
+            if (!this.rawSearch) return items;
             const term = this.rawSearch.toLowerCase();
-            return this.rawItems.filter(item => item.name.toLowerCase().includes(term));
+            return items.filter(item => item.name.toLowerCase().includes(term));
         },
         keywordsString: {
             get() {
@@ -261,6 +284,49 @@ const app = Vue.createApp({
                 attributes: { base_value: null, receiving_cost: null, value_multiplier: null }
             };
         },
+        
+        // 前端即時預判 JS 引擎
+        itemMatchesNodeJS(itemName, node) {
+            const rules = node.rules || {};
+            const kNot = (rules.keywords_not || []).filter(k=>k);
+            const kOr = (rules.keywords || []).filter(k=>k);
+            const kAnd = (rules.keywords_and || []).filter(k=>k);
+            const regexStr = rules.regex || null;
+
+            if (kNot.length > 0 && kNot.some(k => itemName.includes(k))) return { match: false };
+
+            const hasPositiveRules = kOr.length > 0 || kAnd.length > 0 || regexStr;
+
+            if (kOr.length > 0 && kOr.some(k => itemName.includes(k))) return { match: true };
+            if (kAnd.length > 0 && kAnd.every(k => itemName.includes(k))) return { match: true };
+            if (regexStr) {
+                try {
+                    const regex = new RegExp(regexStr, 'i');
+                    if (regex.test(itemName)) return { match: true };
+                } catch (e) {
+                    // ignore invalid regex typing
+                }
+            }
+
+            if (!hasPositiveRules) return { match: 'pass_through' };
+            return { match: false };
+        },
+        classifyItemJS(itemName, node) {
+            if (!node || node.type === 'item') return null;
+            
+            for (const child of (node.children || [])) {
+                if (child.type === 'item') continue;
+                
+                const { match } = this.itemMatchesNodeJS(itemName, child);
+                if (match) {
+                    const deeper = this.classifyItemJS(itemName, child);
+                    if (deeper) return deeper;
+                    if (match === true) return child.id;
+                }
+            }
+            return null;
+        },
+
         selectNode(node) { this.selectedNode = node; },
         buildParentMap() {
             this.parentNodeMap.clear();

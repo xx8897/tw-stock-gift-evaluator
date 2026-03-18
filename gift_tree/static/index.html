@@ -85,7 +85,14 @@
 
             <!-- 浮動編輯面板 -->
             <aside class="edit-panel" v-if="selectedNode">
-                <h3>✏️ 編輯節點</h3>
+                <div class="edit-panel-title-area">
+                    <h3>✏️ 編輯節點</h3>
+                    <button @click="addChildCategory" 
+                            class="btn small info" 
+                            v-if="selectedNode.type === 'category' || selectedNode.type === 'root'">
+                        ➕ 新增子分類
+                    </button>
+                </div>
                 <div class="form-group">
                     <label>ID:</label>
                     <input type="text" :value="selectedNode.id" disabled>
@@ -98,15 +105,15 @@
                 <template v-if="selectedNode.type === 'category' || selectedNode.type === 'root'">
                     <div class="form-group">
                         <label>🔸 OR 規則 - 任一關鍵字符合即命中 (逗號分隔):</label>
-                        <input type="text" v-model="keywordsString" placeholder="例如: 禮券, 提貨券, 抵用">
+                        <input type="text" v-model.lazy="keywordsString" placeholder="例如: 禮券, 提貨券, 抵用">
                     </div>
                     <div class="form-group">
                         <label>🔷 AND 規則 - 所有關鍵字同時存在才命中 (逗號分隔):</label>
-                        <input type="text" v-model="keywordsAndString" placeholder="例如: 電子, 簡訊 (兩者都有才算)">
+                        <input type="text" v-model.lazy="keywordsAndString" placeholder="例如: 電子, 簡訊 (兩者都有才算)">
                     </div>
                     <div class="form-group">
                         <label>🚫 排除規則 (NOT) - 包含任一字詞即剔除 (逗號分隔):</label>
-                        <input type="text" v-model="keywordsNotString" placeholder="例如: 禮盒, 全家福 (排除不要的項目)">
+                        <input type="text" v-model.lazy="keywordsNotString" placeholder="例如: 禮盒, 全家福 (排除不要的項目)">
                     </div>
                     <div class="form-group">
                         <label>🧮 正則表示式 (Regex) - 進階字串擷取與匹配規則:</label>
@@ -114,7 +121,7 @@
                     </div>
                     <div class="form-group">
                         <label>節點標籤 Tags (以逗號分隔，如：特賞, 高價, 易碎):</label>
-                        <input type="text" v-model="tagsString" placeholder="例如: 票券, 須冷藏, 電子發放">
+                        <input type="text" v-model.lazy="tagsString" placeholder="例如: 票券, 須冷藏, 電子發放">
                     </div>
                     <div class="form-group">
                         <label>預設基礎價值 (Base Value):</label>
@@ -128,7 +135,6 @@
                         <label>預設領取成本 (Receiving Cost):</label>
                         <input type="number" v-model.number="selectedNode.attributes.receiving_cost">
                     </div>
-                    <button @click="addChildCategory" class="btn small info">➕ 新增子分類</button>
                     <button @click="clearNodeItems"
                         class="btn small"
                         style="background:#e67e22;margin-left:4px;"

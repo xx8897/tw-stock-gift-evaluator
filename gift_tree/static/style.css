@@ -200,6 +200,18 @@ header .actions .divider {
     overflow-y: auto;
 }
 
+.edit-panel-title-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+.edit-panel-title-area h3 {
+    margin: 0;
+}
+
 .raw-panel {
     max-width: 350px;
     background-color: #ecf0f1;

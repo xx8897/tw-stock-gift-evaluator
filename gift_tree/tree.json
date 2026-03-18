@@ -11,43 +11,276 @@
       },
       "children": [
         {
+          "attributes": {
+            "base_value": null,
+            "receiving_cost": null
+          },
+          "children": [
+            {
+              "attributes": {
+                "base_value": 20,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773775655759",
+              "name": "20",
+              "rules": {
+                "keywords": [
+                  "20"
+                ]
+              },
+              "tags": [],
+              "type": "category"
+            },
+            {
+              "attributes": {
+                "base_value": 35,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773774460870",
+              "name": "35",
+              "rules": {
+                "keywords": [
+                  "35"
+                ],
+                "keywords_and": []
+              },
+              "tags": [],
+              "type": "category"
+            },
+            {
+              "attributes": {
+                "base_value": 50,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773774496516",
+              "name": "50",
+              "rules": {
+                "keywords": [
+                  "50"
+                ]
+              },
+              "tags": [],
+              "type": "category"
+            },
+            {
+              "attributes": {
+                "base_value": 25,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773775666839",
+              "name": "25",
+              "rules": {
+                "keywords": [
+                  "25"
+                ]
+              },
+              "tags": [],
+              "type": "category"
+            },
+            {
+              "attributes": {
+                "base_value": 60,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773775667692",
+              "name": "60",
+              "rules": {
+                "keywords": [
+                  "60"
+                ]
+              },
+              "tags": [],
+              "type": "category"
+            },
+            {
+              "attributes": {
+                "base_value": 66,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773775654019",
+              "name": "66",
+              "rules": {
+                "keywords": [
+                  "66"
+                ]
+              },
+              "tags": [],
+              "type": "category"
+            },
+            {
+              "attributes": {
+                "base_value": 88,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773775654769",
+              "name": "88",
+              "rules": {
+                "keywords": [
+                  "88"
+                ]
+              },
+              "tags": [],
+              "type": "category"
+            },
+            {
+              "attributes": {
+                "base_value": 100,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773774551036",
+              "name": "100",
+              "rules": {
+                "keywords": [
+                  "100"
+                ],
+                "keywords_not": []
+              },
+              "tags": [],
+              "type": "category"
+            },
+            {
+              "attributes": {
+                "base_value": 200,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773775652174",
+              "name": "200",
+              "rules": {
+                "keywords": [
+                  "200"
+                ]
+              },
+              "tags": [],
+              "type": "category"
+            },
+            {
+              "attributes": {
+                "base_value": 300,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773775781409",
+              "name": "300",
+              "rules": {
+                "keywords": [
+                  "300"
+                ]
+              },
+              "tags": [],
+              "type": "category"
+            },
+            {
+              "attributes": {
+                "base_value": 45,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773774576333",
+              "name": "45咖啡",
+              "rules": {
+                "keywords": [
+                  "中杯拿鐵",
+                  "大杯美式",
+                  "45元咖啡"
+                ],
+                "keywords_and": [],
+                "keywords_not": [],
+                "regex": null
+              },
+              "tags": [],
+              "type": "category"
+            },
+            {
+              "attributes": {
+                "base_value": null,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773776331418",
+              "name": "35咖啡",
+              "rules": {
+                "keywords": [
+                  "中熱美"
+                ],
+                "keywords_and": [
+                  "中杯",
+                  "美式"
+                ]
+              },
+              "tags": [],
+              "type": "category"
+            },
+            {
+              "attributes": {
+                "base_value": 55,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773776584562",
+              "name": "55咖啡",
+              "rules": {
+                "keywords": [],
+                "keywords_and": [
+                  "大杯",
+                  "拿鐵"
+                ]
+              },
+              "tags": [],
+              "type": "category"
+            }
+          ],
           "id": "cat_1773773554316",
           "name": "超商",
-          "type": "category",
           "rules": {
             "keywords": [
               "全家",
-              "7-11"
+              "7-11",
+              "統一超商",
+              "OK超商",
+              "LINE",
+              "萊爾富",
+              "超商"
             ],
-            "regex": "(\\\\d[\\\\d,]*)元|\\\\$|抵用.*?\\\\d|(\\\\d[\\\\d,]*)點"
-          },
-          "attributes": {
-            "base_value": null,
-            "receiving_cost": null
-          },
-          "tags": [],
-          "children": []
-        },
-        {
-          "id": "cat_1773773596024",
-          "name": "新子分類",
-          "type": "category",
-          "rules": {
-            "keywords": []
-          },
-          "attributes": {
-            "base_value": null,
-            "receiving_cost": null
+            "keywords_and": [
+              "統一",
+              "卡"
+            ],
+            "keywords_not": [
+              "LINEFRIENDS"
+            ],
+            "regex": null
           },
           "tags": [],
-          "children": []
+          "type": "category"
         }
       ],
       "id": "cat_regex_currency",
       "name": "💰 禮物卡",
       "rules": {
         "keywords": [],
-        "regex": "(\\\\d[\\\\d,]*)元|\\\\$|抵用.*?\\\\d|(\\\\d[\\\\d,]*)點"
+        "regex": null
       },
       "tags": [
         "高風險票券"
@@ -57,24 +290,23 @@
     {
       "attributes": {
         "base_value": null,
-        "receiving_cost": null
+        "receiving_cost": null,
+        "value_multiplier": 0.7
       },
       "children": [
         {
           "attributes": {
-            "base_value": null,
+            "base_value": 199,
             "receiving_cost": null
           },
           "children": [],
           "id": "cat_1773770059228",
-          "name": "門票",
+          "name": "動物園門票",
           "rules": {
             "keywords": [
-              "門票"
+              "動物園門票"
             ],
-            "keywords_not": [
-              "六福村"
-            ]
+            "keywords_not": []
           },
           "tags": [],
           "type": "category"
@@ -139,15 +371,17 @@
         },
         {
           "attributes": {
-            "base_value": 300,
+            "base_value": 799,
             "receiving_cost": null
           },
           "children": [],
           "id": "subcat_001_004",
           "name": "劍湖山",
           "rules": {
-            "keywords": [
-              "劍湖山"
+            "keywords": [],
+            "keywords_and": [
+              "主題樂園",
+              "門票"
             ]
           },
           "tags": [
@@ -157,7 +391,7 @@
         },
         {
           "attributes": {
-            "base_value": 100,
+            "base_value": 0,
             "receiving_cost": null
           },
           "children": [],
@@ -166,7 +400,9 @@
           "rules": {
             "keywords": [
               "禮物卡",
+              "零用金",
               "商品卡",
+              "券",
               "提貨券",
               "提貨卡",
               "提用券",
@@ -195,6 +431,25 @@
             "高風險票券"
           ],
           "type": "category"
+        },
+        {
+          "attributes": {
+            "base_value": 100,
+            "receiving_cost": null,
+            "value_multiplier": null
+          },
+          "children": [],
+          "id": "cat_1773778750221",
+          "name": "MyCard",
+          "rules": {
+            "keywords": [],
+            "keywords_and": [
+              "MyCard",
+              "100"
+            ]
+          },
+          "tags": [],
+          "type": "category"
         }
       ],
       "id": "cat_001",
@@ -213,10 +468,29 @@
       "children": [
         {
           "attributes": {
-            "base_value": 400,
+            "base_value": 50,
             "receiving_cost": null
           },
-          "children": [],
+          "children": [
+            {
+              "attributes": {
+                "base_value": 400,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773778377432",
+              "name": "果汁機",
+              "rules": {
+                "keywords": [
+                  "果汁機"
+                ],
+                "keywords_and": []
+              },
+              "tags": [],
+              "type": "category"
+            }
+          ],
           "id": "subcat_002_001",
           "name": "小型家電",
           "rules": {
@@ -227,7 +501,6 @@
               "舒緩儀",
               "按摩儀",
               "檯燈",
-              "按摩",
               "吸塵器",
               "電子鍋",
               "研磨器",
@@ -264,10 +537,65 @@
         },
         {
           "attributes": {
-            "base_value": 150,
+            "base_value": 20,
             "receiving_cost": null
           },
-          "children": [],
+          "children": [
+            {
+              "attributes": {
+                "base_value": 200,
+                "receiving_cost": null,
+                "value_multiplier": ""
+              },
+              "children": [],
+              "id": "cat_1773778840869",
+              "name": "隨身碟",
+              "rules": {
+                "keywords": [],
+                "keywords_and": [
+                  "隨身碟"
+                ]
+              },
+              "tags": [],
+              "type": "category"
+            },
+            {
+              "attributes": {
+                "base_value": 30,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773778850498",
+              "name": "電子數據線",
+              "rules": {
+                "keywords": [
+                  "線"
+                ],
+                "keywords_not": []
+              },
+              "tags": [],
+              "type": "category"
+            },
+            {
+              "attributes": {
+                "base_value": 200,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "children": [],
+              "id": "cat_1773778857188",
+              "name": "豆腐頭",
+              "rules": {
+                "keywords": [
+                  "充電座",
+                  "充電頭"
+                ]
+              },
+              "tags": [],
+              "type": "category"
+            }
+          ],
           "id": "subcat_002_003",
           "name": "記憶體/線材/電池",
           "rules": {
@@ -284,6 +612,10 @@
               "傳輸線",
               "快充",
               "電池"
+            ],
+            "keywords_not": [
+              "針",
+              "牙線"
             ]
           },
           "tags": [
@@ -308,12 +640,12 @@
       "children": [
         {
           "attributes": {
-            "base_value": 400,
+            "base_value": 50,
             "receiving_cost": null
           },
           "children": [],
           "id": "subcat_003_001",
-          "name": "大型煎炒鍋",
+          "name": "小型煎炒鍋",
           "rules": {
             "keywords": [
               "炒鍋",
@@ -351,7 +683,7 @@
         },
         {
           "attributes": {
-            "base_value": 250,
+            "base_value": 30,
             "receiving_cost": null
           },
           "children": [],
@@ -374,26 +706,6 @@
             "布織品"
           ],
           "type": "category"
-        },
-        {
-          "attributes": {
-            "base_value": 150,
-            "receiving_cost": null
-          },
-          "children": [],
-          "id": "subcat_003_004",
-          "name": "小型烹飪鍋",
-          "rules": {
-            "keywords": [
-              "雪平鍋",
-              "奶鍋",
-              "單把鍋"
-            ]
-          },
-          "tags": [
-            "廚房用品"
-          ],
-          "type": "category"
         }
       ],
       "id": "cat_003",
@@ -412,7 +724,7 @@
       "children": [
         {
           "attributes": {
-            "base_value": 200,
+            "base_value": 30,
             "receiving_cost": null
           },
           "children": [],
@@ -423,6 +735,7 @@
               "露營燈",
               "帳篷",
               "野餐墊",
+              "椅",
               "休閒椅",
               "折疊椅",
               "摺疊椅",
@@ -430,10 +743,7 @@
               "小板凳",
               "護膝",
               "雨衣",
-              "保溫瓶",
-              "冰壩杯",
               "扣環",
-              "隨身杯",
               "自動傘",
               "抗UV傘",
               "折傘"
@@ -446,7 +756,7 @@
         },
         {
           "attributes": {
-            "base_value": 180,
+            "base_value": 50,
             "receiving_cost": null
           },
           "children": [],
@@ -457,6 +767,8 @@
               "工具組",
               "工具套裝",
               "螺絲起子",
+              "燈泡",
+              "LED",
               "五金",
               "開瓶器",
               "開罐器",
@@ -485,7 +797,7 @@
         },
         {
           "attributes": {
-            "base_value": 150,
+            "base_value": 50,
             "receiving_cost": null
           },
           "children": [],
@@ -518,18 +830,28 @@
       "children": [
         {
           "attributes": {
-            "base_value": 200,
+            "base_value": 50,
             "receiving_cost": null
           },
           "children": [],
           "id": "subcat_005_001",
-          "name": "不鏽鋼保溫/瓶杯",
+          "name": "杯/瓶",
           "rules": {
             "keywords": [
               "保溫杯",
+              "隨身瓶",
               "保溫瓶",
+              "杯",
+              "胖胖瓶",
+              "手拿杯",
+              "玻璃杯",
+              "玻璃瓶",
               "燜燒罐",
-              "隨行杯"
+              "隨行杯",
+              "水瓶",
+              "環保杯",
+              "對杯",
+              "馬克杯"
             ]
           },
           "tags": [
@@ -539,7 +861,7 @@
         },
         {
           "attributes": {
-            "base_value": 150,
+            "base_value": 90,
             "receiving_cost": null
           },
           "children": [],
@@ -559,12 +881,12 @@
         },
         {
           "attributes": {
-            "base_value": 100,
+            "base_value": 0,
             "receiving_cost": null
           },
           "children": [],
           "id": "subcat_005_003",
-          "name": "包包與提袋",
+          "name": "包包與提袋/雜物",
           "rules": {
             "keywords": [
               "包",
@@ -580,6 +902,16 @@
               "置衣籃",
               "束帶",
               "綁帶"
+            ],
+            "keywords_not": [
+              "洗衣精",
+              "麵",
+              "皂",
+              "衛生紙",
+              "米",
+              "補充",
+              "生醫",
+              "紙巾"
             ]
           },
           "tags": [
@@ -590,90 +922,7 @@
         },
         {
           "attributes": {
-            "base_value": 100,
-            "receiving_cost": null
-          },
-          "children": [],
-          "id": "subcat_005_004",
-          "name": "有牌玻璃陶瓷/控油壺",
-          "rules": {
-            "keywords": [
-              "盤",
-              "碟",
-              "杯",
-              "頂",
-              "馬克杯",
-              "冷水壺",
-              "水壺",
-              "水瓶",
-              "胖胖瓶",
-              "沖茶",
-              "儲物罐",
-              "保鮮盒",
-              "保鮮密封",
-              "保鮮罐",
-              "密封扣",
-              "控油壺",
-              "分裝瓶",
-              "瓶",
-              "壺",
-              "罐",
-              "餐墊",
-              "杯墊",
-              "砧板",
-              "洗漱墊",
-              "珪藻土",
-              "對杯",
-              "杯組",
-              "碗盤組",
-              "碗組",
-              "瓷碗",
-              "餐寶",
-              "導磁盤",
-              "豐收盤",
-              "斗笠碗",
-              "陶瓷",
-              "瓷",
-              "骨瓷",
-              "耐熱玻璃",
-              "強化玻璃",
-              "康寧",
-              "樂美雅",
-              "Luminarc",
-              "真瓷",
-              "白玉玻璃",
-              "玻璃"
-            ]
-          },
-          "tags": [
-            "餐具類",
-            "易碎"
-          ],
-          "type": "category"
-        },
-        {
-          "attributes": {
-            "base_value": 80,
-            "receiving_cost": null
-          },
-          "children": [],
-          "id": "subcat_005_005",
-          "name": "陶瓷玻璃碗盅",
-          "rules": {
-            "keywords": [
-              "碗",
-              "盅"
-            ]
-          },
-          "tags": [
-            "餐具類",
-            "易碎"
-          ],
-          "type": "category"
-        },
-        {
-          "attributes": {
-            "base_value": 60,
+            "base_value": 25,
             "receiving_cost": null
           },
           "children": [],
@@ -685,12 +934,58 @@
               "筷",
               "匙",
               "叉"
+            ],
+            "keywords_and": [
+              "鑰匙"
             ]
           },
           "tags": [
             "餐具類"
           ],
           "type": "category"
+        },
+        {
+          "id": "cat_1773783579076",
+          "name": "廚房小用具",
+          "type": "category",
+          "rules": {
+            "keywords": [
+              "碗",
+              "盤",
+              "罐",
+              "保鮮盒",
+              "碟"
+            ],
+            "keywords_not": [
+              "洗碗"
+            ]
+          },
+          "attributes": {
+            "base_value": 100,
+            "receiving_cost": null,
+            "value_multiplier": null
+          },
+          "tags": [],
+          "children": []
+        },
+        {
+          "id": "cat_1773784117622",
+          "name": "其他廚房用品",
+          "type": "category",
+          "rules": {
+            "keywords": [
+              "刀",
+              "砧板",
+              "壺"
+            ]
+          },
+          "attributes": {
+            "base_value": 100,
+            "receiving_cost": null,
+            "value_multiplier": null
+          },
+          "tags": [],
+          "children": []
         }
       ],
       "id": "cat_005",
@@ -709,7 +1004,7 @@
       "children": [
         {
           "attributes": {
-            "base_value": 120,
+            "base_value": 100,
             "receiving_cost": null
           },
           "children": [],
@@ -718,7 +1013,10 @@
           "rules": {
             "keywords": [
               "橄欖油",
+              "玫瑰鹽",
+              "醬",
               "葵花油",
+              "油",
               "苦茶油",
               "食用油",
               "麻油",
@@ -730,6 +1028,12 @@
               "調味瓶",
               "密封罐",
               "海鹽"
+            ],
+            "keywords_not": [
+              "皂",
+              "台鹽",
+              "臺鹽",
+              "油票"
             ]
           },
           "tags": [
@@ -739,7 +1043,7 @@
         },
         {
           "attributes": {
-            "base_value": 80,
+            "base_value": 30,
             "receiving_cost": null
           },
           "children": [],
@@ -793,6 +1097,9 @@
               "刷",
               "修甲",
               "美容"
+            ],
+            "keywords_not": [
+              "皂"
             ]
           },
           "tags": [
@@ -805,13 +1112,51 @@
             "base_value": 70,
             "receiving_cost": null
           },
-          "children": [],
+          "children": [
+            {
+              "id": "cat_1773781532509",
+              "name": "米",
+              "type": "category",
+              "rules": {
+                "keywords": [
+                  "米"
+                ]
+              },
+              "attributes": {
+                "base_value": 50,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "tags": [],
+              "children": []
+            },
+            {
+              "id": "cat_1773781539086",
+              "name": "麵",
+              "type": "category",
+              "rules": {
+                "keywords": [
+                  "麵",
+                  "面"
+                ]
+              },
+              "attributes": {
+                "base_value": 50,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "tags": [],
+              "children": []
+            }
+          ],
           "id": "subcat_006_004",
           "name": "主食類米麵",
           "rules": {
             "keywords": [
               "米",
               "白米",
+              "麵",
+              "面",
               "香米",
               "糙米",
               "麵條",
@@ -824,6 +1169,9 @@
               "高湯麵",
               "桶麵",
               "湯麵"
+            ],
+            "keywords_not": [
+              "貼片"
             ]
           },
           "tags": [
@@ -833,10 +1181,28 @@
         },
         {
           "attributes": {
-            "base_value": 60,
+            "base_value": 30,
             "receiving_cost": null
           },
-          "children": [],
+          "children": [
+            {
+              "id": "cat_1773782353549",
+              "name": "愛之味",
+              "type": "category",
+              "rules": {
+                "keywords": [
+                  "愛之味"
+                ]
+              },
+              "attributes": {
+                "base_value": 100,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "tags": [],
+              "children": []
+            }
+          ],
           "id": "subcat_006_005",
           "name": "零食與加工食品",
           "rules": {
@@ -863,14 +1229,10 @@
               "伴手禮",
               "火鍋",
               "湯",
-              "禮盒",
-              "組",
-              "體驗",
               "海苔",
               "海燕",
               "禮品",
-              "膳食",
-              "系列"
+              "膳食"
             ]
           },
           "tags": [
@@ -881,17 +1243,87 @@
         },
         {
           "attributes": {
-            "base_value": 60,
+            "base_value": 20,
             "receiving_cost": null
           },
-          "children": [],
+          "children": [
+            {
+              "id": "cat_1773781899007",
+              "name": "皂",
+              "type": "category",
+              "rules": {
+                "keywords": [
+                  "皂",
+                  "牙膏"
+                ]
+              },
+              "attributes": {
+                "base_value": 30,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "tags": [],
+              "children": []
+            },
+            {
+              "id": "cat_1773781905171",
+              "name": "清潔",
+              "type": "category",
+              "rules": {
+                "keywords": [
+                  "洗髮",
+                  "沐浴"
+                ]
+              },
+              "attributes": {
+                "base_value": null,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "tags": [],
+              "children": []
+            },
+            {
+              "id": "cat_1773781905800",
+              "name": "口罩",
+              "type": "category",
+              "rules": {
+                "keywords": [
+                  "口罩"
+                ]
+              },
+              "attributes": {
+                "base_value": 10,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "tags": [],
+              "children": []
+            },
+            {
+              "id": "cat_1773782428090",
+              "name": "新子分類",
+              "type": "category",
+              "rules": {
+                "keywords": []
+              },
+              "attributes": {
+                "base_value": null,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "tags": [],
+              "children": []
+            }
+          ],
           "id": "subcat_006_006",
           "name": "防護清理保養",
           "rules": {
             "keywords": [
               "防疫",
               "口罩",
-              "面罩",
+              "足健康",
+              "保濕ㄝ面罩",
               "酒精",
               "洗手",
               "手工皂",
@@ -935,16 +1367,58 @@
         },
         {
           "attributes": {
-            "base_value": 50,
+            "base_value": 20,
             "receiving_cost": null
           },
-          "children": [],
+          "children": [
+            {
+              "id": "cat_1773782545051",
+              "name": "洗衣",
+              "type": "category",
+              "rules": {
+                "keywords": [
+                  "洗衣"
+                ]
+              },
+              "attributes": {
+                "base_value": null,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "tags": [],
+              "children": []
+            },
+            {
+              "id": "cat_1773782545563",
+              "name": "洗碗",
+              "type": "category",
+              "rules": {
+                "keywords": [
+                  "洗碗",
+                  "洗滌",
+                  "洗潔",
+                  "抗菌"
+                ]
+              },
+              "attributes": {
+                "base_value": 30,
+                "receiving_cost": null,
+                "value_multiplier": null
+              },
+              "tags": [],
+              "children": []
+            }
+          ],
           "id": "subcat_006_007",
           "name": "家政清潔劑組",
           "rules": {
             "keywords": [
               "洗衣",
               "洗碗",
+              "高露潔",
+              "抗菌",
+              "海綿",
+              "清潔",
               "清潔劑",
               "皂",
               "洗潔",
@@ -960,8 +1434,7 @@
               "清潔棉",
               "保鮮膜",
               "抗菌液",
-              "清淨",
-              "日用品"
+              "清淨"
             ]
           },
           "tags": [
@@ -971,7 +1444,7 @@
         },
         {
           "attributes": {
-            "base_value": 50,
+            "base_value": 20,
             "receiving_cost": null
           },
           "children": [],
@@ -1017,7 +1490,7 @@
         },
         {
           "attributes": {
-            "base_value": 30,
+            "base_value": 20,
             "receiving_cost": null
           },
           "children": [],
@@ -1028,6 +1501,7 @@
               "濕紙巾",
               "衛生紙",
               "面紙",
+              "濕巾",
               "抽取式",
               "柔濕巾",
               "水濕巾"
@@ -1056,7 +1530,8 @@
         {
           "attributes": {
             "base_value": 100,
-            "receiving_cost": null
+            "receiving_cost": null,
+            "value_multiplier": 0.5
           },
           "children": [],
           "id": "subcat_007_001",
@@ -1065,7 +1540,10 @@
             "keywords": [
               "錠",
               "維他命",
+              "菌",
               "膠囊",
+              "鋅",
+              "粒",
               "益生菌",
               "葉黃素",
               "魚油",
@@ -1087,6 +1565,24 @@
             "容易變廢物"
           ],
           "type": "category"
+        },
+        {
+          "id": "cat_1773782898347",
+          "name": "貼片",
+          "type": "category",
+          "rules": {
+            "keywords": [
+              "貼片",
+              "貼布"
+            ]
+          },
+          "attributes": {
+            "base_value": 300,
+            "receiving_cost": null,
+            "value_multiplier": null
+          },
+          "tags": [],
+          "children": []
         }
       ],
       "id": "cat_007",
@@ -1096,10 +1592,38 @@
       },
       "tags": [],
       "type": "category"
+    },
+    {
+      "id": "cat_1773782963439",
+      "name": "雜物",
+      "type": "category",
+      "rules": {
+        "keywords": [
+          "油票",
+          "萬用",
+          "吸管",
+          "香氛",
+          "旅行",
+          "果凍",
+          "卸妝",
+          "石墨",
+          "台灣",
+          "隨身",
+          "手指",
+          "功能"
+        ]
+      },
+      "attributes": {
+        "base_value": 0,
+        "receiving_cost": null,
+        "value_multiplier": null
+      },
+      "tags": [],
+      "children": []
     }
   ],
   "id": "root",
-  "name": "🎁 股東會紀念品大分類樹 (自動產生版)",
+  "name": "🎁 股東會紀念品大分類樹",
   "rules": {
     "keywords": []
   },
