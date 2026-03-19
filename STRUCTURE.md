@@ -1,4 +1,4 @@
-# 📂 專案目錄結構說明 (v4.17)
+# 📂 專案目錄結構說明 (v4.18)
 
 > 本文件描述本專案的完整目錄結構與各檔案用途。
 
@@ -26,9 +26,6 @@
 │   ├── ai_agent_customization_guide.md 
 │   ├── google_oauth_setup_guide.md
 │   └── uuid_versions_guide.md
-│
-├── debug/                      # 🛠️ 偵錯工具
-│   └── debug_auth.html
 │
 ├── data/                       # 📊 資料檔案目錄
 │   ├── 2021-2025_推薦評分.xlsx
@@ -76,9 +73,17 @@
 ├── assets/                     # 🖼️ 靜態資源
 │
 ├── scripts/                    # 🐍 工具腳本與雲端整合模組
-│   ├── core/                   # 核心邏輯腳本（如 evaluate_stocks_supa.py 雲端評量）
+│   ├── core/                   # 核心邏輯腳本（如 update_prices_finmind.py 每日股價爬取）
 │   ├── utils/                  # 工具類腳本（檢測 DB Scheme、取得環境變數等）
-│   └── tests/                  # 測試與驗證專區
+│   └── archive/                # 📦 歷史與封存區
+│       ├── debug/              # 測試與偵錯專區（從根目錄移入）
+│       └── tests/              # 歷史單元測試與 API 測試腳本
+│
+├── sql/                        # 🗄️ Supabase 資料庫規劃與部署
+│   ├── migrations/             # 歷史修補檔與特定版本升級腳本
+│   ├── create_stocks_table.sql
+│   ├── setup_ranking_system.sql
+│   └── setup_analytics.sql
 │
 └── .github/
     └── workflows/              # GitHub Actions 自動化流程
