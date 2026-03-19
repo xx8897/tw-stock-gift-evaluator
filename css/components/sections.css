@@ -30,12 +30,12 @@
 
 .intro-section h3 {
     margin-bottom: 0.8rem;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-primary);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
 }
 
 .intro-section p {
@@ -100,7 +100,7 @@
     margin: 0;
 }
 
-/* Strategy Cards — Mobile overrides (must live here, after the base rule) */
+/* Strategy Cards — Mobile overrides */
 @media (max-width: 768px) {
     .strategy-cards {
         grid-template-columns: repeat(2, 1fr);
@@ -122,23 +122,39 @@
     }
 }
 
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
 /* --- Guide Section --- */
 
 .guide-section {
     padding: 1.5rem 2rem;
+    text-align: left;
 }
 
 .guide-section h3 {
     margin-bottom: 0.75rem;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
+    color: var(--text-primary);
 }
 
 .guide-desc {
-    font-size: 0.92rem;
+    font-size: 0.95rem;
     color: var(--text-secondary);
     margin-bottom: 1.25rem;
     line-height: 1.6;
@@ -192,17 +208,17 @@
 }
 
 .guide-note {
-    margin-top: 1rem;
+    margin-top: 1.25rem;
     background: rgba(96, 165, 250, 0.08);
     border: 1px solid rgba(96, 165, 250, 0.2);
     border-radius: 8px;
-    padding: 0.65rem 1rem;
-    font-size: 0.83rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
     color: #93c5fd;
     display: flex;
-    gap: 8px;
+    gap: 10px;
     align-items: flex-start;
-    line-height: 1.55;
+    line-height: 1.6;
 }
 
 .guide-note i {
@@ -216,18 +232,3 @@
     margin-left: 4px;
     cursor: help;
 }
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.15);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-

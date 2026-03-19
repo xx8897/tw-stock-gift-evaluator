@@ -97,7 +97,6 @@ h1 {
 
 
 .footer {
-    text-align: center;
     color: var(--text-secondary);
     font-size: 0.9rem;
 }
@@ -121,74 +120,6 @@ h1 {
 /* Disclaimer Section */
 .disclaimer-section {
     text-align: left;
-}
-
-.disclaimer-section h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.8rem;
-    border-bottom: 1px solid var(--border-subtle);
-}
-
-.disclaimer-body {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.25rem;
-}
-
-.disclaimer-item {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-subtle);
-    border-radius: 12px;
-    padding: 1.25rem;
-    transition: background 0.3s ease, border-color 0.3s ease;
-}
-
-.disclaimer-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--border-strong);
-}
-
-.disclaimer-item h4 {
-    font-size: 0.88rem;
-    color: var(--accent-primary);
-    margin-bottom: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.disclaimer-item h4 i {
-    font-size: 1rem;
-    opacity: 0.9;
-}
-
-.disclaimer-item p {
-    font-size: 0.82rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin: 0;
-}
-
-/* RWD for Disclaimer */
-@media (max-width: 992px) {
-    .disclaimer-body {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .disclaimer-body {
-        grid-template-columns: 1fr;
-    }
-    
-    .disclaimer-item {
-        padding: 1rem;
-    }
 }
 
 /* ==========================================
