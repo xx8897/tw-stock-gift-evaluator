@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 # 引入同目錄的估值模組
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from valuation import estimate_5year_total, calc_v4_cp, calc_v4_score
+from valuation_v5 import estimate_5year_total, calc_v4_cp, calc_v4_score
 
 load_dotenv()
 
