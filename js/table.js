@@ -53,6 +53,15 @@ function checkGiftTypeMatch(row, ticketOnly, objectOnly) {
     return true;
 }
 
+function checkNonOddMatch(row, nonOddOnly) {
+    if (!nonOddOnly) return true;
+    const cond = String(row.cond || '');
+    if (cond.includes('可零股') || cond.includes('不限股數')) {
+        return false;
+    }
+    return true;
+}
+
 // ==========================================
 // 2. 排序輔助函數 (Sort Helper)
 // ==========================================
@@ -91,7 +100,8 @@ function applyFiltersAndSort(query, isAnnualOnly) {
                checkIdRequirementMatch(row, filters.excludeId, filters.includeId) &&
                checkPurchaseMatch(isPurchased, filters.purchaseFilter) &&
                (filters.interestOnly ? isInterest : true) &&
-               checkGiftTypeMatch(row, filters.ticketOnly, filters.objectOnly);
+               checkGiftTypeMatch(row, filters.ticketOnly, filters.objectOnly) &&
+               checkNonOddMatch(row, filters.nonOddOnly);
     });
 
     sortTableData(AppState.filteredData, currentSort.column, currentSort.direction);

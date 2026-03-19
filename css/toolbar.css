@@ -159,6 +159,14 @@
     font-weight: 600;
 }
 
+.table-toolbar .square-tag.non-odd-filter-label input:checked + span,
+.table-toolbar .square-tag.non-odd-filter-label:has(input:checked) {
+    background: rgba(20, 184, 166, 0.2); /* 藍綠 Teal */
+    border-color: rgba(20, 184, 166, 0.5);
+    color: #2dd4bf;
+    font-weight: 600;
+}
+
 .table-toolbar .square-tag.interest-filter-label input:checked + span,
 .table-toolbar .square-tag.interest-filter-label:has(input:checked) {
     background: rgba(245, 158, 11, 0.2); /* 金黃 Amber */

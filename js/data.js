@@ -14,6 +14,7 @@ const AppState = {
         excludeId: false,
         ticketOnly: false,
         objectOnly: false,
+        nonOddOnly: false,
         interestOnly: false,
         purchaseFilter: 'all' // 'all' | 'purchased' | 'unpurchased'
     },

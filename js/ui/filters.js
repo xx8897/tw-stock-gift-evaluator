@@ -111,6 +111,14 @@ window.initFilters = function() {
         renderTable();
     });
 
+    const nonOddFilter = document.getElementById('nonOddFilter');
+    nonOddFilter?.addEventListener('change', () => {
+        AppState.filters.nonOddOnly = nonOddFilter.checked;
+        if (!AppState.globalData.length) return;
+        AppState.currentPage = 1;
+        renderTable();
+    });
+
     const interestFilter = document.getElementById('interestFilter');
     interestFilter?.addEventListener('change', () => {
         AppState.filters.interestOnly = interestFilter.checked;
