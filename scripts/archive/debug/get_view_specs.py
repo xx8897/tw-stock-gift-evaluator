@@ -1,0 +1,26 @@
+import os
+from dotenv import load_dotenv
+
+# 載入 .env 檔案中的變數
+load_dotenv()
+
+SUPABASE_URL = 'https://jyoaoepcrqxzrtdkldfg.supabase.co'
+SUPABASE_KEY = os.environ.get('SUPABASE_SERVICE_KEY')
+
+headers = {
+    'apikey': SUPABASE_KEY,
+    'Authorization': f'Bearer {SUPABASE_KEY}',
+    'Accept': 'application/openapi+json'
+}
+
+print("--- Fetching View Definitions ---")
+resp = requests.get(f"{SUPABASE_URL}/rest/v1/", headers=headers)
+if resp.status_code == 200:
+    spec = resp.json()
+    views = ['top_stocks_30d', 'top_owned_stocks', 'top_interest_stocks']
+    for v in views:
+        print(f"\n--- View: {v} ---")
+        v_def = spec.get('definitions', {}).get(v, {})
+        print(json.dumps(v_def, indent=2, ensure_ascii=False))
+else:
+    print(f"Error: {resp.status_code} {resp.text}")
