@@ -201,7 +201,8 @@ def estimate_5year_total(text):
     items = str(text).split('\n')
     total = 0
     for item in items:
-        item = re.sub(r'^\(\d{4}\)', '', item.strip()).strip()
+        # 移除前面的年份標籤，例如 (2025) 或單純 2025，避免干擾 tree.json 的金額關鍵字 (如 20 匹配到 2025)
+        item = re.sub(r'^\(?\d{4}\)?', '', item.strip()).strip()
         if not item or item in ['無', '-', '未發放', '不發放']: continue
         total += estimate_gift_value_v5(item)
     return total
@@ -214,10 +215,39 @@ def calc_v4_cp(row):
     return round(cp, 2)
 
 def calc_v4_score(row):
-    cp, freq, cond = row.get('新版性價比', 0), row.get('五年內發放次數', 0), str(row.get('去年條件', ''))
-    is_convenient = not ('身分證' in cond or '本人' in cond)
-    if cp >= 2.0 and freq >= 5 and is_convenient: return '5 星'
-    elif cp >= 1.0 and freq >= 4 and is_convenient: return '4 星'
-    elif cp >= 0.5 and freq >= 3: return '3 星'
-    elif cp >= 0.1: return '2 星'
-    else: return '1 星'
+    """
+    V5 星級評等邏輯：
+    - 可零股領取 = 所有 1 星以上的基礎門檻
+    - 不須身分證 = 3 星以上的必要條件
+    - CP 門檻決定最終星級
+
+    星級對照：
+      5 星: CP > 5 + 不須身分證 + 可零股
+      4 星: CP > 3 + 不須身分證 + 可零股
+      3 星: CP > 2 + 不須身分證 + 可零股
+      2 星: CP > 2 + 可零股
+      1 星: CP > 1 + 可零股
+      0 星: 其餘（含不可零股）
+    """
+    cp   = row.get('新版性價比', 0)
+    cond = str(row.get('去年條件', ''))
+
+    # 判斷領取便利性
+    needs_id        = '身分證' in cond or '本人' in cond
+    odd_lot_blocked = '1000股' in cond or '千股' in cond or '整股' in cond
+
+    # 不可零股 → 0 星
+    if odd_lot_blocked:
+        return '0 星'
+
+    # 可零股 + 不須身分證 才能進入高星
+    if not needs_id:
+        if cp > 5: return '5 星'
+        if cp > 3: return '4 星'
+        if cp > 2: return '3 星'
+
+    # 需要身分證但可零股：最高 2 星
+    if cp > 2: return '2 星'
+    if cp > 1: return '1 星'
+
+    return '0 星'
