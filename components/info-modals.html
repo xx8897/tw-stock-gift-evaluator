@@ -45,68 +45,72 @@
                 </ul>
             </div>
             <p style="font-size: 0.85rem; margin-bottom: 0.5rem; opacity: 0.9;"><strong>💡 典型估值範例</strong></p>
-            <div class="valuation-table">
-                <div class="v-row v-header">
-                    <span class="v-col-star" style="min-width: 44%;">紀念品描述</span>
-                    <span class="v-col-cp">落點節點</span>
-                    <span class="v-col-cond" style="text-align:right;">最終估值</span>
-                </div>
-                <div class="v-row">
-                    <span style="min-width: 44%;">全家 50 元商品卡</span>
-                    <span>超商 › 50</span>
-                    <span style="color: var(--accent-primary); text-align:right;">50 − 15 = <strong>35 元</strong></span>
-                </div>
-                <div class="v-row">
-                    <span style="min-width: 44%;">六福村主題樂園門票</span>
-                    <span>票券 › 六福村</span>
-                    <span style="color: var(--accent-primary); text-align:right;">799 × 0.7 − 15 = <strong>544 元</strong></span>
-                </div>
-                <div class="v-row highlight">
-                    <span style="min-width: 44%;">王品集團餐飲禮物卡</span>
-                    <span>票券 › 王品</span>
-                    <span style="color: var(--accent-primary); text-align:right;">2800 × 0.7 − 15 = <strong>1,945 元</strong></span>
-                </div>
-                <div class="v-row">
-                    <span style="min-width: 44%;">不鏽鋼湯鍋（含蓋）</span>
-                    <span>烹飪 › 大型燉煮鍋</span>
-                    <span style="color: var(--accent-primary); text-align:right;">300 − 20 = <strong>280 元</strong></span>
-                </div>
-                <div class="v-row">
-                    <span style="min-width: 44%;">（未能分類項目）</span>
-                    <span>保底（根節點）</span>
-                    <span style="color: var(--accent-primary); text-align:right;">40 − 20 = <strong>20 元</strong></span>
-                </div>
-            </div>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>紀念品描述</th>
+                        <th>落點節點</th>
+                        <th>最終估值</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>全家 50 元商品卡</td>
+                        <td>超商 › 50</td>
+                        <td class="col-result">50 − 15 = <strong>35 元</strong></td>
+                    </tr>
+                    <tr>
+                        <td>六福村主題樂園門票</td>
+                        <td>票券 › 六福村</td>
+                        <td class="col-result">799 × 0.7 − 15 = <strong>544 元</strong></td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td>王品集團餐飲禮物卡</td>
+                        <td>票券 › 王品</td>
+                        <td class="col-result">2800 × 0.7 − 15 = <strong>1,945 元</strong></td>
+                    </tr>
+                    <tr>
+                        <td>不鏽鋼湯鍋（含蓋）</td>
+                        <td>烹飪 › 大型燉煮鍋</td>
+                        <td class="col-result">300 − 20 = <strong>280 元</strong></td>
+                    </tr>
+                    <tr>
+                        <td>（未能分類項目）</td>
+                        <td>保底（根節點）</td>
+                        <td class="col-result">40 − 20 = <strong>20 元</strong></td>
+                    </tr>
+                </tbody>
+            </table>
 
             <h4>⭐ 推薦評級對照 (V5 星級制度)</h4>
             <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
-                星級由 <strong>CP 值 × 領取便利性</strong> 共同決定。<strong>不可零股領取</strong>的標的直接歸 0 星；需身分證正本的標的上限為 2 星。
+                星級由 <strong>CP 值 × 領取便利性 × 穩定性</strong> 共同決定。<strong>不可零股領取</strong>的標的直接歸 0 星；需身分證正本或不足五年發放的標的上限為 2 星。
             </p>
             <div class="valuation-table">
                 <div class="v-row v-header">
                     <span class="v-col-star">星級</span>
                     <span class="v-col-cp">CP 指數</span>
-                    <span class="v-col-cond">其他門檻</span>
+                    <span class="v-col-cond">門檻條件</span>
                 </div>
                 <div class="v-row">
                     <span class="v-col-star">⭐⭐⭐⭐⭐</span>
                     <span class="v-col-cp"><strong>&gt; 5</strong></span>
-                    <span class="v-col-cond"><strong>不須身分證</strong> + <strong>可零股</strong></span>
+                    <span class="v-col-cond">連續 5 年 + <strong>不須身分證</strong> + <strong>可零股</strong></span>
                 </div>
                 <div class="v-row">
                     <span class="v-col-star">⭐⭐⭐⭐</span>
                     <span class="v-col-cp"><strong>&gt; 3</strong></span>
-                    <span class="v-col-cond"><strong>不須身分證</strong> + <strong>可零股</strong></span>
+                    <span class="v-col-cond">連續 5 年 + <strong>不須身分證</strong> + <strong>可零股</strong></span>
                 </div>
                 <div class="v-row">
                     <span class="v-col-star">⭐⭐⭐</span>
                     <span class="v-col-cp"><strong>&gt; 2</strong></span>
-                    <span class="v-col-cond"><strong>不須身分證</strong> + <strong>可零股</strong></span>
+                    <span class="v-col-cond">連續 5 年 + <strong>不須身分證</strong> + <strong>可零股</strong></span>
                 </div>
                 <div class="v-row">
                     <span class="v-col-star">⭐⭐</span>
                     <span class="v-col-cp">&gt; 2</span>
-                    <span class="v-col-cond">可零股（身分證可接受）</span>
+                    <span class="v-col-cond">可零股（身分證/少發年份可接受）</span>
                 </div>
                 <div class="v-row">
                     <span class="v-col-star">⭐</span>
@@ -119,7 +123,7 @@
                     <span class="v-col-cond">不可零股 或 CP ≤ 1（無推薦理由）</span>
                 </div>
             </div>
-            <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 0.5rem;">※ CP 值天花板顯示為 10.0。<strong>3 星以上保證無需身分證、可零股領取</strong>，大幅降低手續障礙與資安風險。</p>
+            <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 0.5rem;">※ <strong>3 星以上保證連續發放 5 年、無需身分證、可零股領取</strong>，是最值得信賴的標的。</p>
 
             <h4>💡 選股小撇步</h4>
             <p>5 星神股是本站最高榮譽，CP &gt; 5 代表紀念品價值極高且毫無領取障礙。若神股已被買光，4 星優選同樣方便且具備高 CP，值得入手。CP 值已包含發放頻率加權，少發的公司自然得分低。</p>

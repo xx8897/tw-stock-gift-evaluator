@@ -71,6 +71,14 @@ scripts/core/valuation_v5.py ←  「執行器」通用演算法引擎
      CP 值 💰
 ```
 
+### ⚙️ 輕量化 ETL 數據管線
+
+V5 引擎與外部資料庫的互動，本質上構成了一個標準的 **ETL (Extract, Transform, Load)** 流程，透過 GitHub Actions 達成批次處理：
+
+- **🟢 Extract (提取)**：從 FinMind API 抓取最新股價，並讀取本地整理的「紀念品歷史發放紀錄」。
+- **🟡 Transform (轉換)**：執行 V5 核心邏輯 `(五年總估值 ÷ 最近價格) × (發放次數 ÷ 5)`，處理異常值並將結果轉換為 1~5 星的推薦等級。
+- **🔵 Load (載入)**：將計算完畢的新鮮數據（價格、CP 值、推薦分數）透過 API `UPDATE` 回 Supabase 雲端資料庫供前端即時讀取。
+
 ### 估值三步驟
 
 1. **DFS 比對**：用 `keywords`、`keywords_and`、`keywords_not` 在樹中找到最深層的匹配節點。越精確的描述，落點越深，估值越準。
@@ -119,6 +127,7 @@ python gift_tree/app.py
 ## 🛠 工程品質
 
 - **Content Security Policy (CSP)**：嚴格限制腳本與連線來源，防止 XSS。支援 Cloudflare Turnstile、Google Analytics、Supabase 等必要服務。
+- **流量與行為分析**：整合 **Google Analytics 4 (GA4)** 進行基礎流量追蹤與自訂自訂點擊事件（Click Events）蒐集，作為精準產生「30 日關注榜」等大數據應用的資料基石，同時嚴格遵守安全與隱私規範。
 - **模組化前端架構**：`data.js`（全域狀態）、`table.js`（渲染）、`ui/`（事件）、`auth/`（驗證）各司其職，易於維護與擴充。
 - **Console 零報警**：在 Chrome DevTools Console 與 Issues 面板維持 0 error / 0 warning，確保與瀏覽器政策完全相容。
 - **Google OAuth 2.0**：登入流程完全由 Google 伺服器處理，本站不儲存任何用戶密碼。

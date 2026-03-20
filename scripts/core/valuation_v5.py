@@ -218,35 +218,37 @@ def calc_v4_score(row):
     """
     V5 星級評等邏輯：
     - 可零股領取 = 所有 1 星以上的基礎門檻
-    - 不須身分證 = 3 星以上的必要條件
+    - 不須身分證 + 連續五年 = 3 星以上的必要條件
     - CP 門檻決定最終星級
 
     星級對照：
-      5 星: CP > 5 + 不須身分證 + 可零股
-      4 星: CP > 3 + 不須身分證 + 可零股
-      3 星: CP > 2 + 不須身分證 + 可零股
-      2 星: CP > 2 + 可零股
+      5 星: CP > 5 + 連續五年 + 不須身分證 + 可零股
+      4 星: CP > 3 + 連續五年 + 不須身分證 + 可零股
+      3 星: CP > 2 + 連續五年 + 不須身分證 + 可零股
+      2 星: CP > 2 + 可零股（身分證/少發 ok）
       1 星: CP > 1 + 可零股
       0 星: 其餘（含不可零股）
     """
     cp   = row.get('新版性價比', 0)
+    freq = row.get('五年內發放次數', 0)
     cond = str(row.get('去年條件', ''))
 
     # 判斷領取便利性
     needs_id        = '身分證' in cond or '本人' in cond
     odd_lot_blocked = '1000股' in cond or '千股' in cond or '整股' in cond
+    five_years      = int(freq) >= 5  # 連續五年發放
 
     # 不可零股 → 0 星
     if odd_lot_blocked:
         return '0 星'
 
-    # 可零股 + 不須身分證 才能進入高星
-    if not needs_id:
+    # 可零股 + 不須身分證 + 連續五年 才能進入高星 (3~5 星)
+    if not needs_id and five_years:
         if cp > 5: return '5 星'
         if cp > 3: return '4 星'
         if cp > 2: return '3 星'
 
-    # 需要身分證但可零股：最高 2 星
+    # 無法進入高星但可零股：最高 2 星
     if cp > 2: return '2 星'
     if cp > 1: return '1 星'
 
