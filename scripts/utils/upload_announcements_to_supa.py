@@ -35,6 +35,11 @@ def upload_announcements():
             print(f"ERROR: 缺少必要欄位 '{col}'")
             return
 
+    # 依照最後買進日升序排列 (na 放置最後)
+    print("依最後買進日排序資料...")
+    df['最後買進日'] = pd.to_datetime(df['最後買進日'], errors='coerce')
+    df = df.sort_values(by='最後買進日', ascending=True, na_position='last')
+
     upsert_data = []
     current_ts = time.strftime('%Y-%m-%dT%H:%M:%S+08:00', time.localtime())
 
@@ -82,7 +87,7 @@ def upload_announcements():
     print(f"準備上傳 {len(upsert_data)} 筆紀錄到 Supabase...")
 
     # 每 100 筆為一批上傳
-    url = f"{SUPABASE_URL}/rest/v1/{TABLE_NAME}"
+    url = f"{SUPABASE_URL}/rest/v1/{TABLE_NAME}?on_conflict=stock_id,meeting_date"
     headers = {
         'apikey': SUPABASE_KEY,
         'Authorization': f'Bearer {SUPABASE_KEY}',
