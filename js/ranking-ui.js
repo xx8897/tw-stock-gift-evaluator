@@ -44,7 +44,7 @@
             ]);
             console.log('[RankingUI]: 數據獲取完成', { hotData, ownedData });
 
-            const mkItem = (id, name, valueText) => {
+            const mkItem = (id, name, valueText, trendHtml = '') => {
                 const item = document.createElement('div');
                 item.className = 'ranking-item';
                 // 如果名稱暫時找不到，且 AppState 已就緒，嘗試再次尋找
@@ -56,7 +56,7 @@
                 item.innerHTML = `
                     <div class="item-stock">${id}</div>
                     <div class="item-name">${displayName || '—'}</div>
-                    <div class="item-value" style="font-size: 0.75rem; opacity: 0.7;">${valueText}</div>
+                    <div class="item-value" style="font-size: 0.75rem; opacity: 0.7;">${valueText}${trendHtml}</div>
                 `;
                 item.onclick = () => {
                     const searchInput = document.getElementById('searchInput');
@@ -79,7 +79,10 @@
                         const name = (typeof AppState !== 'undefined' && AppState?.globalData) 
                             ? AppState.globalData.find(s => s.id === d.stock_id)?.name 
                             : d.stock_id;
-                        hotList.appendChild(mkItem(d.stock_id, name || d.stock_id, `${d.interest_count} 個收藏`));
+                        const trend = d.recent_count > 0 
+                            ? `<span class="trend-badge trend-up">↑${d.recent_count}</span>` 
+                            : '';
+                        hotList.appendChild(mkItem(d.stock_id, name || d.stock_id, `${d.interest_count} 人收藏`, trend));
                     });
                 } else {
                     hotList.innerHTML = '<div class="ranking-item loading">暫無熱度數據</div>';
@@ -119,7 +122,7 @@
 
         if (type === 'hot') {
             title.innerText = '⭐ 收藏熱度榜 Top 50';
-            if (desc) desc.innerText = '歷史總會員「收藏」個數 ＋ 近 30 天內訪客的「關注」個數';
+            if (desc) desc.innerText = '所有來源的唯一收藏人數（含會員＋訪客），↑ 為近 30 天新增';
             const data = await fetchTopStocks(50);
             renderModalList(data, 'hot');
         } else {
@@ -151,7 +154,12 @@
             const name = (typeof AppState !== 'undefined' && AppState?.globalData)
                 ? AppState.globalData.find(s => s.id === id)?.name
                 : (d.stock_name || id);
-            const valueText = type === 'hot' ? `${d.interest_count} 個收藏` : `${d.owner_count} 位持有`;
+            const trendHtml = (type === 'hot' && d.recent_count > 0) 
+                ? `<span class="trend-badge trend-up">↑${d.recent_count}</span>` 
+                : '';
+            const valueText = type === 'hot' 
+                ? `${d.interest_count} 人收藏${trendHtml}` 
+                : `${d.owner_count} 位持有`;
 
             const item = document.createElement('div');
             item.className = 'ranking-item';
