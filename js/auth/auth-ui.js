@@ -201,6 +201,8 @@ function handleAuthChange(user) {
             .catch(err => console.error('初次同步失敗:', err))
             .finally(() => {
                 AppState.isInitialSyncing = false;
+                // 同步完成後重新渲染排行榜，確保顯示最新資料
+                if (typeof renderRankings === 'function') renderRankings();
             });
     }
 }

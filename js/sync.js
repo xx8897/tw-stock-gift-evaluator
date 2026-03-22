@@ -77,23 +77,45 @@ async function syncToCloud(showLoading = true) {
     emitSyncEvent('sync:started', { mode: showLoading ? 'manual' : 'background' });
 
     try {
-        // 先刪除該用戶所有舊資料，再批次寫入新資料
-        const { error: delErr } = await client
-            .from('user_stocks')
-            .delete()
-            .eq('user_id', user.id);
-        if (delErr) throw delErr;
-
         const purchased = [...AppState.purchasedStocks];
         const interests = [...AppState.interestStocks];
-        
+
         const rows = [];
         purchased.forEach(id => rows.push({ user_id: user.id, stock_id: id, type: 'purchased' }));
         interests.forEach(id => rows.push({ user_id: user.id, stock_id: id, type: 'interest' }));
 
         if (rows.length > 0) {
-            const { error: insErr } = await client.from('user_stocks').insert(rows);
-            if (insErr) throw insErr;
+            // Upsert：先寫入（更新或新增），資料不會出現空窗期
+            const { error: upsertErr } = await client
+                .from('user_stocks')
+                .upsert(rows, { onConflict: 'user_id,stock_id,type' });
+            if (upsertErr) throw upsertErr;
+
+            // 差異刪除：只刪除已從清單中移除的項目
+            if (purchased.length > 0) {
+                await client.from('user_stocks').delete()
+                    .eq('user_id', user.id).eq('type', 'purchased')
+                    .not('stock_id', 'in', `(${purchased.map(id => `"${id}"`).join(',')})`);
+            } else {
+                await client.from('user_stocks').delete()
+                    .eq('user_id', user.id).eq('type', 'purchased');
+            }
+
+            if (interests.length > 0) {
+                await client.from('user_stocks').delete()
+                    .eq('user_id', user.id).eq('type', 'interest')
+                    .not('stock_id', 'in', `(${interests.map(id => `"${id}"`).join(',')})`);
+            } else {
+                await client.from('user_stocks').delete()
+                    .eq('user_id', user.id).eq('type', 'interest');
+            }
+        } else {
+            // 本地清單已全清空，才執行完全刪除
+            const { error: delErr } = await client
+                .from('user_stocks')
+                .delete()
+                .eq('user_id', user.id);
+            if (delErr) throw delErr;
         }
 
         const now = new Date();
@@ -146,6 +168,8 @@ async function loadFromCloud() {
         // cloudInterest 為空時，AppState.interestStocks 保持 loadUserData 讀入的值不變
 
         if (typeof window.processDataAndRender === 'function') window.processDataAndRender();
+        // 雲端資料載入後重新渲染排行榜
+        if (typeof renderRankings === 'function') renderRankings();
         
         emitSyncEvent('sync:applied', { source: 'cloud', count: cloudData.length });
 
