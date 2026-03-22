@@ -65,23 +65,6 @@ td.price {
     padding-left: 1.15rem;
 }
 
-/* 標題基礎樣式 */
-th {
-    background: var(--th-bg);
-    color: var(--text-secondary);
-    font-weight: 700;
-    font-size: 0.85rem;
-    text-transform: none; /* 保持中文原始字體 */
-    letter-spacing: 0.05em;
-    padding: 1rem 0.75rem;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    white-space: nowrap;
-    border-bottom: 2px solid var(--border-subtle);
-    transition: background-color 0.2s;
-}
-
 /* 偶數行輕微底色，增加閱讀引導感 */
 tbody tr:nth-child(even) {
     background: rgba(255, 255, 255, 0.012);
@@ -150,7 +133,10 @@ th {
     letter-spacing: 0.05em;
     position: sticky;
     top: 0;
+    z-index: 10;
     white-space: nowrap;
+    border-bottom: 2px solid var(--border-subtle);
+    transition: background-color 0.2s;
 }
 
 th.sortable {
@@ -480,6 +466,10 @@ td:has(.gift-cell) {
 /* 已過期的列整體變暗 */
 tbody tr.expired-row {
     opacity: 0.45;
+}
+
+tbody tr.expired-row:hover {
+    opacity: 0.7;
 }
 
 /* 可點擊的股號（今年紀念品表） */

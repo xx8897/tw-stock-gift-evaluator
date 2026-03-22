@@ -23,6 +23,7 @@ const AppState = {
     currentUser: null, // Supabase 登入使用者，null 代表未登入
     isInitialSyncing: false,
     viewMode: 'history',           // 'history' | 'annual'
+    annualSort: { column: null, direction: 'asc' }, // null = 預設（未到期在前）
     announcementData: [],          // 今年紀念品原始資料
     filteredAnnouncementData: []   // 今年紀念品過濾/排序後資料
 };
@@ -220,6 +221,10 @@ async function loadAnnouncements() {
             };
         });
         console.debug('[Announcements] 載入成功，共', AppState.announcementData.length, '筆公告');
+        // 若使用者已切到今年紀念品，自動刷新表格
+        if (AppState.viewMode === 'annual' && typeof renderTable === 'function') {
+            renderTable();
+        }
     } catch (e) {
         console.warn('loadAnnouncements 失敗:', e);
     }

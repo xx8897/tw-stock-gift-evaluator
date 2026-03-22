@@ -62,15 +62,29 @@ function applyAnnualFiltersAndSort() {
                checkNonOddMatch(row, filters.nonOddOnly);
     });
 
-    // 未到期升序在前，已過期升序在後
-    filtered.sort((a, b) => {
-        const aExp = !!(a.lastBuyDate && a.lastBuyDate < today);
-        const bExp = !!(b.lastBuyDate && b.lastBuyDate < today);
-        if (aExp !== bExp) return aExp ? 1 : -1;
-        const aD = a.lastBuyDate || '';
-        const bD = b.lastBuyDate || '';
-        return aD < bD ? -1 : aD > bD ? 1 : 0;
-    });
+    const { annualSort } = AppState;
+
+    if (annualSort.column === 'lastBuyDate') {
+        // 使用者手動排序：純粹按日期排序
+        const dir = annualSort.direction === 'asc' ? 1 : -1;
+        filtered.sort((a, b) => {
+            const aD = a.lastBuyDate || '';
+            const bD = b.lastBuyDate || '';
+            if (aD < bD) return -1 * dir;
+            if (aD > bD) return 1 * dir;
+            return 0;
+        });
+    } else {
+        // 預設：未到期升序在前，已過期升序在後
+        filtered.sort((a, b) => {
+            const aExp = !!(a.lastBuyDate && a.lastBuyDate < today);
+            const bExp = !!(b.lastBuyDate && b.lastBuyDate < today);
+            if (aExp !== bExp) return aExp ? 1 : -1;
+            const aD = a.lastBuyDate || '';
+            const bD = b.lastBuyDate || '';
+            return aD < bD ? -1 : aD > bD ? 1 : 0;
+        });
+    }
 
     AppState.filteredAnnouncementData = filtered;
 }
@@ -90,14 +104,38 @@ function renderAnnualTable() {
     const tableBody   = document.getElementById('tableBody');
     const pagination  = document.getElementById('pagination');
 
+    // 資料尚未載入時顯示提示
+    if (AppState.announcementData.length === 0) {
+        resultCount.textContent = '';
+        noResults.classList.add('hidden');
+        tableBody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:3rem 1rem;color:var(--text-secondary);"><i class="fa-solid fa-spinner fa-spin" style="margin-right:0.5rem;"></i>今年公告資料載入中...</td></tr>';
+        pagination.innerHTML = '';
+        return;
+    }
+
     applyAnnualFiltersAndSort();
+
+    // 更新排序圖示
+    const annualSortHeaders = annualThead ? annualThead.querySelectorAll('th.sortable') : [];
+    annualSortHeaders.forEach(th => {
+        const col = th.dataset.sort;
+        const icon = th.querySelector('i');
+        if (col === AppState.annualSort.column) {
+            th.classList.add('active');
+            if (icon) icon.className = AppState.annualSort.direction === 'asc'
+                ? 'fa-solid fa-sort-up' : 'fa-solid fa-sort-down';
+        } else {
+            th.classList.remove('active');
+            if (icon) icon.className = 'fa-solid fa-sort';
+        }
+    });
 
     const today = getTodayUTC8();
     const total = AppState.filteredAnnouncementData.length;
     const totalPages = Math.max(1, Math.ceil(total / AppState.pageSize));
     if (AppState.currentPage > totalPages) AppState.currentPage = 1;
 
-    resultCount.textContent = `共 ${total} 筆結果`;
+    resultCount.textContent = `共 ${total} 筆結果（今年公告）`;
 
     if (total === 0) {
         noResults.classList.remove('hidden');
@@ -167,6 +205,10 @@ window.switchViewMode = function(mode) {
 window.switchToHistoryWithSearch = function(stockId) {
     const searchInput = document.getElementById('searchInput');
     if (searchInput) searchInput.value = stockId;
+
+    // 顯示搜尋清除按鈕
+    const clearBtn = document.getElementById('searchClearBtn');
+    if (clearBtn) clearBtn.classList.toggle('hidden', !stockId);
 
     document.querySelectorAll('.view-toggle-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.view === 'history');

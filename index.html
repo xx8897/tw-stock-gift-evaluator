@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="css/variables.css?v=5">
     <link rel="stylesheet" href="css/base.css?v=5">
     <link rel="stylesheet" href="css/layout.css?v=5">
-    <link rel="stylesheet" href="css/components.css?v=7">
+    <link rel="stylesheet" href="css/components.css?v=8">
     <link rel="stylesheet" href="css/modal.css?v=6">
     <link rel="stylesheet" href="css/auth.css?v=6">
     <link rel="stylesheet" href="css/utilities.css?v=6">
@@ -160,6 +160,7 @@
                 <label for="searchInput" class="visually-hidden">搜尋股票代號、公司名稱或紀念品</label>
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" id="searchInput" placeholder="搜尋股號、公司名稱或紀念品品項..." autocomplete="off">
+                <button class="search-clear-btn hidden" id="searchClearBtn" type="button" title="清除搜尋"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
             <div class="filters" id="starFilterGroup">
@@ -366,7 +367,7 @@
                             <th>股號</th>
                             <th>公司</th>
                             <th>最近價格</th>
-                            <th>最後買進日</th>
+                            <th class="sortable" data-sort="lastBuyDate">最後買進日 <i class="fa-solid fa-sort"></i></th>
                             <th>股東會日期</th>
                             <th>會議性質</th>
                             <th>紀念品</th>

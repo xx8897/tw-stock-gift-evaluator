@@ -43,9 +43,36 @@
     color: var(--text-secondary);
 }
 
+.search-clear-btn {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.6;
+    transition: opacity 0.2s, color 0.2s;
+}
+
+.search-clear-btn:hover {
+    opacity: 1;
+    color: var(--text-primary);
+}
+
+.search-clear-btn.hidden {
+    display: none;
+}
+
 .search-box input {
     width: 100%;
-    padding: 0.8rem 1rem 0.8rem 2.8rem;
+    padding: 0.8rem 2.2rem 0.8rem 2.8rem;
     border-radius: 12px;
     border: 1px solid var(--glass-border);
     background: var(--input-bg);

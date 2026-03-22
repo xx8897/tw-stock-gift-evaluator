@@ -9,8 +9,17 @@ window.initFilters = function() {
     const pageSizeSelect = document.getElementById('pageSizeSelect');
     const sortHeaders = document.querySelectorAll('th.sortable');
 
+    // ── 搜尋清除按鈕 ──────────────────────────────────────
+    const searchClearBtn = document.getElementById('searchClearBtn');
+    const toggleClearBtn = () => {
+        if (searchClearBtn) {
+            searchClearBtn.classList.toggle('hidden', !searchInput?.value);
+        }
+    };
+
     let searchTimer = null;
     searchInput?.addEventListener('input', () => {
+        toggleClearBtn();
         if (!AppState.globalData.length) return;
         AppState.currentPage = 1;
         renderTable();
@@ -23,6 +32,18 @@ window.initFilters = function() {
                 trackUIEvent('search_query', val);
             }
         }, 1000);
+    });
+
+    searchClearBtn?.addEventListener('click', () => {
+        if (searchInput) {
+            searchInput.value = '';
+            searchInput.focus();
+            toggleClearBtn();
+            if (AppState.globalData.length) {
+                AppState.currentPage = 1;
+                renderTable();
+            }
+        }
     });
 
     // 星星過濾器 (多選邏輯)
@@ -185,6 +206,26 @@ window.initFilters = function() {
         if (!AppState.globalData.length) return;
         AppState.currentPage = 1;
         renderTable();
+    });
+
+    // ── 今年紀念品排序標頭 ─────────────────────────────────
+    const annualSortHeaders = document.querySelectorAll('#annualThead th.sortable');
+    annualSortHeaders.forEach(th => {
+        th.addEventListener('click', () => {
+            const col = th.dataset.sort;
+            if (AppState.annualSort.column === col) {
+                // 三態切換：asc → desc → 預設(null)
+                if (AppState.annualSort.direction === 'asc') {
+                    AppState.annualSort.direction = 'desc';
+                } else {
+                    AppState.annualSort = { column: null, direction: 'asc' };
+                }
+            } else {
+                AppState.annualSort = { column: col, direction: 'asc' };
+            }
+            AppState.currentPage = 1;
+            renderTable();
+        });
     });
 
     // ── 歷史 / 今年 切換按鈕 ───────────────────────────────
