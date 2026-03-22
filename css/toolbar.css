@@ -303,6 +303,50 @@
     opacity: 1;
 }
 
+/* ── 歷史 / 今年 切換（Segmented Control）───────────────── */
+.table-toolbar .toolbar-right {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.view-toggle {
+    display: inline-flex;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    overflow: hidden;
+    height: 32px;
+}
+
+.view-toggle-btn {
+    padding: 0 0.9rem;
+    font-size: 0.8rem;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+    white-space: nowrap;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-family: inherit;
+}
+
+.view-toggle-btn:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.view-toggle-btn.active {
+    background: var(--accent-primary);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.view-toggle-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.8);
+}
+
 @media (max-width: 900px) {
     .table-toolbar {
         padding: 1rem;
@@ -318,6 +362,7 @@
         width: 100%;
         display: flex;
         justify-content: flex-end;
+        margin-left: 0;
     }
 
     .table-toolbar .toolbar-left {

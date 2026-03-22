@@ -108,6 +108,21 @@ function applyFiltersAndSort(query, isAnnualOnly) {
 }
 
 function renderTable() {
+    if (AppState.viewMode === 'annual') {
+        if (typeof renderAnnualTable === 'function') renderAnnualTable();
+        return;
+    }
+
+    // 確保切回歷史模式時 colgroup / thead 正確
+    const colgroup = document.getElementById('dataColgroup');
+    if (colgroup && typeof HISTORY_COLGROUP_HTML !== 'undefined') {
+        colgroup.innerHTML = HISTORY_COLGROUP_HTML;
+    }
+    const historyThead = document.getElementById('historyThead');
+    const annualThead  = document.getElementById('annualThead');
+    if (historyThead) historyThead.style.display = '';
+    if (annualThead)  annualThead.style.display  = 'none';
+
     const searchInput = document.getElementById('searchInput');
     const annualFilter = document.getElementById('annualFilter');
     const resultCount = document.getElementById('resultCount');
@@ -168,7 +183,7 @@ function renderTable() {
 
         tr.innerHTML = `
             <td data-label="興趣" class="interest-cell"><button class="interest-btn ${isInterest ? 'active' : ''}" onclick="toggleInterestAndRender('${row.id}')" title="${isInterest ? '取消收藏' : '加入收藏'}"><i class="fa-solid fa-star"></i></button></td>
-            <td data-label="已買" class="purchase-cell"><button class="purchase-btn ${isPurchased ? 'active' : ''}" onclick="togglePurchaseAndRender('${row.id}')" title="${isPurchased ? '已買入' : '標記買入'}"><i class="fa-solid ${isPurchased ? 'fa-check' : 'fa-plus'}"></i></button></td>
+            <td data-label="持有" class="purchase-cell"><button class="purchase-btn ${isPurchased ? 'active' : ''}" onclick="togglePurchaseAndRender('${row.id}')" title="${isPurchased ? '已買入' : '標記買入'}"><i class="fa-solid ${isPurchased ? 'fa-check' : 'fa-plus'}"></i></button></td>
             <td data-label="股號" class="stock-id">${row.id}</td>
             <td data-label="公司" class="stock-name">${row.name}</td>
             <td data-label="最近價格" class="price">${row.price.toFixed(2)}</td>
@@ -178,7 +193,7 @@ function renderTable() {
             <td data-label="五年內發放" class="freq-cell">
                 <span class="freq-num">${row.freq}<span class="freq-slash">/5</span></span>
             </td>
-            <td data-label="CP 值" class="cp-value">${row.cp.toFixed(2)}</td>
+            <td data-label="性價比+" class="cp-value">${row.cp.toFixed(2)}</td>
             <td data-label="去年條件" class="cond-cell" title="${condText}">${condDisplay}</td>
             <td data-label="推薦評分"><span class="badge badge-${starNum}">${row.score}</span></td>
         `;

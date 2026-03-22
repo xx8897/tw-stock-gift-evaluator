@@ -186,4 +186,19 @@ window.initFilters = function() {
         AppState.currentPage = 1;
         renderTable();
     });
+
+    // ── 歷史 / 今年 切換按鈕 ───────────────────────────────
+    const viewToggleBtns = document.querySelectorAll('#viewToggle .view-toggle-btn');
+    console.debug('[Filters] viewToggle buttons found:', viewToggleBtns.length);
+    viewToggleBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetMode = btn.dataset.view;
+            console.debug('[ViewToggle] clicked →', targetMode);
+            if (AppState.viewMode === targetMode) return;
+            viewToggleBtns.forEach(b => b.classList.toggle('active', b.dataset.view === targetMode));
+            if (typeof window.switchViewMode === 'function') {
+                window.switchViewMode(targetMode);
+            }
+        });
+    });
 };

@@ -474,6 +474,41 @@ td:has(.gift-cell) {
 }
 
 /* ==========================================
+   今年紀念品表格 (Annual Table)
+   ========================================== */
+
+/* 已過期的列整體變暗 */
+tbody tr.expired-row {
+    opacity: 0.45;
+}
+
+/* 可點擊的股號（今年紀念品表） */
+.stock-id-link {
+    cursor: pointer;
+}
+
+.stock-id-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* 日期與會議性質欄置中 + monospace */
+td.annual-date,
+td.meeting-type {
+    text-align: center;
+    font-family: 'Outfit', monospace;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* 紀念品欄：桌機允許換行 */
+td.annual-gift {
+    white-space: normal;
+    word-break: break-word;
+    overflow: visible;
+}
+
+/* ==========================================
    桌機專屬區塊：手機不需要的角色設定
    (防止汚染手機版 td 的外観)
    ========================================== */

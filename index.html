@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="css/variables.css?v=5">
     <link rel="stylesheet" href="css/base.css?v=5">
     <link rel="stylesheet" href="css/layout.css?v=5">
-    <link rel="stylesheet" href="css/components.css?v=6">
+    <link rel="stylesheet" href="css/components.css?v=7">
     <link rel="stylesheet" href="css/modal.css?v=6">
     <link rel="stylesheet" href="css/auth.css?v=6">
     <link rel="stylesheet" href="css/utilities.css?v=6">
@@ -258,6 +258,13 @@
                                 <span class="sync-hint-text hidden" id="syncHintText">💡 每 15 分鐘自動同步，離開頁面前建議手動儲存</span>
                             </div>
                         </div>
+                        <!-- 歷史 / 今年 切換 -->
+                        <div class="toolbar-right">
+                            <div class="view-toggle" id="viewToggle">
+                                <button class="view-toggle-btn active" data-view="history">歷史紀念品</button>
+                                <button class="view-toggle-btn" data-view="annual">今年紀念品</button>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- 第二行：操作項目 (篩選按鈕 + 每頁顯示) -->
@@ -322,7 +329,7 @@
                 </div>
 
                 <table id="dataTable">
-                    <colgroup>
+                    <colgroup id="dataColgroup">
                         <col style="width: 53px;">  <!-- 1. 興趣 -->
                         <col style="width: 53px;">  <!-- 2. 持有 -->
                         <col style="width: 85px;">  <!-- 3. 股號 -->
@@ -334,7 +341,7 @@
                         <col style="width: 128px;"> <!-- 9. 去年條件 -->
                         <col style="width: 118px;"> <!-- 10. 推薦評分 -->
                     </colgroup>
-                    <thead>
+                    <thead id="historyThead">
                         <tr>
                             <th class="th-interest" title="收藏感興趣的股票"><i class="fa-solid fa-star"></i></th>
                             <th class="th-purchased" title="標記已買入股票"><i class="fa-solid fa-cart-shopping"></i></th>
@@ -350,6 +357,19 @@
                             <th class="sortable" data-sort="score"
                                 title="綜合 CP 值給出的推薦星級：5星(CP≥2.0)、4星(CP≥1.0)、3星(CP≥0.5)、2星(CP≥0.1)、1星(CP<0.1)。">推薦評分 <i
                                     class="fa-solid fa-sort"></i></th>
+                        </tr>
+                    </thead>
+                    <thead id="annualThead" style="display:none">
+                        <tr>
+                            <th class="th-interest" title="收藏感興趣的股票"><i class="fa-solid fa-star"></i></th>
+                            <th class="th-purchased" title="標記已買入股票"><i class="fa-solid fa-cart-shopping"></i></th>
+                            <th>股號</th>
+                            <th>公司</th>
+                            <th>最近價格</th>
+                            <th>最後買進日</th>
+                            <th>股東會日期</th>
+                            <th>會議性質</th>
+                            <th>紀念品</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -433,6 +453,7 @@
     <script src="js/analytics.js?v=1"></script>
     <script src="js/data.js?v=7"></script>
     <script src="js/table.js?v=7"></script>
+    <script src="js/annual-table.js?v=1"></script>
     <script src="js/ui/modals.js?v=1"></script>
     <script src="js/ui/filters.js?v=1"></script>
     <script src="js/ui/table-events.js?v=1"></script>

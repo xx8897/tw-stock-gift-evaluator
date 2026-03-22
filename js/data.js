@@ -21,7 +21,10 @@ const AppState = {
     currentPage: 1,
     pageSize: 25,
     currentUser: null, // Supabase 登入使用者，null 代表未登入
-    isInitialSyncing: false
+    isInitialSyncing: false,
+    viewMode: 'history',           // 'history' | 'annual'
+    announcementData: [],          // 今年紀念品原始資料
+    filteredAnnouncementData: []   // 今年紀念品過濾/排序後資料
 };
 
 function processDataAndRender(options = {}) {
@@ -175,6 +178,7 @@ async function loadData() {
                 window.stopLoadingTextRotation();
             }
             processDataAndRender();
+            loadAnnouncements(); // 非阻塞，背景載入今年公告
             return; // 成功從 Supabase 取得資料，結束函式
         } else {
             throw new Error('Supabase 無資料，轉向備援');
@@ -183,6 +187,41 @@ async function loadData() {
         console.error('Supabase 載入失敗且已停用 Excel 備援:', primaryError);
         // 暫時註解備援機制
         // await loadExcelDataFallback(loadingState, tableWrapper, lastUpdated);
+    }
+}
+
+async function loadAnnouncements() {
+    if (!window.supabaseClient) return;
+    try {
+        const { data, error } = await window.supabaseClient
+            .from('announcements')
+            .select('*');
+        if (error) { console.warn('announcements 讀取失敗:', error); return; }
+        if (!data || data.length === 0) return;
+
+        // 建立對照表：股價 + 歷史資料（score / freq / cond）
+        const refMap = {};
+        AppState.globalData.forEach(s => { refMap[s.id] = s; });
+
+        AppState.announcementData = data.map(row => {
+            const id = String(row.stock_id || '');
+            const ref = refMap[id];
+            return {
+                id,
+                name: String(row.name || ''),
+                price: ref ? ref.price : 0,
+                lastBuyDate: row.last_buy_date || null,
+                meetingDate: row.meeting_date || null,
+                meetingType: String(row.meeting_type || ''),
+                gift: String(row.gift || ''),
+                score: ref ? ref.score : '1 星',
+                freq: ref ? ref.freq : 0,
+                cond: ref ? ref.cond : '',
+            };
+        });
+        console.debug('[Announcements] 載入成功，共', AppState.announcementData.length, '筆公告');
+    } catch (e) {
+        console.warn('loadAnnouncements 失敗:', e);
     }
 }
 
