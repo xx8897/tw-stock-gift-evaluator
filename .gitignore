@@ -29,8 +29,7 @@ wheels/
 docs/*
 
 # Data
-
-
+data/
 
 # OS
 .DS_Store
