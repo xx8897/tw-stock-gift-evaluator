@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(du -sh /c/Users/xx8897/codespace/antigravity/台股文件/*)"
+      "Bash(du -sh /c/Users/xx8897/codespace/antigravity/台股文件/*)",
+      "Bash(python -c \"import pandas as pd; df = pd.read_excel\\(''data/20260323.xlsx''\\); print\\(''欄位:'', df.columns.tolist\\(\\)\\); print\\(\\); print\\(df.head\\(3\\).to_string\\(\\)\\)\")"
     ]
   }
 }

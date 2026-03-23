@@ -55,11 +55,8 @@ function checkGiftTypeMatch(row, ticketOnly, objectOnly) {
 
 function checkNonOddMatch(row, nonOddOnly) {
     if (!nonOddOnly) return true;
-    const cond = String(row.cond || '');
-    if (cond.includes('可零股') || cond.includes('不限股數')) {
-        return false;
-    }
-    return true;
+    const cond = String(row.histCond || row.cond || '');
+    return cond.includes('【特殊條件】');
 }
 
 // ==========================================

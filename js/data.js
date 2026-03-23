@@ -195,7 +195,7 @@ async function loadAnnouncements() {
     if (!window.supabaseClient) return;
     try {
         const { data, error } = await window.supabaseClient
-            .from('announcements')
+            .from('2026')
             .select('*');
         if (error) { console.warn('announcements 讀取失敗:', error); return; }
         if (!data || data.length === 0) return;
@@ -213,11 +213,11 @@ async function loadAnnouncements() {
                 price: ref ? ref.price : 0,
                 lastBuyDate: row.last_buy_date || null,
                 meetingDate: row.meeting_date || null,
-                meetingType: String(row.meeting_type || ''),
                 gift: String(row.gift || ''),
                 score: ref ? ref.score : '1 星',
                 freq: ref ? ref.freq : 0,
-                cond: ref ? ref.cond : '',
+                cond: String(row.cond || ''),       // 今年條件（顯示用）
+                histCond: ref ? ref.cond : '',      // 歷史條件（非零股篩選用）
             };
         });
         console.debug('[Announcements] 載入成功，共', AppState.announcementData.length, '筆公告');

@@ -233,6 +233,10 @@ def calc_v4_score(row):
     freq = row.get('五年內發放次數', 0)
     cond = str(row.get('去年條件', ''))
 
+    # 特殊條件 → 0 星
+    if '【特殊條件】' in cond:
+        return '0 星'
+
     # 判斷領取便利性
     needs_id        = '身分證' in cond or '本人' in cond
     odd_lot_blocked = '1000股' in cond or '千股' in cond or '整股' in cond

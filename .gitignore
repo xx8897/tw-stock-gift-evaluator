@@ -28,8 +28,7 @@ wheels/
 # Docs (internal development notes, not for public repo)
 docs/*
 
-# Data
-data/
+
 
 # OS
 .DS_Store

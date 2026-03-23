@@ -8,12 +8,11 @@ const ANNUAL_COLGROUP_HTML =
     '<col style="width: 85px;">'  +  // 3. 股號
     '<col style="width: 90px;">'  +  // 4. 公司
     '<col style="width: 85px;">'  +  // 5. 最近價格
-    '<col style="width: 115px;">' +  // 6. 最後買進日
-    '<col style="width: 115px;">' +  // 7. 股東會日期
-    '<col style="width: 85px;">'  +  // 8. 會議性質
-    '<col>'                       +  // 9. 紀念品 (auto)
-    '<col style="width: 128px;">' +  // 10. 去年條件
-    '<col style="width: 118px;">';   // 11. 推薦評分
+    '<col style="width: 130px;">' +  // 6. 最後買進日
+    '<col style="width: 130px;">' +  // 7. 股東會日期
+    '<col>'                       +  // 8. 紀念品 (auto)
+    '<col style="width: 128px;">' +  // 9. 條件
+    '<col style="width: 118px;">';   // 10. 推薦評分
 
 const HISTORY_COLGROUP_HTML =
     '<col style="width: 53px;">'  +  // 1. 興趣
@@ -118,7 +117,7 @@ function renderAnnualTable() {
     if (AppState.announcementData.length === 0) {
         resultCount.textContent = '';
         noResults.classList.add('hidden');
-        tableBody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:3rem 1rem;color:var(--text-secondary);"><i class="fa-solid fa-spinner fa-spin" style="margin-right:0.5rem;"></i>今年公告資料載入中...</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:3rem 1rem;color:var(--text-secondary);"><i class="fa-solid fa-spinner fa-spin" style="margin-right:0.5rem;"></i>今年公告資料載入中...</td></tr>';
         pagination.innerHTML = '';
         return;
     }
@@ -145,7 +144,7 @@ function renderAnnualTable() {
     const totalPages = Math.max(1, Math.ceil(total / AppState.pageSize));
     if (AppState.currentPage > totalPages) AppState.currentPage = 1;
 
-    resultCount.textContent = `共 ${total} 筆結果（今年公告）`;
+    resultCount.textContent = `共 ${total} 筆結果`;
 
     if (total === 0) {
         noResults.classList.remove('hidden');
@@ -179,9 +178,8 @@ function renderAnnualTable() {
             <td data-label="最近價格" class="price">${priceDisp}</td>
             <td data-label="最後買進日" class="annual-date">${formatDateDisplay(row.lastBuyDate)}</td>
             <td data-label="股東會日期" class="annual-date">${formatDateDisplay(row.meetingDate)}</td>
-            <td data-label="會議性質" class="meeting-type">${row.meetingType || '—'}</td>
             <td data-label="紀念品" class="annual-gift">${row.gift || '—'}</td>
-            <td data-label="去年條件" class="cond-cell" title="${condText}">${condText}</td>
+            <td data-label="條件" class="cond-cell" title="${condText}">${condText}</td>
             <td data-label="推薦評分" class="score-cell"><span class="badge badge-${starNum}">${row.score || '1 星'}</span></td>
         `;
         tableBody.appendChild(tr);
