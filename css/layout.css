@@ -216,6 +216,7 @@ h1 {
         align-items: stretch;
         gap: 1rem;
         padding: 1rem;
+        overflow: hidden;
     }
 
     .search-box {
