@@ -44,7 +44,7 @@ async function initComponents() {
     await loadComponent('feedbackContainer', 'components/feedback-modal.html');
 
     // 載入新抽離的 footer 和彈窗
-    await loadComponent('footerContainer', 'components/footer.html');
+    await loadComponent('footerContainer', 'components/footer.html?v=2');
     await loadComponent('nicknameContainer', 'components/nickname-modal.html');
     await loadComponent('rankingContainer', 'components/ranking-modal.html');
 

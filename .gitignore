@@ -25,6 +25,9 @@ wheels/
 .installed.cfg
 *.egg
 
+# Docs (internal development notes, not for public repo)
+docs/*
+
 # Data
 
 

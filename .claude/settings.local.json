@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(du -sh /c/Users/xx8897/codespace/antigravity/台股文件/*)"
+    ]
+  }
+}

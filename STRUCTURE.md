@@ -1,4 +1,4 @@
-# 📂 專案目錄結構說明 (v4.18)
+# 📂 專案目錄結構說明 (v4.19)
 
 > 本文件描述本專案的完整目錄結構、各檔案職責，以及各層架構的設計決策。
 
@@ -59,6 +59,7 @@
 │   ├── main.js                     #    程式進入點（協調初始化順序）
 │   ├── data.js                     #    全域狀態 AppState、Supabase 資料載入
 │   ├── table.js                    #    表格渲染、過濾邏輯彙整（checkXXXMatch 函式群）
+│   ├── annual-table.js             #    今年紀念品表格（公告資料、去年條件、推薦評分）
 │   ├── components-loader.js        #    異步 fetch HTML 組件並注入 DOM
 │   ├── ui.js                       #    UI 模組啟動入口（匯聚並執行 ui/*.js）
 │   ├── ui/
@@ -83,7 +84,12 @@
 │   └── app.py                      #    本機視覺化編輯器（Flask，http://127.0.0.1:5001）
 │
 ├── data/                           # 📊 歷史資料備份
-│   └── 2021-2025_推薦v2.xlsx       #    Excel 備援資料源（Supabase 掛掉時使用）
+│   ├── 2021-2025_推薦v2.xlsx       #    Excel 備援資料源（Supabase 掛掉時使用）
+│   ├── 20260322公告.xlsx           #    今年股東會公告資料（最後買進日、紀念品）
+│   ├── 三月.xlsx                   #    三月補充公告
+│   ├── 四月.xlsx                   #    四月補充公告
+│   ├── 特殊領取資格彙整.xlsx         #    各公司特殊領取條件彙整（身分證需求等）
+│   └── 興櫃的資料_updated.xlsx      #    興櫃股票資料
 │
 ├── docs/                           # 📖 開發與設定教學文件
 │   ├── ai_agent_customization_guide.md
@@ -102,6 +108,7 @@
 │   │   └── evaluate_stocks_supa.py #    全量重算 CP 值並批次更新 Supabase
 │   │
 │   ├── utils/                      # 輔助工具腳本（手動執行，不進 CI/CD）
+│   │   ├── upload_announcements_to_supa.py  # 將今年股東會公告 Excel 上傳至 Supabase
 │   │   ├── generate_stock_excel.py #    產生試算 Excel 報表
 │   │   ├── generate_mindmap.py     #    將分類樹視覺化為思維導圖
 │   │   ├── filter_stocks.py        #    依篩選條件過濾並輸出清單
@@ -115,6 +122,9 @@
 │       ├── valuation.py            #    舊版 V4 估值引擎（if-else 硬編碼，已被 V5 取代）
 │       ├── valuation_v4_4.py       #    同上，V4.4 版本
 │       ├── evaluate_stocks.py      #    舊版全量評估腳本
+│       ├── clean_excel_text.py     #    一次性 Excel 文字清洗工具
+│       ├── clean_excel_text_v2.py  #    同上，v2
+│       ├── format_excel_dates.py   #    一次性日期格式轉換工具
 │       ├── debug/                  #    偵錯與手動測試腳本
 │       └── tests/                  #    歷史單元測試與 API 驗證腳本
 │
@@ -163,4 +173,4 @@
 
 ---
 
-> 最後更新：2026-03-19 (v4.18)
+> 最後更新：2026-03-23 (v4.19)

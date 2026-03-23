@@ -195,7 +195,7 @@ function renderTable() {
             </td>
             <td data-label="性價比+" class="cp-value">${row.cp.toFixed(2)}</td>
             <td data-label="去年條件" class="cond-cell" title="${condText}">${condDisplay}</td>
-            <td data-label="推薦評分"><span class="badge badge-${starNum}">${row.score}</span></td>
+            <td data-label="推薦評分" class="score-cell"><span class="badge badge-${starNum}">${row.score}</span></td>
         `;
         tableBody.appendChild(tr);
     });

@@ -11,7 +11,9 @@ const ANNUAL_COLGROUP_HTML =
     '<col style="width: 115px;">' +  // 6. 最後買進日
     '<col style="width: 115px;">' +  // 7. 股東會日期
     '<col style="width: 85px;">'  +  // 8. 會議性質
-    '<col>';                          // 9. 紀念品 (auto)
+    '<col>'                       +  // 9. 紀念品 (auto)
+    '<col style="width: 128px;">' +  // 10. 去年條件
+    '<col style="width: 118px;">';   // 11. 推薦評分
 
 const HISTORY_COLGROUP_HTML =
     '<col style="width: 53px;">'  +  // 1. 興趣
@@ -64,7 +66,15 @@ function applyAnnualFiltersAndSort() {
 
     const { annualSort } = AppState;
 
-    if (annualSort.column === 'lastBuyDate') {
+    if (annualSort.column === 'score') {
+        // 推薦評分排序
+        const dir = annualSort.direction === 'asc' ? 1 : -1;
+        filtered.sort((a, b) => {
+            const aS = parseInt(a.score?.charAt(0)) || 1;
+            const bS = parseInt(b.score?.charAt(0)) || 1;
+            return (aS - bS) * dir;
+        });
+    } else if (annualSort.column === 'lastBuyDate') {
         // 使用者手動排序：純粹按日期排序
         const dir = annualSort.direction === 'asc' ? 1 : -1;
         filtered.sort((a, b) => {
@@ -108,7 +118,7 @@ function renderAnnualTable() {
     if (AppState.announcementData.length === 0) {
         resultCount.textContent = '';
         noResults.classList.add('hidden');
-        tableBody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:3rem 1rem;color:var(--text-secondary);"><i class="fa-solid fa-spinner fa-spin" style="margin-right:0.5rem;"></i>今年公告資料載入中...</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:3rem 1rem;color:var(--text-secondary);"><i class="fa-solid fa-spinner fa-spin" style="margin-right:0.5rem;"></i>今年公告資料載入中...</td></tr>';
         pagination.innerHTML = '';
         return;
     }
@@ -154,6 +164,8 @@ function renderAnnualTable() {
         const isInterest  = AppState.interestStocks.has(row.id);
         const isExpired   = !!(row.lastBuyDate && row.lastBuyDate < today);
         const priceDisp   = row.price > 0 ? row.price.toFixed(2) : '—';
+        const condText    = (row.cond && row.cond !== 'nan' && row.cond.trim()) ? row.cond.trim() : '—';
+        const starNum     = parseInt(row.score?.charAt(0)) || 1;
 
         const tr = document.createElement('tr');
         if (isPurchased) tr.classList.add('purchased-row');
@@ -169,6 +181,8 @@ function renderAnnualTable() {
             <td data-label="股東會日期" class="annual-date">${formatDateDisplay(row.meetingDate)}</td>
             <td data-label="會議性質" class="meeting-type">${row.meetingType || '—'}</td>
             <td data-label="紀念品" class="annual-gift">${row.gift || '—'}</td>
+            <td data-label="去年條件" class="cond-cell" title="${condText}">${condText}</td>
+            <td data-label="推薦評分" class="score-cell"><span class="badge badge-${starNum}">${row.score || '1 星'}</span></td>
         `;
         tableBody.appendChild(tr);
     });
