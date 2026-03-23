@@ -1,5 +1,5 @@
 window.initTableEvents = function() {
-    step = 'sorting';
+    const sortHeaders = document.querySelectorAll('th.sortable');
     sortHeaders.forEach(header => {
         header.addEventListener('click', () => {
             if (!AppState.globalData.length) return;
@@ -32,7 +32,6 @@ window.initTableEvents = function() {
     }
 
     // ── 禮物 icon 金幣爆炸 ────────────────────────────────────
-    step = 'giftbox';
     const headerGiftBox = document.getElementById('headerGiftBox');
     if (headerGiftBox) {
         headerGiftBox.addEventListener('click', () => {
